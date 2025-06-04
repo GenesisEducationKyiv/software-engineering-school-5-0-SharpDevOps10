@@ -14,7 +14,7 @@ export class UUIDValidationPipe extends ParseUUIDPipe implements PipeTransform {
     });
   }
 
-  transform (value: any, metadata: ArgumentMetadata) {
+  transform (value: any, metadata: ArgumentMetadata): Promise<string> {
     if (value === undefined || value === null) return value;
 
     return super.transform(value, metadata);

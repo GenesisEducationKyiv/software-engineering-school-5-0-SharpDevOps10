@@ -16,16 +16,34 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.cjs'],
+  ignorePatterns: ['.eslintrc.js'],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-function-return-type': [
+      'warn',
+      {
+        allowExpressions: false,
+        allowTypedFunctionExpressions: true,
+        allowHigherOrderFunctions: true,
+        allowConciseArrowFunctionExpressionsStartingWithVoid: true,
+      },
+    ],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': [
       'warn',
       { argsIgnorePattern: '^type$' },
     ],
+    '@typescript-eslint/require-await': 'error',
+    '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+    '@typescript-eslint/no-empty-function': 'warn',
+    '@typescript-eslint/no-empty-interface': 'warn',
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      { 'ts-expect-error': 'allow-with-description' }
+    ],
+
     semi: ['error', 'always'],
     'comma-dangle': ['error', 'always-multiline'],
     'arrow-parens': ['error', 'always'],
@@ -45,5 +63,16 @@ module.exports = {
     'space-before-blocks': 'error',
     'space-in-parens': 'error',
     eqeqeq: ['error', 'smart'],
+    'eol-last': ['error', 'always'],
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'no-duplicate-imports': 'error',
+    'prefer-const': 'error',
+    'newline-before-return': 'error',
+    'no-var': 'error',
+    'prefer-arrow-callback': 'error',
+    'no-else-return': 'error',
+    'consistent-return': 'error',
+    'no-multi-spaces': 'error',
+    'object-shorthand': ['error', 'always'],
   },
 };
