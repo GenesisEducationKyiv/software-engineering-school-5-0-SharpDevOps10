@@ -14,6 +14,7 @@ export class IsCityValidConstraint implements ValidatorConstraintInterface {
   async validate (city: string): Promise<boolean> {
     try {
       await this.weatherApiClient.getWeatherData(city);
+      
       return true;
     } catch {
       return false;
