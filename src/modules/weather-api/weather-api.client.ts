@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestj
 import { IWeatherApiClient } from '@weather-api/interfaces/weather-api-client.interface';
 import { plainToInstance } from 'class-transformer';
 import { WeatherApiResponse } from '@weather-api/responses/weather-api.response';
+import { WeatherApiErrorResponse } from '@weather-api/responses/weather-api.error-response.interface';
 
 @Injectable()
 export class WeatherApiClient implements IWeatherApiClient {
@@ -27,7 +28,7 @@ export class WeatherApiClient implements IWeatherApiClient {
     return plainToInstance(WeatherApiResponse, body);
   }
 
-  private handleApiError (status: number, body: any, city: string): never {
+  private handleApiError (status: number, body: WeatherApiErrorResponse, city: string): never {
     const CITY_NOT_FOUND_CODE = 1006;
     const errorCode = body?.error?.code;
     const message = body?.error?.message ?? 'Unknown error';
