@@ -5,11 +5,11 @@ import { ILoggerService } from '@logger/logger.service.interface';
 export class LoggerService implements ILoggerService {
   private readonly logger = new Logger('NotificationService');
 
-  log (message: string) {
+  log (message: string): void {
     this.logger.log(message);
   }
 
-  error (message: string, trace?: string) {
+  error (message: string, trace?: string): void {
     this.logger.error(message, trace);
   }
 }

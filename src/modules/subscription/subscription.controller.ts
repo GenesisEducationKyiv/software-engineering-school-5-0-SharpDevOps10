@@ -16,6 +16,7 @@ export class SubscriptionController {
   @Post('subscribe')
   async subscribe (@Body() body: CreateSubscriptionDto): Promise<{ message: string }> {
     await this.subscriptionService.subscribe(body);
+    
     return {
       message: 'Subscription successful. Confirmation email sent.',
     };
@@ -26,6 +27,7 @@ export class SubscriptionController {
     @Param('token', UUIDValidationPipe, SubscriptionByTokenPipe) subscription: Subscription
   ): Promise<{ message: string }> {
     await this.subscriptionService.confirm(subscription);
+    
     return { 
       message: 'Subscription confirmed successfully', 
     };
@@ -36,6 +38,7 @@ export class SubscriptionController {
     @Param('token', UUIDValidationPipe, SubscriptionByTokenPipe) subscription: Subscription
   ): Promise<{ message: string }> {
     await this.subscriptionService.unsubscribe(subscription);
+    
     return {
       message: 'Unsubscribed successfully',
     };
