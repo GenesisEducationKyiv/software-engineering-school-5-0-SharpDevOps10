@@ -1,4 +1,4 @@
-# ADR 0001: Use Prisma as the ORM for the Database Access
+# ADR 0001: Choose the ORM for the Database Access
 
 **Status:** Accepted
 
