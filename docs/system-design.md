@@ -238,3 +238,54 @@ using stubs for external providers.
 * **Observability**:
     * Add more detailed metrics and APM traces for better performance monitoring.
     * Add alerting rules for critical errors and performance issues in Datadog.
+
+## 8. Sequence Diagrams
+
+### 8.1 Get Weather
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant API
+    participant WeatherAPI
+    User ->> API: GET /weather?city=City
+    API ->> WeatherAPI: Fetch weather data
+    WeatherAPI -->> API: Weather JSON
+    API -->> User: Weather response
+```
+
+### 8.2 Subscribe to Weather Updates
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant API
+    participant DB
+    participant EmailService
+    participant Scheduler
+    User ->> API: POST /subscribe
+    API ->> DB: Save subscription (pending)
+    API ->> EmailService: Send confirmation email
+    EmailService -->> User: Confirmation link
+    User ->> API: GET /confirm/:token
+    API ->> DB: Mark subscription confirmed
+    API -->> User: Confirmation success
+    API ->> Scheduler: Schedule notifications (hourly/daily)
+    loop At selected frequency
+        Scheduler ->> WeatherAPI: Fetch weather
+        Scheduler ->> EmailService: Send weather update
+        EmailService -->> User: Weather update email
+    end
+```
+
+### 8.3 Unsubscribe from Weather Updates
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant API
+    participant DB
+    User ->> API: GET /unsubscribe/:token
+    API ->> DB: Remove subscription
+    API -->> User: Unsubscription success
+```
