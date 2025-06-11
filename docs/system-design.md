@@ -290,18 +290,71 @@ sequenceDiagram
     API -->> User: Unsubscription success
 ```
 
-
 ## 9. Entity Relationship Diagram
 
 ```mermaid
 erDiagram
-  SUBSCRIPTIONS {
-    UUID id PK
-    TEXT email
-    TEXT city
-    TEXT frequency
-    TEXT token
-    BOOLEAN confirmed
-    TIMESTAMP created_at
-  }
+    SUBSCRIPTIONS {
+        UUID id PK
+        TEXT email
+        TEXT city
+        TEXT frequency
+        TEXT token
+        BOOLEAN confirmed
+        TIMESTAMP created_at
+    }
+```
+
+## 10. API Examples
+
+### GET /weather?city=London
+
+**Response**
+
+```json
+{
+  "temperature": 21,
+  "humidity": 40,
+  "description": "Partly cloudy"
+}
+```
+
+### POST /subscribe
+
+**Request**
+
+```json
+{
+  "email": "user@example.com",
+  "city": "London",
+  "frequency": "daily"
+}
+```
+
+**Response**
+
+```json
+{
+  "message": "Subscription successful. Confirmation email sent."
+}
+```
+
+### GET /confirm/{token}
+
+**Response**
+
+```json
+{
+  "message": "Subscription confirmed successfully"
+}
+```
+
+### GET /unsubscribe/{token}
+
+**Response**
+
+```json
+{
+  "message": "Unsubscribed successfully"
+}
 ```
