@@ -289,3 +289,19 @@ sequenceDiagram
     API ->> DB: Remove subscription
     API -->> User: Unsubscription success
 ```
+
+
+## 9. Entity Relationship Diagram
+
+```mermaid
+erDiagram
+  SUBSCRIPTIONS {
+    UUID id PK
+    TEXT email
+    TEXT city
+    TEXT frequency
+    TEXT token
+    BOOLEAN confirmed
+    TIMESTAMP created_at
+  }
+```
