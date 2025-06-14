@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EmailJobService } from '@notification/jobs/email-job.service';
-import { ISubscriptionService } from '@subscription/interfaces/subscription.service.interface';
-import { IWeatherService } from '@weather/interfaces/weather.service.interface';
-import { IEmailService } from '@email/interfaces/email-service.interface';
-import { ILoggerService } from '@logger/logger.service.interface';
 import { DI_TOKENS } from '@utils/tokens/DI-tokens';
 import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
 import { randomUUID } from 'node:crypto';
+import type { ISubscriptionNotifier } from '@subscription/interfaces/subscription.notifier.interface';
+import type { IWeatherService } from '@weather/interfaces/weather.service.interface';
+import type { IEmailService } from '@email/interfaces/email-service.interface';
+import type { ILoggerService } from '@logger/logger.service.interface';
 
 describe('EmailJobService', () => {
   let service: EmailJobService;
@@ -32,11 +32,8 @@ describe('EmailJobService', () => {
     },
   ];
 
-  const subscriptionServiceMock: jest.Mocked<ISubscriptionService> = {
-    subscribe: jest.fn(),
-    unsubscribe: jest.fn(),
-    confirm: jest.fn(),
-    getConfirmedSubscriptions: jest.fn(),
+  const subscriptionNotifierMock: jest.Mocked<ISubscriptionNotifier> = {
+    getConfirmedSubscriptions: jest.fn().mockResolvedValue(mockSubs),
   };
 
   const weatherServiceMock: jest.Mocked<IWeatherService> = {
@@ -57,7 +54,7 @@ describe('EmailJobService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         EmailJobService,
-        { provide: DI_TOKENS.SUBSCRIPTION_SERVICE, useValue: subscriptionServiceMock },
+        { provide: DI_TOKENS.SUBSCRIPTION_NOTIFIER, useValue: subscriptionNotifierMock },
         { provide: DI_TOKENS.WEATHER_SERVICE, useValue: weatherServiceMock },
         { provide: DI_TOKENS.EMAIL_SERVICE, useValue: emailServiceMock },
         { provide: DI_TOKENS.LOGGER_SERVICE, useValue: loggerMock },
@@ -73,7 +70,7 @@ describe('EmailJobService', () => {
 
   it('should filter subscriptions by frequency and send emails', async () => {
     const city = 'Paris';
-    subscriptionServiceMock.getConfirmedSubscriptions.mockResolvedValue(mockSubs);
+    subscriptionNotifierMock.getConfirmedSubscriptions.mockResolvedValue(mockSubs);
     weatherServiceMock.getWeather.mockResolvedValue({
       temperature: 20,
       humidity: 50,
@@ -98,7 +95,7 @@ describe('EmailJobService', () => {
   });
 
   it('should log error if email sending fails', async () => {
-    subscriptionServiceMock.getConfirmedSubscriptions.mockResolvedValue([
+    subscriptionNotifierMock.getConfirmedSubscriptions.mockResolvedValue([
       {
         id: randomUUID(),
         email: 'fail@example.com',

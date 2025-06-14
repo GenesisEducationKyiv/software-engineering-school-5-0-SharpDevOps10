@@ -1,16 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DI_TOKENS } from '@utils/tokens/DI-tokens';
 import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
-import type { ISubscriptionService } from '@subscription/interfaces/subscription.service.interface';
 import type { IWeatherService } from '@weather/interfaces/weather.service.interface';
 import type { IEmailService } from '@email/interfaces/email-service.interface';
 import type { ILoggerService } from '@logger/logger.service.interface';
+import type { ISubscriptionNotifier } from '@subscription/interfaces/subscription.notifier.interface';
 
 @Injectable()
 export class EmailJobService {
   constructor (
-    @Inject(DI_TOKENS.SUBSCRIPTION_SERVICE)
-    private readonly subscriptionService: ISubscriptionService,
+    @Inject(DI_TOKENS.SUBSCRIPTION_NOTIFIER)
+    private readonly subscriptionService: ISubscriptionNotifier,
     @Inject(DI_TOKENS.WEATHER_SERVICE)
     private readonly weatherService: IWeatherService,
     @Inject(DI_TOKENS.EMAIL_SERVICE)

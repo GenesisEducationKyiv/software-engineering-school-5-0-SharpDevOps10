@@ -20,8 +20,15 @@ import { WeatherModule } from '@weather/weather.module';
       provide: DI_TOKENS.SUBSCRIPTION_SERVICE,
       useClass: SubscriptionService,
     },
+    {
+      provide: DI_TOKENS.SUBSCRIPTION_NOTIFIER,
+      useExisting: DI_TOKENS.SUBSCRIPTION_SERVICE,
+    },
   ],
   imports: [PrismaModule, EmailModule, WeatherModule],
-  exports: [DI_TOKENS.SUBSCRIPTION_SERVICE],
+  exports: [
+    DI_TOKENS.SUBSCRIPTION_SERVICE,
+    DI_TOKENS.SUBSCRIPTION_NOTIFIER,
+  ],
 })
 export class SubscriptionModule {}
