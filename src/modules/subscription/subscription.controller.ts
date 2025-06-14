@@ -3,6 +3,7 @@ import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { SubscriptionByTokenPipe } from '@utils/pipes/subscription-by-token.pipe';
 import { UUIDValidationPipe } from '@utils/pipes/uuid-validation.pipe';
 import { DI_TOKENS } from '@utils/tokens/DI-tokens';
+import { SUBSCRIPTION_MESSAGES } from '@utils/constants/subscription.messages';
 import type { Subscription } from '@prisma/client';
 import type { ISubscriptionService } from './interfaces/subscription.service.interface';
 
@@ -17,9 +18,7 @@ export class SubscriptionController {
   async subscribe (@Body() body: CreateSubscriptionDto): Promise<{ message: string }> {
     await this.subscriptionService.subscribe(body);
     
-    return {
-      message: 'Subscription successful. Confirmation email sent.',
-    };
+    return { message: SUBSCRIPTION_MESSAGES.SUBSCRIPTION_CREATED };
   }
 
   @Get('confirm/:token')
@@ -28,9 +27,7 @@ export class SubscriptionController {
   ): Promise<{ message: string }> {
     await this.subscriptionService.confirm(subscription);
     
-    return { 
-      message: 'Subscription confirmed successfully', 
-    };
+    return { message: SUBSCRIPTION_MESSAGES.SUBSCRIPTION_CONFIRMED };
   }
 
   @Get('unsubscribe/:token')
@@ -39,8 +36,6 @@ export class SubscriptionController {
   ): Promise<{ message: string }> {
     await this.subscriptionService.unsubscribe(subscription);
     
-    return {
-      message: 'Unsubscribed successfully',
-    };
+    return { message: SUBSCRIPTION_MESSAGES.SUBSCRIPTION_UNSUBSCRIBED };
   }
 }
