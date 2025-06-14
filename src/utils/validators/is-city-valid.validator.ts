@@ -1,7 +1,7 @@
 import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 import { Inject, Injectable } from '@nestjs/common';
 import { IWeatherApiClient } from '@weather-api/interfaces/weather-api-client.interface';
-import { DI_TOKENS } from '@utils/tokens/DI-tokens';
+import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 
 @ValidatorConstraint({ name: 'IsCityValidConstraint', async: true })
 @Injectable()
