@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException, PipeTransform } from '@nestjs/common';
 import { Subscription } from '@prisma/client';
-import { DI_TOKENS } from '@utils/tokens/DI-tokens';
+import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { ISubscriptionRepository } from '@subscription/interfaces/subscription.repository.interface';
 
 @Injectable()

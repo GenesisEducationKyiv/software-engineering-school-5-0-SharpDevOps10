@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EmailJobService } from '@notification/jobs/email-job.service';
-import { DI_TOKENS } from '@utils/tokens/DI-tokens';
+import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
 import { randomUUID } from 'node:crypto';
 import type { ISubscriptionNotifier } from '@subscription/interfaces/subscription.notifier.interface';
