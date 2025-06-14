@@ -5,8 +5,8 @@ import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { randomUUID } from 'node:crypto';
 import { IEmailService } from '@email/interfaces/email-service.interface';
 import { isTokenExpired } from '@utils/date/is-token-expired';
-import { Subscription } from '@prisma/client';
-import { ISubscriptionService } from '@subscription/interfaces/subscription.service.interface';
+import type { Subscription } from '@prisma/client';
+import type { ISubscriptionService } from '@subscription/interfaces/subscription.service.interface';
 
 @Injectable()
 export class SubscriptionService implements ISubscriptionService {

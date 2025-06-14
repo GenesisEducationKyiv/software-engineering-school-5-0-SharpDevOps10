@@ -2,9 +2,9 @@ import { Body, Controller, Post, Param, Get, Inject } from '@nestjs/common';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { SubscriptionByTokenPipe } from '@utils/pipes/subscription-by-token.pipe';
 import { UUIDValidationPipe } from '@utils/pipes/uuid-validation.pipe';
-import { Subscription } from '@prisma/client';
-import { ISubscriptionService } from './interfaces/subscription.service.interface';
 import { DI_TOKENS } from '@utils/tokens/DI-tokens';
+import type { Subscription } from '@prisma/client';
+import type { ISubscriptionService } from './interfaces/subscription.service.interface';
 
 @Controller()
 export class SubscriptionController {
