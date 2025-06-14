@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DI_TOKENS } from '@utils/tokens/DI-tokens';
 import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
-import { ISubscriptionService } from '@subscription/interfaces/subscription.service.interface';
-import { IWeatherService } from '@weather/interfaces/weather.service.interface';
-import { IEmailService } from '@email/interfaces/email-service.interface';
-import { ILoggerService } from '@logger/logger.service.interface';
+import type { ISubscriptionService } from '@subscription/interfaces/subscription.service.interface';
+import type { IWeatherService } from '@weather/interfaces/weather.service.interface';
+import type { IEmailService } from '@email/interfaces/email-service.interface';
+import type { ILoggerService } from '@logger/logger.service.interface';
 
 @Injectable()
 export class EmailJobService {
