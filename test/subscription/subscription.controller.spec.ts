@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '@modules/app/app.module';
 import { PrismaClient } from '@prisma/client';
-import { DI_TOKENS } from '@utils/tokens/DI-tokens';
+import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { IEmailService } from '@email/interfaces/email-service.interface';
 
 describe('SubscriptionController (e2e)', () => {

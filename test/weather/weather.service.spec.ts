@@ -2,7 +2,7 @@ import { WeatherService } from '@weather/weather.service';
 import { IWeatherApiClient } from '@weather-api/interfaces/weather-api-client.interface';
 import { WeatherApiResponse } from '@weather-api/responses/weather-api.response';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DI_TOKENS } from '@utils/tokens/DI-tokens';
+import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { NotFoundException } from '@nestjs/common';
 

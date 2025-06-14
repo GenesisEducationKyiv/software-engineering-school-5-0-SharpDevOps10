@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestj
 import { IWeatherApiClient } from '@weather-api/interfaces/weather-api-client.interface';
 import { plainToInstance } from 'class-transformer';
 import { WeatherApiResponse } from '@weather-api/responses/weather-api.response';
-import { WeatherApiErrorResponse } from '@weather-api/responses/weather-api.error-response.interface';
+import type { WeatherApiErrorResponse } from '@weather-api/responses/weather-api.error-response.interface';
 
 @Injectable()
 export class WeatherApiClient implements IWeatherApiClient {
