@@ -1,13 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 import { SubscriptionService } from '@subscription/subscription.service';
-import { IEmailService } from '@email/interfaces/email-service.interface';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DI_TOKENS } from '@utils/tokens/DI-tokens';
+import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { SubscriptionRepository } from '@subscription/subscription.repository';
 import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
 import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
 import { ConflictException } from '@nestjs/common';
 import { PrismaService } from '@database/prisma.service';
+import type { ITokenService } from '@modules/subscription/interfaces/token.service.interface';
+import type { IEmailService } from '@email/interfaces/email-service.interface';
 
 describe('SubscriptionService (integration)', () => {
   let service: SubscriptionService;
@@ -16,6 +17,11 @@ describe('SubscriptionService (integration)', () => {
   const emailServiceMock: jest.Mocked<IEmailService> = {
     sendConfirmationEmail: jest.fn(),
     sendWeatherUpdateEmail: jest.fn(),
+  };
+
+  const subscriptionTokenServiceMock: jest.Mocked<ITokenService> = {
+    generateToken: jest.fn(),
+    isTokenExpired: jest.fn(),
   };
 
   beforeAll(async () => {
@@ -31,6 +37,9 @@ describe('SubscriptionService (integration)', () => {
   beforeEach(async () => {
     await prisma.subscription.deleteMany();
 
+    subscriptionTokenServiceMock.generateToken.mockReturnValue('mocked-token');
+    subscriptionTokenServiceMock.isTokenExpired.mockReturnValue(false);
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SubscriptionService,
@@ -42,6 +51,10 @@ describe('SubscriptionService (integration)', () => {
         {
           provide: DI_TOKENS.EMAIL_SERVICE,
           useValue: emailServiceMock,
+        },
+        {
+          provide: DI_TOKENS.SUBSCRIPTION_TOKEN_SERVICE,
+          useValue: subscriptionTokenServiceMock,
         },
       ],
     }).compile();

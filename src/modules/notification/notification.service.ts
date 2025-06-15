@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
-import { EmailJobService } from '@notification/jobs/email-job.service';
+import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
+import type { IEmailJobService } from '@notification/interfaces/email.job.service.interface';
 
 @Injectable()
 export class NotificationService {
   constructor (
-    private readonly emailJobService: EmailJobService,
+    @Inject(DI_TOKENS.EMAIL_JOB_SERVICE)
+    private readonly emailJobService: IEmailJobService,
   ) {}
 
   @Cron(CronExpression.EVERY_HOUR, {

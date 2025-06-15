@@ -1,5 +1,5 @@
-import { Subscription } from '@prisma/client';
 import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
+import type { Subscription } from '@prisma/client';
 
 export interface ISubscriptionRepository {
   findByEmailAndCity (email: string, city: string): Promise<Subscription>;

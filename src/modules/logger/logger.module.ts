@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DI_TOKENS } from '@utils/tokens/DI-tokens';
+import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { LoggerService } from '@logger/logger.service';
 
 @Module({
