@@ -1,18 +1,24 @@
 import { WeatherService } from '@weather/weather.service';
-import { IWeatherApiClient } from '@weather-api/interfaces/weather-api-client.interface';
 import { WeatherApiResponse } from '@weather-api/responses/weather-api.response';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { NotFoundException } from '@nestjs/common';
+import type { IWeatherApiClient } from '@weather-api/interfaces/weather-api-client.interface';
+import type { IWeatherMapper } from '@modules/weather/interfaces/weather.mapper.interface';
 
 describe('WeatherService', () => {
   let service: WeatherService;
   let weatherApiClientMock: jest.Mocked<IWeatherApiClient>;
+  let weatherMapperMock: jest.Mocked<IWeatherMapper>;
 
   beforeEach(async () => {
     const mockWeatherApiClient: jest.Mocked<IWeatherApiClient> = {
       getWeatherData: jest.fn(),
+    };
+
+    const mockWeatherMapper: jest.Mocked<IWeatherMapper> = {
+      mapToGetWeatherResponse: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -22,10 +28,15 @@ describe('WeatherService', () => {
           provide: DI_TOKENS.WEATHER_API_CLIENT,
           useValue: mockWeatherApiClient,
         },
+        {
+          provide: DI_TOKENS.WEATHER_MAPPER,
+          useValue: mockWeatherMapper,
+        },
       ],
     }).compile();
     service = module.get<WeatherService>(WeatherService);
     weatherApiClientMock = module.get(DI_TOKENS.WEATHER_API_CLIENT);
+    weatherMapperMock = module.get(DI_TOKENS.WEATHER_MAPPER);
   });
 
   it('should return weather data transformed to GetWeatherResponse', async () => {
@@ -43,15 +54,16 @@ describe('WeatherService', () => {
       location: {},
     } as unknown as WeatherApiResponse;
 
-    weatherApiClientMock.getWeatherData.mockResolvedValue(mockApiResponse);
-
-    const result = await service.getWeather(city);
-
     const expected: GetWeatherResponse = {
       temperature: 22.5,
       humidity: 60,
       description: 'Sunny',
     };
+
+    weatherApiClientMock.getWeatherData.mockResolvedValue(mockApiResponse);
+    weatherMapperMock.mapToGetWeatherResponse.mockReturnValue(expected);
+
+    const result = await service.getWeather(city);
 
     expect(result).toEqual(expected);
     expect(weatherApiClientMock.getWeatherData).toHaveBeenCalledWith(city);
@@ -89,7 +101,14 @@ describe('WeatherService', () => {
       location: {},
     } as unknown as WeatherApiResponse;
 
+    const expected: GetWeatherResponse = {
+      temperature: 15,
+      humidity: 80,
+      description: 'Cloudy',
+    };
+
     weatherApiClientMock.getWeatherData.mockResolvedValue(mockApiResponse);
+    weatherMapperMock.mapToGetWeatherResponse.mockReturnValue(expected);
 
     const result = await service.getWeather(city);
 

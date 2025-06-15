@@ -1,9 +1,9 @@
 import { BadRequestException, ConflictException, Inject, Injectable } from '@nestjs/common';
 import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
-import { ISubscriptionRepository } from './interfaces/subscription.repository.interface';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
-import { IEmailService } from '@email/interfaces/email-service.interface';
-import { ITokenService } from '@subscription/interfaces/token.service.interface';
+import type { ISubscriptionRepository } from './interfaces/subscription.repository.interface';
+import type { IEmailService } from '@email/interfaces/email-service.interface';
+import type { ITokenService } from '@subscription/interfaces/token.service.interface';
 import type { Subscription } from '@prisma/client';
 import type { ISubscriptionService } from '@subscription/interfaces/subscription.service.interface';
 import type { ISubscriptionNotifier } from '@subscription/interfaces/subscription.notifier.interface';
