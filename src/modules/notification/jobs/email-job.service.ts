@@ -5,9 +5,10 @@ import type { IWeatherService } from '@weather/interfaces/weather.service.interf
 import type { IEmailService } from '@email/interfaces/email-service.interface';
 import type { ILoggerService } from '@logger/logger.service.interface';
 import type { ISubscriptionNotifier } from '@subscription/interfaces/subscription.notifier.interface';
+import type { IEmailJobService } from '@notification/interfaces/email.job.service.interface';
 
 @Injectable()
-export class EmailJobService {
+export class EmailJobService implements IEmailJobService {
   constructor (
     @Inject(DI_TOKENS.SUBSCRIPTION_NOTIFIER)
     private readonly subscriptionService: ISubscriptionNotifier,
@@ -21,7 +22,7 @@ export class EmailJobService {
 
   async sendWeatherEmailsByFrequency (frequency: SubscriptionFrequencyEnum): Promise<void> {
     const subscriptions = await this.subscriptionService.getConfirmedSubscriptions();
-    const filtered = subscriptions.filter((s) => s.frequency === frequency);
+    const filtered = subscriptions.filter((sub) => sub.frequency === frequency);
     const label = frequency === SubscriptionFrequencyEnum.HOURLY ? 'hourly' : 'daily';
 
     for (const sub of filtered) {
