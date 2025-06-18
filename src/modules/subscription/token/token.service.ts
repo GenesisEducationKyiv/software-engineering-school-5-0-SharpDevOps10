@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
+import { TOKEN_DATE } from '@utils/constants/token.date';
 import type { ITokenService } from '@subscription/interfaces/token.service.interface';
-import { TOKEN_DATE } from '@utils/date/token.date';
 
 @Injectable()
 export class TokenService implements ITokenService {
