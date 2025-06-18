@@ -1,5 +1,4 @@
 import { BadRequestException, ConflictException, Inject, Injectable } from '@nestjs/common';
-import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import type { ISubscriptionRepository } from './interfaces/subscription.repository.interface';
 import type { IEmailService } from '@email/interfaces/email-service.interface';
@@ -7,15 +6,17 @@ import type { ITokenService } from '@subscription/interfaces/token.service.inter
 import type { Subscription } from '@prisma/client';
 import type { ISubscriptionService } from '@subscription/interfaces/subscription.service.interface';
 import type { ISubscriptionNotifier } from '@subscription/interfaces/subscription.notifier.interface';
+import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
+import { EMAIL_DI_TOKENS } from '@email/di-tokens';
 
 @Injectable()
 export class SubscriptionService implements ISubscriptionService, ISubscriptionNotifier {
   constructor (
-    @Inject(DI_TOKENS.SUBSCRIPTION_REPOSITORY)
+    @Inject(SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_REPOSITORY)
     private readonly subscriptionRepository: ISubscriptionRepository,
-    @Inject(DI_TOKENS.EMAIL_SERVICE)
+    @Inject(EMAIL_DI_TOKENS.EMAIL_SERVICE)
     private readonly emailService: IEmailService,
-    @Inject(DI_TOKENS.SUBSCRIPTION_TOKEN_SERVICE)
+    @Inject(SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_TOKEN_SERVICE)
     private readonly tokenService: ITokenService,
   ) {}
 
