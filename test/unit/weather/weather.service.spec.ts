@@ -1,11 +1,11 @@
 import { WeatherService } from '@weather/weather.service';
 import { WeatherApiResponse } from '@weather-api/responses/weather-api.response';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { NotFoundException } from '@nestjs/common';
 import type { IWeatherApiClient } from '@weather-api/interfaces/weather-api-client.interface';
-import type { IWeatherMapper } from '@modules/weather/interfaces/weather.mapper.interface';
+import type { IWeatherMapper } from '@weather/interfaces/weather.mapper.interface';
+import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 
 describe('WeatherService', () => {
   let service: WeatherService;
@@ -25,18 +25,18 @@ describe('WeatherService', () => {
       providers: [
         WeatherService,
         {
-          provide: DI_TOKENS.WEATHER_API_CLIENT,
+          provide: WEATHER_DI_TOKENS.WEATHER_API_CLIENT,
           useValue: mockWeatherApiClient,
         },
         {
-          provide: DI_TOKENS.WEATHER_MAPPER,
+          provide: WEATHER_DI_TOKENS.WEATHER_MAPPER,
           useValue: mockWeatherMapper,
         },
       ],
     }).compile();
     service = module.get<WeatherService>(WeatherService);
-    weatherApiClientMock = module.get(DI_TOKENS.WEATHER_API_CLIENT);
-    weatherMapperMock = module.get(DI_TOKENS.WEATHER_MAPPER);
+    weatherApiClientMock = module.get(WEATHER_DI_TOKENS.WEATHER_API_CLIENT);
+    weatherMapperMock = module.get(WEATHER_DI_TOKENS.WEATHER_MAPPER);
   });
 
   it('should return weather data transformed to GetWeatherResponse', async () => {

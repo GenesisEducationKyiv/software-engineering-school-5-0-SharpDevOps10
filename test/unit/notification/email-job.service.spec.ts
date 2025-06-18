@@ -1,12 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EmailJobService } from '@notification/jobs/email-job.service';
-import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
 import { randomUUID } from 'node:crypto';
 import type { ISubscriptionNotifier } from '@subscription/interfaces/subscription.notifier.interface';
 import type { IWeatherService } from '@weather/interfaces/weather.service.interface';
 import type { IEmailService } from '@email/interfaces/email-service.interface';
 import type { ILoggerService } from '@logger/logger.service.interface';
+import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
+import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
+import { EMAIL_DI_TOKENS } from '@email/di-tokens';
+import { LOGGER_DI_TOKENS } from '@logger/di-tokens';
 
 describe('EmailJobService', () => {
   let service: EmailJobService;
@@ -54,10 +57,10 @@ describe('EmailJobService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         EmailJobService,
-        { provide: DI_TOKENS.SUBSCRIPTION_NOTIFIER, useValue: subscriptionNotifierMock },
-        { provide: DI_TOKENS.WEATHER_SERVICE, useValue: weatherServiceMock },
-        { provide: DI_TOKENS.EMAIL_SERVICE, useValue: emailServiceMock },
-        { provide: DI_TOKENS.LOGGER_SERVICE, useValue: loggerMock },
+        { provide: SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_NOTIFIER, useValue: subscriptionNotifierMock },
+        { provide: WEATHER_DI_TOKENS.WEATHER_SERVICE, useValue: weatherServiceMock },
+        { provide: EMAIL_DI_TOKENS.EMAIL_SERVICE, useValue: emailServiceMock },
+        { provide: LOGGER_DI_TOKENS.LOGGER_SERVICE, useValue: loggerMock },
       ],
     }).compile();
 

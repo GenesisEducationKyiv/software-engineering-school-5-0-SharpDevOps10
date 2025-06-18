@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { SubscriptionService } from '@subscription/subscription.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { SubscriptionRepository } from '@subscription/subscription.repository';
 import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
 import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
@@ -9,6 +8,8 @@ import { ConflictException } from '@nestjs/common';
 import { PrismaService } from '@database/prisma.service';
 import type { ITokenService } from '@modules/subscription/interfaces/token.service.interface';
 import type { IEmailService } from '@email/interfaces/email-service.interface';
+import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
+import { EMAIL_DI_TOKENS } from '@email/di-tokens';
 
 describe('SubscriptionService (integration)', () => {
   let service: SubscriptionService;
@@ -45,15 +46,15 @@ describe('SubscriptionService (integration)', () => {
         SubscriptionService,
         PrismaService,
         {
-          provide: DI_TOKENS.SUBSCRIPTION_REPOSITORY,
+          provide: SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_REPOSITORY,
           useClass: SubscriptionRepository,
         },
         {
-          provide: DI_TOKENS.EMAIL_SERVICE,
+          provide: EMAIL_DI_TOKENS.EMAIL_SERVICE,
           useValue: emailServiceMock,
         },
         {
-          provide: DI_TOKENS.SUBSCRIPTION_TOKEN_SERVICE,
+          provide: SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_TOKEN_SERVICE,
           useValue: subscriptionTokenServiceMock,
         },
       ],

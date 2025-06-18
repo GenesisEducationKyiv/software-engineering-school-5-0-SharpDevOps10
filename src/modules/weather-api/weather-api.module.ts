@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { WeatherApiClient } from './weather-api.client';
-import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
+import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 
 @Module({
   providers: [
     {
-      provide: DI_TOKENS.WEATHER_API_CLIENT,
+      provide: WEATHER_DI_TOKENS.WEATHER_API_CLIENT,
       useClass: WeatherApiClient,
     },
   ],
-  exports: [DI_TOKENS.WEATHER_API_CLIENT],
+  exports: [WEATHER_DI_TOKENS.WEATHER_API_CLIENT],
 })
 export class WeatherApiModule {}
