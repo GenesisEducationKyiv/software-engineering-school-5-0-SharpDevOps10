@@ -35,6 +35,10 @@ describe('SubscriptionService (integration)', () => {
     await prisma.$disconnect();
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   beforeEach(async () => {
     await prisma.subscription.deleteMany();
 

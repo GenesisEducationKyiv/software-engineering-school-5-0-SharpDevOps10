@@ -39,6 +39,10 @@ describe('WeatherService', () => {
     weatherMapperMock = module.get(WEATHER_DI_TOKENS.WEATHER_MAPPER);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should return weather data transformed to GetWeatherResponse', async () => {
     const city = 'London';
     const mockApiResponse = {
