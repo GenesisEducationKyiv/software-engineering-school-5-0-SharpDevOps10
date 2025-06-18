@@ -29,6 +29,10 @@ import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
       provide: SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_TOKEN_SERVICE,
       useClass: TokenService,
     },
+    {
+      provide: SUBSCRIPTION_DI_TOKENS.TOKEN_TTL_HOURS,
+      useValue: Number(process.env.TOKEN_TTL_HOURS),
+    },
   ],
   imports: [PrismaModule, EmailModule, WeatherModule],
   exports: [
