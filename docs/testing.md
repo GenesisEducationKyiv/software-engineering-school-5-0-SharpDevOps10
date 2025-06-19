@@ -32,3 +32,8 @@ Then, run the tests:
 ```bash
 $ npm run test:integration
 ```
+
+## How to run all tests
+```bash
+$ npm run test:all
+```
