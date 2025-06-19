@@ -7,6 +7,7 @@ import { IWeatherMapper } from '@modules/weather/interfaces/weather.mapper.inter
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { WeatherApiResponse } from '@weather-api/responses/weather-api.response';
+import { PrismaService } from '@database/prisma.service';
 
 describe('WeatherController', () => {
   let app: INestApplication;
@@ -27,6 +28,8 @@ describe('WeatherController', () => {
       .useValue(weatherApiClientMock)
       .overrideProvider(WEATHER_DI_TOKENS.WEATHER_MAPPER)
       .useValue(weatherMapperMock)
+      .overrideProvider(PrismaService)
+      .useValue({ $connect: jest.fn(), $disconnect: jest.fn() })
       .compile();
 
     app = moduleFixture.createNestApplication();
