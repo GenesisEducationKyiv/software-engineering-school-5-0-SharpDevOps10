@@ -5,7 +5,20 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node & dependencies
+        uses: ./.github/actions/install
+
+      - name: Run unit tests
+        run: npm run test:unit
+  integration-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -18,7 +31,5 @@ jobs:
         run: |
           docker compose -f docker-compose.test.yml up -d && sleep 5s
 
-      - name: Start migration
-        run: npm run test:migrate
-      - name: Run tests
-        run: npm run test
+      - name: Run integration tests
+        run: npm run test:integration
