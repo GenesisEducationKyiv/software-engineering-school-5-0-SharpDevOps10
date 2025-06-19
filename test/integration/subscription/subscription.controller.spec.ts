@@ -5,8 +5,10 @@ import { AppModule } from '@modules/app/app.module';
 import { PrismaClient } from '@prisma/client';
 import { IEmailService } from '@email/interfaces/email-service.interface';
 import { EMAIL_DI_TOKENS } from '@email/di-tokens';
+import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
+import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
 
-describe('SubscriptionController (e2e)', () => {
+describe('SubscriptionController', () => {
   let app: INestApplication;
   let prisma: PrismaClient;
 
@@ -37,10 +39,10 @@ describe('SubscriptionController (e2e)', () => {
   });
 
   it('POST /subscribe 201 + creates subscription', async () => {
-    const dto = {
-      email: 'test-e2e@example.com',
-      city: 'Kyiv',
-      frequency: 'daily',
+    const dto: CreateSubscriptionDto = {
+      email: 'test@example.com',
+      city: 'Paris',
+      frequency: SubscriptionFrequencyEnum.DAILY,
     };
 
     const res = await request(app.getHttpServer()).post('/subscribe').send(dto);
@@ -54,13 +56,31 @@ describe('SubscriptionController (e2e)', () => {
       where: { email: dto.email, city: dto.city },
     });
 
-    expect(sub).toBeDefined();
-    expect(sub?.confirmed).toBe(false);
+    expect(sub).toMatchObject({
+      email: dto.email,
+      city: dto.city,
+      frequency: dto.frequency,
+      confirmed: false,
+    });
+
+    expect(sub?.token).toEqual(
+      expect.stringMatching(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+      )
+    );
   });
 
   it('GET /confirm/:token 200 + marks as confirmed', async () => {
+    const dto: CreateSubscriptionDto = {
+      email: 'test-e2e@example.com',
+      city: 'Berlin',
+      frequency: SubscriptionFrequencyEnum.DAILY,
+    };
+
+    await request(app.getHttpServer()).post('/subscribe').send(dto);
+
     const subscription = await prisma.subscription.findFirstOrThrow({
-      where: { email: 'test-e2e@example.com' },
+      where: { email: dto.email },
     });
 
     const res = await request(app.getHttpServer())
@@ -100,10 +120,10 @@ describe('SubscriptionController (e2e)', () => {
   });
 
   it('GET /unsubscribe/:token 200 + deletes subscription', async () => {
-    const dto = {
+    const dto: CreateSubscriptionDto = {
       email: 'unsubscribe@example.com',
       city: 'Lviv',
-      frequency: 'daily',
+      frequency: SubscriptionFrequencyEnum.DAILY,
     };
 
     await request(app.getHttpServer()).post('/subscribe').send(dto);
