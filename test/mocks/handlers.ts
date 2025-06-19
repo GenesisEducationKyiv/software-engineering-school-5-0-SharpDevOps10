@@ -1,12 +1,11 @@
 import { http } from 'msw';
-import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
 
 export const handlers = [
   http.get('http://api.weatherapi.com/v1/current.json', ({ request }) => {
     const url = new URL(request.url);
     const city = url.searchParams.get('q');
 
-    if (city === 'InvalidCity') {
+    if (city !== 'Paris') {
       return Response.json(
         {
           error: { code: 1006, message: 'No matching location found.' },
@@ -17,45 +16,51 @@ export const handlers = [
 
     return Response.json(
       {
-        location: { name: city },
-        current: { temp_c: 15 },
-      },
-      { status: 200 }
-    );
-  }),
-  http.post('/subscribe', async ({ request }) => {
-    const body = await request.json() as CreateSubscriptionDto;
-
-    if (body.email === 'not-an-email') {
-      return Response.json(
-        {
-          message: ['email must be an email'],
+        location: {
+          name: city,
+          region: 'Ile-de-France',
+          country: 'France',
+          lat: 48.8667,
+          lon: 2.3333,
+          tz_id: 'Europe/Paris',
+          localtime_epoch: 1750322281,
+          localtime: '2025-06-19 10:38',
         },
-        { status: 400 }
-      );
-    }
-
-    return Response.json(
-      {
-        message: 'Subscription successful. Confirmation email sent.',
-      },
-      { status: 201 }
-    );
-  }),
-
-  http.get('/confirm/:token', () => {
-    return Response.json(
-      {
-        message: 'Subscription confirmed successfully',
-      },
-      { status: 200 }
-    );
-  }),
-
-  http.get('/unsubscribe/:token', () => {
-    return Response.json(
-      {
-        message: 'Unsubscribed successfully',
+        current: {
+          last_updated_epoch: 1750321800,
+          last_updated: '2025-06-19 10:30',
+          temp_c: 24.1,
+          temp_f: 75.4,
+          is_day: 1,
+          condition: {
+            text: 'Sunny',
+            icon: '//cdn.weatherapi.com/weather/64x64/day/113.png',
+            code: 1000,
+          },
+          wind_mph: 7.8,
+          wind_kph: 12.6,
+          wind_degree: 60,
+          wind_dir: 'ENE',
+          pressure_mb: 1024.0,
+          pressure_in: 30.24,
+          precip_mm: 0.0,
+          precip_in: 0.0,
+          humidity: 57,
+          cloud: 0,
+          feelslike_c: 25.2,
+          feelslike_f: 77.4,
+          windchill_c: 25.2,
+          windchill_f: 77.4,
+          heatindex_c: 25.9,
+          heatindex_f: 78.7,
+          dewpoint_c: 13.7,
+          dewpoint_f: 56.6,
+          vis_km: 10.0,
+          vis_miles: 6.0,
+          uv: 3.3,
+          gust_mph: 9.0,
+          gust_kph: 14.5,
+        },
       },
       { status: 200 }
     );
