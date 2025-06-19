@@ -20,6 +20,7 @@
     "test:integration:migrate": "dotenv -e .testing.env -- npx prisma migrate deploy",
     "test:integration:run": "dotenv -e .testing.env -- jest -c jest.integration.json -i",
     "test:integration": "npm run test:integration:migrate && npm run test:integration:run",
+    "test:all": "npm run test:integration && npm run test:unit",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
