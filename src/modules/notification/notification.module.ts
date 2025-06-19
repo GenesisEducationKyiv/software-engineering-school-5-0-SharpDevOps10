@@ -5,13 +5,13 @@ import { SubscriptionModule } from '@subscription/subscription.module';
 import { WeatherModule } from '@weather/weather.module';
 import { LoggerModule } from '@modules/logger/logger.module';
 import { EmailJobService } from '@notification/jobs/email-job.service';
-import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
+import { NOTIFICATION_DI_TOKENS } from '@notification/di-tokens';
 
 @Module({
   providers: [
     NotificationService,
     {
-      provide: DI_TOKENS.EMAIL_JOB_SERVICE,
+      provide: NOTIFICATION_DI_TOKENS.EMAIL_JOB_SERVICE,
       useClass: EmailJobService,
     },
   ],

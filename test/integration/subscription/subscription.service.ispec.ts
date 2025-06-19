@@ -1,14 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 import { SubscriptionService } from '@subscription/subscription.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { SubscriptionRepository } from '@subscription/subscription.repository';
 import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
 import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
-import { ConflictException } from '@nestjs/common';
+import { BadRequestException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '@database/prisma.service';
-import type { ITokenService } from '@modules/subscription/interfaces/token.service.interface';
 import type { IEmailService } from '@email/interfaces/email-service.interface';
+import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
+import { EMAIL_DI_TOKENS } from '@email/di-tokens';
+import { TokenService } from '@subscription/token/token.service';
 
 describe('SubscriptionService (integration)', () => {
   let service: SubscriptionService;
@@ -17,11 +18,6 @@ describe('SubscriptionService (integration)', () => {
   const emailServiceMock: jest.Mocked<IEmailService> = {
     sendConfirmationEmail: jest.fn(),
     sendWeatherUpdateEmail: jest.fn(),
-  };
-
-  const subscriptionTokenServiceMock: jest.Mocked<ITokenService> = {
-    generateToken: jest.fn(),
-    isTokenExpired: jest.fn(),
   };
 
   beforeAll(async () => {
@@ -34,27 +30,32 @@ describe('SubscriptionService (integration)', () => {
     await prisma.$disconnect();
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   beforeEach(async () => {
     await prisma.subscription.deleteMany();
-
-    subscriptionTokenServiceMock.generateToken.mockReturnValue('mocked-token');
-    subscriptionTokenServiceMock.isTokenExpired.mockReturnValue(false);
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SubscriptionService,
         PrismaService,
+        TokenService,
         {
-          provide: DI_TOKENS.SUBSCRIPTION_REPOSITORY,
+          provide: SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_REPOSITORY,
           useClass: SubscriptionRepository,
         },
         {
-          provide: DI_TOKENS.EMAIL_SERVICE,
+          provide: EMAIL_DI_TOKENS.EMAIL_SERVICE,
           useValue: emailServiceMock,
         },
         {
-          provide: DI_TOKENS.SUBSCRIPTION_TOKEN_SERVICE,
-          useValue: subscriptionTokenServiceMock,
+          provide: SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_TOKEN_SERVICE,
+          useExisting: TokenService,
+        },
+        {
+          provide: SUBSCRIPTION_DI_TOKENS.TOKEN_TTL_HOURS,
+          useValue: 24,
         },
       ],
     }).compile();
@@ -155,5 +156,27 @@ describe('SubscriptionService (integration)', () => {
     const sub = await prisma.subscription.findFirstOrThrow({ where: { email: dto.email } });
 
     await expect(service.unsubscribe(sub)).rejects.toThrow(ConflictException);
+  });
+
+  it('should throw BadRequestException if token is expired', async () => {
+    const dto: CreateSubscriptionDto = {
+      email: 'expired@example.com',
+      city: 'Vienna',
+      frequency: SubscriptionFrequencyEnum.DAILY,
+    };
+
+    await service.subscribe(dto);
+    const sub = await prisma.subscription.findFirstOrThrow({ where: { email: dto.email } });
+
+    await prisma.subscription.update({
+      where: { id: sub.id },
+      data: {
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 100),
+      },
+    });
+
+    const expiredSub = await prisma.subscription.findFirstOrThrow({ where: { id: sub.id } });
+
+    await expect(service.confirm(expiredSub)).rejects.toThrow(BadRequestException);
   });
 });

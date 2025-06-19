@@ -1,22 +1,25 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DI_TOKENS } from '@utils/di-tokens/DI-tokens';
 import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
 import type { IWeatherService } from '@weather/interfaces/weather.service.interface';
 import type { IEmailService } from '@email/interfaces/email-service.interface';
 import type { ILoggerService } from '@logger/logger.service.interface';
 import type { ISubscriptionNotifier } from '@subscription/interfaces/subscription.notifier.interface';
 import type { IEmailJobService } from '@notification/interfaces/email.job.service.interface';
+import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
+import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
+import { EMAIL_DI_TOKENS } from '@email/di-tokens';
+import { LOGGER_DI_TOKENS } from '@logger/di-tokens';
 
 @Injectable()
 export class EmailJobService implements IEmailJobService {
   constructor (
-    @Inject(DI_TOKENS.SUBSCRIPTION_NOTIFIER)
+    @Inject(SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_NOTIFIER)
     private readonly subscriptionService: ISubscriptionNotifier,
-    @Inject(DI_TOKENS.WEATHER_SERVICE)
+    @Inject(WEATHER_DI_TOKENS.WEATHER_SERVICE)
     private readonly weatherService: IWeatherService,
-    @Inject(DI_TOKENS.EMAIL_SERVICE)
+    @Inject(EMAIL_DI_TOKENS.EMAIL_SERVICE)
     private readonly emailService: IEmailService,
-    @Inject(DI_TOKENS.LOGGER_SERVICE)
+    @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: ILoggerService,
   ) {}
 

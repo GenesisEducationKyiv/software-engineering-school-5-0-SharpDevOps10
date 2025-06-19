@@ -1,0 +1,3 @@
+export const LOGGER_DI_TOKENS = {
+  LOGGER_SERVICE: Symbol('LOGGER_SERVICE'),
+};
