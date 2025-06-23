@@ -1,11 +1,16 @@
 import { TokenService } from '@subscription/token/token.service';
+import { IConfigService } from '@modules/config/config.service.interface';
 
 describe('TokenService', () => {
   let service: TokenService;
 
+  const mockConfigService: jest.Mocked<IConfigService> = {
+    getTokenTtlHours: jest.fn().mockReturnValue(1),
+  };
+
   beforeEach(() => {
     jest.useFakeTimers();
-    service = new TokenService(1);
+    service = new TokenService(mockConfigService);
   });
 
   afterEach(() => {

@@ -8,6 +8,7 @@ import { IsCityValidConstraint } from '@utils/validators/is-city-valid.validator
 import { WeatherModule } from '@weather/weather.module';
 import { TokenService } from '@subscription/token/token.service';
 import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
+import { ConfigModule } from '@modules/config/config.module';
 
 @Module({
   controllers: [SubscriptionController],
@@ -29,12 +30,8 @@ import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
       provide: SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_TOKEN_SERVICE,
       useClass: TokenService,
     },
-    {
-      provide: SUBSCRIPTION_DI_TOKENS.TOKEN_TTL_HOURS,
-      useValue: Number(process.env.TOKEN_TTL_HOURS),
-    },
   ],
-  imports: [PrismaModule, EmailModule, WeatherModule],
+  imports: [PrismaModule, EmailModule, WeatherModule, ConfigModule],
   exports: [
     SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_SERVICE,
     SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_NOTIFIER,

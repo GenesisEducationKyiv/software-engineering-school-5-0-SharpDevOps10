@@ -10,6 +10,8 @@ import type { IEmailService } from '@email/interfaces/email-service.interface';
 import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
 import { EMAIL_DI_TOKENS } from '@email/di-tokens';
 import { TokenService } from '@subscription/token/token.service';
+import { IConfigService } from '@modules/config/config.service.interface';
+import { CONFIG_DI_TOKENS } from '@modules/config/di-tokens';
 
 describe('SubscriptionService (integration)', () => {
   let service: SubscriptionService;
@@ -18,6 +20,10 @@ describe('SubscriptionService (integration)', () => {
   const emailServiceMock: jest.Mocked<IEmailService> = {
     sendConfirmationEmail: jest.fn(),
     sendWeatherUpdateEmail: jest.fn(),
+  };
+
+  const configServiceMock: jest.Mocked<IConfigService> = {
+    getTokenTtlHours: jest.fn().mockReturnValue(1),
   };
 
   beforeAll(async () => {
@@ -54,8 +60,8 @@ describe('SubscriptionService (integration)', () => {
           useExisting: TokenService,
         },
         {
-          provide: SUBSCRIPTION_DI_TOKENS.TOKEN_TTL_HOURS,
-          useValue: 24,
+          provide: CONFIG_DI_TOKENS.CONFIG_SERVICE,
+          useValue: configServiceMock,
         },
       ],
     }).compile();

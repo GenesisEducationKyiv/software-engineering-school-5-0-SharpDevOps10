@@ -7,6 +7,8 @@ import { IEmailService } from '@email/interfaces/email-service.interface';
 import { EMAIL_DI_TOKENS } from '@email/di-tokens';
 import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
 import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
+import { IConfigService } from '@modules/config/config.service.interface';
+import { CONFIG_DI_TOKENS } from '@modules/config/di-tokens';
 
 describe('SubscriptionController', () => {
   let app: INestApplication;
@@ -17,12 +19,18 @@ describe('SubscriptionController', () => {
     sendWeatherUpdateEmail: jest.fn(),
   };
 
+  const mockConfigService: jest.Mocked<IConfigService> = {
+    getTokenTtlHours: jest.fn().mockReturnValue(1),
+  };
+
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     })
       .overrideProvider(EMAIL_DI_TOKENS.EMAIL_SERVICE)
       .useValue(mockEmailService)
+      .overrideProvider(CONFIG_DI_TOKENS.CONFIG_SERVICE)
+      .useValue(mockConfigService)
       .compile();
 
     app = moduleRef.createNestApplication();
