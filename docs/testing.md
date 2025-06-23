@@ -11,7 +11,7 @@ $ npm install
 Then, run the tests:
 
 ```bash
-$ npm run test:unit                                                             
+$ npm run test:unit
 ```
 
 ## How to run integration tests
