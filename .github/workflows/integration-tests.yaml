@@ -1,25 +1,14 @@
-name: Run Tests
+name: Integration Tests
 on:
   pull_request:
   push:
   workflow_dispatch:
 
 jobs:
-  unit-tests:
-    name: Unit Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Node & dependencies
-        uses: ./.github/actions/install
-
-      - name: Run unit tests
-        run: npm run test:unit
   integration-tests:
+    name: Integration Tests
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
