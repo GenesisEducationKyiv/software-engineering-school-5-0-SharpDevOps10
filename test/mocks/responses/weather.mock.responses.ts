@@ -46,14 +46,7 @@ export const weatherApiParisResponse = {
   },
 };
 
-export const visualCrossingParisResponse = {
-  queryCost: 1,
-  latitude: 0,
-  longitude: 0,
-  resolvedAddress: 'Paris',
-  address: 'Paris',
-  timezone: 'UTC',
-  tzoffset: 0,
+export const visualCrossingSuccessfulResponse = {
   currentConditions: {
     datetime: '2025-06-25T12:00:00Z',
     datetimeEpoch: 1750000000,
@@ -75,12 +68,5 @@ export const visualCrossingParisResponse = {
     solarenergy: 3.5,
     uvindex: 5,
     conditions: 'Partly Cloudy',
-    icon: 'partly-cloudy-day',
-    source: 'mock',
-    sunrise: '06:00:00',
-    sunset: '21:00:00',
-    sunriseEpoch: 1750000000,
-    sunsetEpoch: 1750000000,
-    moonphase: 0.5,
   },
 };
