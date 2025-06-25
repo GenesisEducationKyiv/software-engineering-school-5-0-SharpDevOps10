@@ -1,13 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { IConfigService } from '@modules/config/config.service.interface';
+import { ConfigService as NestConfigService } from '@nestjs/config';
+import { IConfigService } from './config.service.interface';
 
 @Injectable()
 export class ConfigService implements IConfigService {
-  getTokenTtlHours (): number {
-    const value = process.env.TOKEN_TTL_HOURS;
-    const parsed = Number(value);
-    if (isNaN(parsed) || parsed <= 0) throw new Error('Invalid TOKEN_TTL_HOURS env variable');
+  constructor (private readonly config: NestConfigService) {}
 
-    return parsed;
+  getTokenTtlHours (): number {
+    return this.config.get<number>('TOKEN_TTL_HOURS');
+  }
+
+  getWeatherApiKey (): string {
+    return this.config.getOrThrow<string>('WEATHER_API_KEY');
+  }
+
+  getWeatherApiBaseUrl (): string {
+    return this.config.getOrThrow<string>('WEATHER_API_BASE_URL');
+  }
+
+  getVisualCrossingApiKey (): string {
+    return this.config.getOrThrow<string>('VISUAL_CROSSING_API_KEY');
+  }
+
+  getVisualCrossingBaseUrl (): string {
+    return this.config.getOrThrow<string>('VISUAL_CROSSING_BASE_URL');
   }
 }

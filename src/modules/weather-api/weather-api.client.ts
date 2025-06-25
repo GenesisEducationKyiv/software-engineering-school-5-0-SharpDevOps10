@@ -6,16 +6,20 @@ import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { plainToInstance } from 'class-transformer';
 import { WeatherApiResponse } from '@weather-api/responses/weather-api.response';
 import type { WeatherApiErrorResponse } from '@weather-api/responses/weather-api.error-response.interface';
+import { CONFIG_DI_TOKENS } from '@modules/config/di-tokens';
+import { IConfigService } from '@modules/config/config.service.interface';
 
 @Injectable()
 export class WeatherApiClient implements IWeatherApiClient {
   constructor (
     @Inject(WEATHER_DI_TOKENS.WEATHER_MAPPER)
     private readonly mapper: IWeatherMapper,
+    @Inject(CONFIG_DI_TOKENS.CONFIG_SERVICE)
+    private readonly config: IConfigService,
   ) {}
 
-  private readonly apiKey = process.env.WEATHER_API_KEY;
-  private readonly baseUrl = process.env.WEATHER_API_BASE_URL;
+  private readonly apiKey = this.config.getWeatherApiKey();
+  private readonly baseUrl = this.config.getWeatherApiBaseUrl();
 
   async getWeatherData (city: string): Promise<GetWeatherResponse> {
     const url = `${this.baseUrl}?key=${this.apiKey}&q=${encodeURIComponent(city)}`;
