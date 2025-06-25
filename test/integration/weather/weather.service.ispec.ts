@@ -1,11 +1,9 @@
 import { IWeatherService } from '@weather/interfaces/weather.service.interface';
 import { server } from '../../setup-msw';
 import { Test, TestingModule } from '@nestjs/testing';
-import { WeatherService } from '@weather/weather.service';
-import { WeatherApiClient } from '@weather-api/weather-api.client';
-import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 import { NotFoundException } from '@nestjs/common';
-import { WeatherApiMapper } from '@weather-api/mappers/weather-api.mapper';
+import { WeatherModule } from '@weather/weather.module';
+import { WeatherService } from '@modules/weather/weather.service';
 
 describe('WeatherService (integration)', () => {
   let service: IWeatherService;
@@ -16,18 +14,7 @@ describe('WeatherService (integration)', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        WeatherService,
-        WeatherApiClient,
-        {
-          provide: WEATHER_DI_TOKENS.WEATHER_API_CLIENT,
-          useClass: WeatherApiClient,
-        },
-        {
-          provide: WEATHER_DI_TOKENS.WEATHER_MAPPER,
-          useClass: WeatherApiMapper,
-        },
-      ],
+      imports: [WeatherModule],
     }).compile();
 
     service = module.get(WeatherService);

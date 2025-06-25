@@ -1,42 +1,31 @@
 import { WeatherService } from '@weather/weather.service';
-import { WeatherApiResponse } from '@weather-api/responses/weather-api.response';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { NotFoundException } from '@nestjs/common';
-import type { IWeatherApiClient } from '@weather/interfaces/weather-api.interface';
-import type { IWeatherMapper } from '@weather-api/interfaces/weather.mapper.interface';
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
+import { IWeatherHandler } from '@weather/interfaces/weather-handler.interface';
 
 describe('WeatherService', () => {
   let service: WeatherService;
-  let weatherApiClientMock: jest.Mocked<IWeatherApiClient>;
-  let weatherMapperMock: jest.Mocked<IWeatherMapper>;
+  let handlerMock: jest.Mocked<IWeatherHandler>;
 
   beforeEach(async () => {
-    const mockWeatherApiClient: jest.Mocked<IWeatherApiClient> = {
-      getWeatherData: jest.fn(),
-    };
-
-    const mockWeatherMapper: jest.Mocked<IWeatherMapper> = {
-      mapToGetWeatherResponse: jest.fn(),
+    const mockHandler: jest.Mocked<IWeatherHandler> = {
+      setNext: jest.fn(),
+      handle: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         WeatherService,
         {
-          provide: WEATHER_DI_TOKENS.WEATHER_API_CLIENT,
-          useValue: mockWeatherApiClient,
-        },
-        {
-          provide: WEATHER_DI_TOKENS.WEATHER_MAPPER,
-          useValue: mockWeatherMapper,
+          provide: WEATHER_DI_TOKENS.WEATHER_HANDLER,
+          useValue: mockHandler,
         },
       ],
     }).compile();
     service = module.get<WeatherService>(WeatherService);
-    weatherApiClientMock = module.get(WEATHER_DI_TOKENS.WEATHER_API_CLIENT);
-    weatherMapperMock = module.get(WEATHER_DI_TOKENS.WEATHER_MAPPER);
+    handlerMock = module.get(WEATHER_DI_TOKENS.WEATHER_HANDLER);
   });
 
   afterEach(() => {
@@ -45,18 +34,6 @@ describe('WeatherService', () => {
 
   it('should return weather data transformed to GetWeatherResponse', async () => {
     const city = 'London';
-    const mockApiResponse = {
-      current: {
-        temp_c: 22.5,
-        humidity: 60,
-        condition: {
-          text: 'Sunny',
-          icon: '',
-          code: 1000,
-        },
-      },
-      location: {},
-    } as unknown as WeatherApiResponse;
 
     const expected: GetWeatherResponse = {
       temperature: 22.5,
@@ -64,41 +41,40 @@ describe('WeatherService', () => {
       description: 'Sunny',
     };
 
-    weatherApiClientMock.getWeatherData.mockResolvedValue(expected);
+    handlerMock.handle.mockResolvedValue(expected);
 
     const result = await service.getWeather(city);
 
     expect(result).toEqual(expected);
-    expect(weatherApiClientMock.getWeatherData).toHaveBeenCalledWith(city);
+    expect(handlerMock.handle).toHaveBeenCalledWith(city);
   });
 
-  it('should throw if weatherApiClient throws NotFoundException', async () => {
+  it('should throw if handler throws NotFoundException', async () => {
     const city = 'InvalidCity';
-    weatherApiClientMock.getWeatherData.mockRejectedValue(new NotFoundException('City not found'));
+    handlerMock.handle.mockRejectedValue(new NotFoundException('City not found'));
 
     await expect(service.getWeather(city)).rejects.toThrow(NotFoundException);
-    expect(weatherApiClientMock.getWeatherData).toHaveBeenCalledWith(city);
+    expect(handlerMock.handle).toHaveBeenCalledWith(city);
   });
 
-  it('should rethrow unexpected errors from weatherApiClient', async () => {
+  it('should rethrow unexpected errors from handler', async () => {
     const city = 'Kyiv';
     const error = new Error('Unexpected error');
-    weatherApiClientMock.getWeatherData.mockRejectedValue(error);
+    handlerMock.handle.mockRejectedValue(error);
 
     await expect(service.getWeather(city)).rejects.toThrow('Unexpected error');
-    expect(weatherApiClientMock.getWeatherData).toHaveBeenCalledWith(city);
+    expect(handlerMock.handle).toHaveBeenCalledWith(city);
   });
 
-  it('should map condition.text to description', async () => {
+  it('should return correct description from handler', async () => {
     const city = 'Lviv';
-
     const expected: GetWeatherResponse = {
       temperature: 15,
       humidity: 80,
       description: 'Cloudy',
     };
 
-    weatherApiClientMock.getWeatherData.mockResolvedValue(expected);
+    handlerMock.handle.mockResolvedValue(expected);
 
     const result = await service.getWeather(city);
 
