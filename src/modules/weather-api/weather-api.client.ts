@@ -1,15 +1,23 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { IWeatherApiClient } from '@weather-api/interfaces/weather-api-client.interface';
+import { HttpException, HttpStatus, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { IWeatherApiClient } from '@weather/interfaces/weather-api.interface';
+import { WEATHER_DI_TOKENS } from '@modules/weather/di-tokens';
+import { IWeatherMapper } from '@weather-api/interfaces/weather.mapper.interface';
+import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { plainToInstance } from 'class-transformer';
 import { WeatherApiResponse } from '@weather-api/responses/weather-api.response';
 import type { WeatherApiErrorResponse } from '@weather-api/responses/weather-api.error-response.interface';
 
 @Injectable()
 export class WeatherApiClient implements IWeatherApiClient {
+  constructor (
+    @Inject(WEATHER_DI_TOKENS.WEATHER_MAPPER)
+    private readonly mapper: IWeatherMapper,
+  ) {}
+
   private readonly apiKey = process.env.WEATHER_API_KEY;
   private readonly baseUrl = process.env.WEATHER_API_BASE_URL;
 
-  async getWeatherData (city: string): Promise<WeatherApiResponse> {
+  async getWeatherData (city: string): Promise<GetWeatherResponse> {
     const url = `${this.baseUrl}?key=${this.apiKey}&q=${encodeURIComponent(city)}`;
     let response: Response;
 
@@ -25,7 +33,9 @@ export class WeatherApiClient implements IWeatherApiClient {
     const body = await response.json();
     if (!response.ok) this.handleApiError(response.status, body, city);
 
-    return plainToInstance(WeatherApiResponse, body);
+    const data = plainToInstance(WeatherApiResponse, body);
+
+    return this.mapper.mapToGetWeatherResponse(data);
   }
 
   private handleApiError (status: number, body: WeatherApiErrorResponse, city: string): never {

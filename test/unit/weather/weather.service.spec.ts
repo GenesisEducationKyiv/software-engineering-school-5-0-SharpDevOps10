@@ -3,8 +3,8 @@ import { WeatherApiResponse } from '@weather-api/responses/weather-api.response'
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { NotFoundException } from '@nestjs/common';
-import type { IWeatherApiClient } from '@weather-api/interfaces/weather-api-client.interface';
-import type { IWeatherMapper } from '@weather/interfaces/weather.mapper.interface';
+import type { IWeatherApiClient } from '@weather/interfaces/weather-api.interface';
+import type { IWeatherMapper } from '@weather-api/interfaces/weather.mapper.interface';
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 
 describe('WeatherService', () => {
@@ -64,8 +64,7 @@ describe('WeatherService', () => {
       description: 'Sunny',
     };
 
-    weatherApiClientMock.getWeatherData.mockResolvedValue(mockApiResponse);
-    weatherMapperMock.mapToGetWeatherResponse.mockReturnValue(expected);
+    weatherApiClientMock.getWeatherData.mockResolvedValue(expected);
 
     const result = await service.getWeather(city);
 
@@ -92,18 +91,6 @@ describe('WeatherService', () => {
 
   it('should map condition.text to description', async () => {
     const city = 'Lviv';
-    const mockApiResponse = {
-      current: {
-        temp_c: 15,
-        humidity: 80,
-        condition: {
-          text: 'Cloudy',
-          icon: '',
-          code: 1003,
-        },
-      },
-      location: {},
-    } as unknown as WeatherApiResponse;
 
     const expected: GetWeatherResponse = {
       temperature: 15,
@@ -111,8 +98,7 @@ describe('WeatherService', () => {
       description: 'Cloudy',
     };
 
-    weatherApiClientMock.getWeatherData.mockResolvedValue(mockApiResponse);
-    weatherMapperMock.mapToGetWeatherResponse.mockReturnValue(expected);
+    weatherApiClientMock.getWeatherData.mockResolvedValue(expected);
 
     const result = await service.getWeather(city);
 
