@@ -4,9 +4,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { WeatherModule } from '@weather/weather.module';
 import { WeatherService } from '@modules/weather/weather.service';
+import { IWeatherApiClient } from '@modules/weather/interfaces/weather-api.interface';
+import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 
 describe('WeatherService (integration)', () => {
   let service: IWeatherService;
+
+  let visualCrossingClient: IWeatherApiClient;
 
   beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
   afterEach(() => server.resetHandlers());
@@ -18,6 +22,10 @@ describe('WeatherService (integration)', () => {
     }).compile();
 
     service = module.get(WeatherService);
+
+    visualCrossingClient = module.get(WEATHER_DI_TOKENS.VISUAL_CROSSING_CLIENT);
+
+    jest.spyOn(visualCrossingClient, 'getWeatherData');
   });
 
   it('should return transformed weather data from weather api client', async () => {
@@ -54,5 +62,19 @@ describe('WeatherService (integration)', () => {
     const city = 'FailsEverywhere';
 
     await expect(service.getWeather(city)).rejects.toThrow(ServiceUnavailableException);
+  });
+
+  it('should not fallback to VisualCrossing if WeatherApi succeeds', async () => {
+    const city = 'Paris';
+
+    const result = await service.getWeather(city);
+
+    expect(result).toEqual({
+      temperature: 24.1,
+      humidity: 57,
+      description: 'Sunny',
+    });
+
+    expect(visualCrossingClient.getWeatherData).not.toHaveBeenCalled();
   });
 });
