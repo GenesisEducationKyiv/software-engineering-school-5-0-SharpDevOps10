@@ -7,6 +7,7 @@ import { IVisualCrossingMapper } from '@visual-crossing-api/interfaces/visual-cr
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { CONFIG_DI_TOKENS } from '@modules/config/di-tokens';
 import { IConfigService } from '@modules/config/config.service.interface';
+import { LogResponseToFile } from '@utils/decorators/log-response-to-file.decorator';
 
 @Injectable()
 export class VisualCrossingClient implements IWeatherApiClient {
@@ -18,11 +19,12 @@ export class VisualCrossingClient implements IWeatherApiClient {
     private readonly config: IConfigService,
   ) {}
 
-  private readonly apiKey = this.config.getWeatherApiKey();
-  private readonly baseUrl = this.config.getVisualCrossingBaseUrl();
-
+  @LogResponseToFile('visualcrossing.com')
   async getWeatherData (city: string): Promise<GetWeatherResponse> {
-    const url = `${this.baseUrl}/${encodeURIComponent(city)}?unitGroup=metric&include=current&key=${this.apiKey}&contentType=json`;
+    const baseUrl = this.config.getVisualCrossingBaseUrl();
+    const apiKey = this.config.getVisualCrossingApiKey();
+
+    const url = `${baseUrl}/${encodeURIComponent(city)}?unitGroup=metric&include=current&key=${apiKey}&contentType=json`;
 
     let response: Response;
 

@@ -8,6 +8,7 @@ import { WeatherApiResponse } from '@weather-api/responses/weather-api.response'
 import type { WeatherApiErrorResponse } from '@weather-api/responses/weather-api.error-response.interface';
 import { CONFIG_DI_TOKENS } from '@modules/config/di-tokens';
 import { IConfigService } from '@modules/config/config.service.interface';
+import { LogResponseToFile } from '@utils/decorators/log-response-to-file.decorator';
 
 @Injectable()
 export class WeatherApiClient implements IWeatherApiClient {
@@ -18,11 +19,12 @@ export class WeatherApiClient implements IWeatherApiClient {
     private readonly config: IConfigService,
   ) {}
 
-  private readonly apiKey = this.config.getWeatherApiKey();
-  private readonly baseUrl = this.config.getWeatherApiBaseUrl();
-
+  @LogResponseToFile('weatherapi.com')
   async getWeatherData (city: string): Promise<GetWeatherResponse> {
-    const url = `${this.baseUrl}?key=${this.apiKey}&q=${encodeURIComponent(city)}`;
+    const apiKey = this.config.getWeatherApiKey();
+    const baseUrl = this.config.getWeatherApiBaseUrl();
+
+    const url = `${baseUrl}?key=${apiKey}&q=${encodeURIComponent(city)}`;
     let response: Response;
 
     try {
