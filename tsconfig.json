@@ -14,6 +14,7 @@
       "@modules/*": ["modules/*"],
       "@weather-api/*": ["modules/weather-api/*"],
       "@weather/*": ["modules/weather/*"],
+      "@visual-crossing-api/*": ["modules/visual-crossing-api/*"],
       "@utils/*": ["utils/*"],
       "@enums/*": ["enums/*"],
       "@database/*": ["database/*"],

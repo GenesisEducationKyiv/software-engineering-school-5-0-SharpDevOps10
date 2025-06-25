@@ -2,8 +2,8 @@ import { INestApplication, NotFoundException, ValidationPipe } from '@nestjs/com
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@modules/app/app.module';
 import * as request from 'supertest';
-import { IWeatherApiClient } from '@weather-api/interfaces/weather-api-client.interface';
-import { IWeatherMapper } from '@modules/weather/interfaces/weather.mapper.interface';
+import { IWeatherApiClient } from '@weather/interfaces/weather-api.interface';
+import { IWeatherMapper } from '@weather-api/interfaces/weather.mapper.interface';
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { WeatherApiResponse } from '@weather-api/responses/weather-api.response';
@@ -98,8 +98,7 @@ describe('WeatherController', () => {
       description: 'Sunny',
     };
 
-    weatherApiClientMock.getWeatherData.mockResolvedValue(mockApiResponse);
-    weatherMapperMock.mapToGetWeatherResponse.mockReturnValue(mockResponse);
+    weatherApiClientMock.getWeatherData.mockResolvedValue(mockResponse);
 
     const res = await request(app.getHttpServer()).get(`/weather?city=${city}`);
 

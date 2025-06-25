@@ -3,9 +3,9 @@ import { server } from '../../setup-msw';
 import { Test, TestingModule } from '@nestjs/testing';
 import { WeatherService } from '@weather/weather.service';
 import { WeatherApiClient } from '@weather-api/weather-api.client';
-import { WeatherMapper } from '@weather/mappers/weather.mapper';
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 import { NotFoundException } from '@nestjs/common';
+import { WeatherApiMapper } from '@weather-api/mappers/weather-api.mapper';
 
 describe('WeatherService (integration)', () => {
   let service: IWeatherService;
@@ -19,14 +19,13 @@ describe('WeatherService (integration)', () => {
       providers: [
         WeatherService,
         WeatherApiClient,
-        WeatherMapper,
         {
           provide: WEATHER_DI_TOKENS.WEATHER_API_CLIENT,
           useClass: WeatherApiClient,
         },
         {
           provide: WEATHER_DI_TOKENS.WEATHER_MAPPER,
-          useClass: WeatherMapper,
+          useClass: WeatherApiMapper,
         },
       ],
     }).compile();
@@ -34,7 +33,7 @@ describe('WeatherService (integration)', () => {
     service = module.get(WeatherService);
   });
 
-  it('should return transformed weather data from real API client + mapper', async () => {
+  it('should return transformed weather data from real API client', async () => {
     const city = 'Paris';
 
     const result = await service.getWeather(city);

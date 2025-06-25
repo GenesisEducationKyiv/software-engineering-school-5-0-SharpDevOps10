@@ -10,6 +10,7 @@
   "moduleNameMapper": {
     "^@modules/(.*)$": "<rootDir>/src/modules/$1",
     "^@weather-api/(.*)$": "<rootDir>/src/modules/weather-api/$1",
+    "^@visual-crossing-api/(.*)$": "<rootDir>/src/modules/visual-crossing-api/$1",
     "^@weather/(.*)$": "<rootDir>/src/modules/weather/$1",
     "^@utils/(.*)$": "<rootDir>/src/utils/$1",
     "^@enums/(.*)$": "<rootDir>/src/enums/$1",
