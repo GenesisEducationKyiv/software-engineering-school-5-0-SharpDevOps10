@@ -7,8 +7,8 @@ import { IEmailService } from '@email/interfaces/email-service.interface';
 import { EMAIL_DI_TOKENS } from '@email/di-tokens';
 import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
 import { SubscriptionFrequencyEnum } from '@subscription/enums/subscription-frequency.enum';
-import { IConfigService } from '@modules/config/config.service.interface';
 import { CONFIG_DI_TOKENS } from '@modules/config/di-tokens';
+import { configServiceMock } from '../../mocks/configs/config.service.mock';
 
 describe('SubscriptionController', () => {
   let app: INestApplication;
@@ -19,15 +19,6 @@ describe('SubscriptionController', () => {
     sendWeatherUpdateEmail: jest.fn(),
   };
 
-  const mockConfigService: jest.Mocked<IConfigService> = {
-    getTokenTtlHours: jest.fn().mockReturnValue(1),
-    getWeatherApiKey: jest.fn().mockReturnValue('test-weather-api-key'),
-    getWeatherApiBaseUrl: jest.fn().mockReturnValue('https://api.weather.com'),
-    getVisualCrossingApiKey: jest.fn().mockReturnValue('test-visual-crossing-api-key'),
-    getVisualCrossingBaseUrl: jest.fn().mockReturnValue('https://api.visualcrossing.com'),
-    getWeatherProvidersPriority: jest.fn().mockReturnValue(['WEATHER_API', 'VISUAL_CROSSING']),
-  };
-
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
@@ -35,7 +26,7 @@ describe('SubscriptionController', () => {
       .overrideProvider(EMAIL_DI_TOKENS.EMAIL_SERVICE)
       .useValue(mockEmailService)
       .overrideProvider(CONFIG_DI_TOKENS.CONFIG_SERVICE)
-      .useValue(mockConfigService)
+      .useValue(configServiceMock)
       .compile();
 
     app = moduleRef.createNestApplication();

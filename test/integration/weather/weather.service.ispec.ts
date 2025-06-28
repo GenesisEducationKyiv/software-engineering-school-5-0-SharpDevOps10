@@ -6,9 +6,12 @@ import { WeatherModule } from '@weather/weather.module';
 import { WeatherService } from '@modules/weather/weather.service';
 import { IWeatherApiClient } from '@modules/weather/interfaces/weather-api.interface';
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
+import * as fs from 'node:fs/promises';
 
 describe('WeatherService (integration)', () => {
   let service: IWeatherService;
+  let spyAppendFile: jest.SpyInstance;
+  let spyMkdir: jest.SpyInstance;
 
   let visualCrossingClient: IWeatherApiClient;
 
@@ -26,6 +29,8 @@ describe('WeatherService (integration)', () => {
     visualCrossingClient = module.get(WEATHER_DI_TOKENS.VISUAL_CROSSING_CLIENT);
 
     jest.spyOn(visualCrossingClient, 'getWeatherData');
+    spyAppendFile = jest.spyOn(fs, 'appendFile').mockResolvedValue(undefined);
+    spyMkdir = jest.spyOn(fs, 'mkdir').mockImplementation(undefined);
   });
 
   it('should return transformed weather data from weather api client', async () => {
@@ -76,5 +81,28 @@ describe('WeatherService (integration)', () => {
     });
 
     expect(visualCrossingClient.getWeatherData).not.toHaveBeenCalled();
+  });
+
+  it('should log response from successful provider call', async () => {
+    const city = 'Paris';
+
+    await service.getWeather(city);
+
+    expect(spyMkdir).toHaveBeenCalledWith(expect.stringContaining('logs'), { recursive: true });
+    expect(spyAppendFile).toHaveBeenCalledWith(
+      expect.stringContaining('logs/provider.log'),
+      expect.stringContaining('Response:'),
+    );
+  });
+
+  it('should log error if provider fails', async () => {
+    const city = 'InvalidCity';
+
+    await expect(service.getWeather(city)).rejects.toThrow(NotFoundException);
+
+    expect(spyAppendFile).toHaveBeenCalledWith(
+      expect.stringContaining('logs/provider.log'),
+      expect.stringMatching(/Error: NotFoundException:/),
+    );
   });
 });
