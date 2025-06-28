@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@subscription/enums/subscription-frequency.enum';
 import type { IWeatherService } from '@weather/interfaces/weather.service.interface';
 import type { IEmailService } from '@email/interfaces/email-service.interface';
 import type { ILoggerService } from '@logger/logger.service.interface';

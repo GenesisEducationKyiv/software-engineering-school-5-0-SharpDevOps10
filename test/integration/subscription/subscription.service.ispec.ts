@@ -3,7 +3,7 @@ import { SubscriptionService } from '@subscription/subscription.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SubscriptionRepository } from '@subscription/subscription.repository';
 import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
-import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@subscription/enums/subscription-frequency.enum';
 import { BadRequestException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '@database/prisma.service';
 import type { IEmailService } from '@email/interfaces/email-service.interface';
@@ -28,6 +28,7 @@ describe('SubscriptionService (integration)', () => {
     getWeatherApiBaseUrl: jest.fn().mockReturnValue('https://api.weather.com'),
     getVisualCrossingApiKey: jest.fn().mockReturnValue('test-visual-crossing-api-key'),
     getVisualCrossingBaseUrl: jest.fn().mockReturnValue('https://api.visualcrossing.com'),
+    getWeatherProvidersPriority: jest.fn().mockReturnValue(['WEATHER_API', 'VISUAL_CROSSING']),
   };
 
   beforeAll(async () => {

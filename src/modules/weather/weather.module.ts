@@ -8,9 +8,10 @@ import { WeatherApiHandler } from '@weather/handlers/weather-api.handler';
 import { VisualCrossingHandler } from '@weather/handlers/visual-crossing.handler';
 import { WeatherHandlerFactory } from '@weather/factories/weather-handler.factory';
 import { IWeatherHandler } from '@weather/interfaces/weather-handler.interface';
+import { ConfigModule } from '@config/config.module';
 
 @Module({
-  imports: [WeatherApiModule, VisualCrossingModule],
+  imports: [WeatherApiModule, VisualCrossingModule, ConfigModule],
   controllers: [WeatherController],
   providers: [
     WeatherService,
@@ -23,14 +24,10 @@ import { IWeatherHandler } from '@weather/interfaces/weather-handler.interface';
     },
     {
       provide: WEATHER_DI_TOKENS.WEATHER_HANDLER,
-      useFactory: (
-        factory: WeatherHandlerFactory,
-        weatherApi: WeatherApiHandler,
-        visualCrossing: VisualCrossingHandler,
-      ): IWeatherHandler => {
-        return factory.create(weatherApi, visualCrossing);
+      useFactory: (factory: WeatherHandlerFactory): IWeatherHandler => {
+        return factory.create();
       },
-      inject: [WeatherHandlerFactory, WeatherApiHandler, VisualCrossingHandler],
+      inject: [WeatherHandlerFactory],
     },
   ],
   exports: [WeatherApiModule, WEATHER_DI_TOKENS.WEATHER_SERVICE],

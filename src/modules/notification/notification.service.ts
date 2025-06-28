@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@subscription/enums/subscription-frequency.enum';
 import type { IEmailJobService } from '@notification/interfaces/email.job.service.interface';
 import { NOTIFICATION_DI_TOKENS } from '@notification/di-tokens';
 

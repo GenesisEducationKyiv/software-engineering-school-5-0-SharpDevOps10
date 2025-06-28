@@ -8,7 +8,7 @@ import { IsCityValidConstraint } from '@utils/validators/is-city-valid.validator
 import { WeatherModule } from '@weather/weather.module';
 import { TokenService } from '@subscription/token/token.service';
 import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
-import { ConfigModule } from '@modules/config/config.module';
+import { ConfigModule } from '@config/config.module';
 
 @Module({
   controllers: [SubscriptionController],

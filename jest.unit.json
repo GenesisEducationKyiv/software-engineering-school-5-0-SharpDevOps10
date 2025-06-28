@@ -18,6 +18,7 @@
     "^@subscription/(.*)$": "<rootDir>/src/modules/subscription/$1",
     "^@email/(.*)$": "<rootDir>/src/modules/email/$1",
     "^@logger/(.*)$": "<rootDir>/src/modules/logger/$1",
-    "^@notification/(.*)$": "<rootDir>/src/modules/notification/$1"
+    "^@notification/(.*)$": "<rootDir>/src/modules/notification/$1",
+    "^@config/(.*)$": "<rootDir>/src/modules/config/$1"
   }
 }

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EmailJobService } from '@notification/jobs/email-job.service';
-import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@subscription/enums/subscription-frequency.enum';
 import { randomUUID } from 'node:crypto';
 import type { ISubscriptionNotifier } from '@subscription/interfaces/subscription.notifier.interface';
 import type { IWeatherService } from '@weather/interfaces/weather.service.interface';
