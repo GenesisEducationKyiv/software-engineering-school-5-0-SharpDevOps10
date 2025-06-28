@@ -10,8 +10,8 @@ import type { IEmailService } from '@email/interfaces/email-service.interface';
 import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
 import { EMAIL_DI_TOKENS } from '@email/di-tokens';
 import { TokenService } from '@subscription/token/token.service';
-import { IConfigService } from '@modules/config/config.service.interface';
 import { CONFIG_DI_TOKENS } from '@modules/config/di-tokens';
+import { configServiceMock } from '../../mocks/configs/config.service.mock';
 
 describe('SubscriptionService (integration)', () => {
   let service: SubscriptionService;
@@ -20,15 +20,6 @@ describe('SubscriptionService (integration)', () => {
   const emailServiceMock: jest.Mocked<IEmailService> = {
     sendConfirmationEmail: jest.fn(),
     sendWeatherUpdateEmail: jest.fn(),
-  };
-
-  const configServiceMock: jest.Mocked<IConfigService> = {
-    getTokenTtlHours: jest.fn().mockReturnValue(1),
-    getWeatherApiKey: jest.fn().mockReturnValue('test-weather-api-key'),
-    getWeatherApiBaseUrl: jest.fn().mockReturnValue('https://api.weather.com'),
-    getVisualCrossingApiKey: jest.fn().mockReturnValue('test-visual-crossing-api-key'),
-    getVisualCrossingBaseUrl: jest.fn().mockReturnValue('https://api.visualcrossing.com'),
-    getWeatherProvidersPriority: jest.fn().mockReturnValue(['WEATHER_API', 'VISUAL_CROSSING']),
   };
 
   beforeAll(async () => {
