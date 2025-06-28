@@ -1,4 +1,5 @@
 import * as Joi from 'joi';
+import { validateWeatherProvidersPriority } from '@config/validators/validate-weather-providers-priority';
 
 export const configValidationSchema = Joi.object({
   TOKEN_TTL_HOURS: Joi.number().positive().required(),
@@ -8,4 +9,6 @@ export const configValidationSchema = Joi.object({
 
   VISUAL_CROSSING_API_KEY: Joi.string().min(1).required(),
   VISUAL_CROSSING_BASE_URL: Joi.string().uri().required(),
+  WEATHER_PROVIDERS_PRIORITY: Joi.string().required()
+    .custom(validateWeatherProvidersPriority),
 });

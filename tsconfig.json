@@ -21,7 +21,8 @@
       "@subscription/*": ["modules/subscription/*"],
       "@email/*": ["modules/email/*"],
       "@logger/*": ["modules/logger/*"],
-      "@notification/*": ["modules/notification/*"]
+      "@notification/*": ["modules/notification/*"],
+      "@config/*": ["modules/config/*"],
     },
     "incremental": true,
     "skipLibCheck": true,

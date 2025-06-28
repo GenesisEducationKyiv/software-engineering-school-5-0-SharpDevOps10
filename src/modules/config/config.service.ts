@@ -25,4 +25,10 @@ export class ConfigService implements IConfigService {
   getVisualCrossingBaseUrl (): string {
     return this.config.getOrThrow<string>('VISUAL_CROSSING_BASE_URL');
   }
+
+  getWeatherProvidersPriority (): string[] {
+    const priority = this.config.getOrThrow<string>('WEATHER_PROVIDERS_PRIORITY');
+
+    return priority.split(',').map((item) => item.trim());
+  }
 }

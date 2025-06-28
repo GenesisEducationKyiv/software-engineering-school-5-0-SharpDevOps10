@@ -4,4 +4,5 @@ export interface IConfigService {
   getWeatherApiBaseUrl(): string;
   getVisualCrossingApiKey(): string
   getVisualCrossingBaseUrl(): string;
+  getWeatherProvidersPriority(): string[];
 }

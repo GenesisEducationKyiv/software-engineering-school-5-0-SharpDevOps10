@@ -10,6 +10,7 @@ describe('TokenService', () => {
     getWeatherApiBaseUrl: jest.fn().mockReturnValue('https://api.weather.com'),
     getVisualCrossingApiKey: jest.fn().mockReturnValue('test-visual-crossing-api-key'),
     getVisualCrossingBaseUrl: jest.fn().mockReturnValue('https://api.visualcrossing.com'),
+    getWeatherProvidersPriority: jest.fn().mockReturnValue(['WEATHER_API', 'VISUAL_CROSSING']),
   };
 
   beforeEach(() => {

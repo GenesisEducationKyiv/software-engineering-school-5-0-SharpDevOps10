@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client';
 import { IEmailService } from '@email/interfaces/email-service.interface';
 import { EMAIL_DI_TOKENS } from '@email/di-tokens';
 import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
-import { SubscriptionFrequencyEnum } from '@enums/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@subscription/enums/subscription-frequency.enum';
 import { IConfigService } from '@modules/config/config.service.interface';
 import { CONFIG_DI_TOKENS } from '@modules/config/di-tokens';
 
@@ -25,6 +25,7 @@ describe('SubscriptionController', () => {
     getWeatherApiBaseUrl: jest.fn().mockReturnValue('https://api.weather.com'),
     getVisualCrossingApiKey: jest.fn().mockReturnValue('test-visual-crossing-api-key'),
     getVisualCrossingBaseUrl: jest.fn().mockReturnValue('https://api.visualcrossing.com'),
+    getWeatherProvidersPriority: jest.fn().mockReturnValue(['WEATHER_API', 'VISUAL_CROSSING']),
   };
 
   beforeAll(async () => {
