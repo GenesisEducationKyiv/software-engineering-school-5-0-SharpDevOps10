@@ -6,9 +6,10 @@ import { createRedisClient } from '@redis/redis.connection';
 import { CONFIG_DI_TOKENS } from '@config/di-tokens';
 import { IConfigService } from '@config/config.service.interface';
 import Redis from 'ioredis';
+import { MetricsModule } from '@modules/metrics/metrics.module';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModule, MetricsModule],
   providers: [
     RedisService,
     {
