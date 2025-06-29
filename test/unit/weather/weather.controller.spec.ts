@@ -16,6 +16,7 @@ jest.mock('ioredis', () => {
     del: jest.fn(),
     quit: jest.fn(),
     on: jest.fn(),
+    disconnect: jest.fn(),
   }));
 
   return { __esModule: true, default: mRedis };

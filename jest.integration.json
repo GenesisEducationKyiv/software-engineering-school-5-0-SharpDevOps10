@@ -6,9 +6,11 @@
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
-  "forceExit": true,
   "testEnvironment": "node",
-  "setupFilesAfterEnv": ["<rootDir>/test/setup-msw.ts"],
+  "setupFilesAfterEnv": [
+    "<rootDir>/test/setup-tests.ts",
+    "<rootDir>/test/setup-msw.ts"
+  ],
   "moduleNameMapper": {
     "^@modules/(.*)$": "<rootDir>/src/modules/$1",
     "^@weather-api/(.*)$": "<rootDir>/src/modules/weather-api/$1",
