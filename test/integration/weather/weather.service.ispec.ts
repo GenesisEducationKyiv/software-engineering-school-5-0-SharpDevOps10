@@ -29,6 +29,7 @@ describe('WeatherService (integration)', () => {
     }).compile();
 
     app = module.createNestApplication();
+    await app.init();
 
     service = module.get(WeatherService);
     visualCrossingClient = module.get(WEATHER_DI_TOKENS.VISUAL_CROSSING_CLIENT);
