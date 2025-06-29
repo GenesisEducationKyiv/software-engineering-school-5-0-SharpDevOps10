@@ -1,9 +1,9 @@
 import { IWeatherService } from '@weather/interfaces/weather.service.interface';
 import { server } from '../../setup-msw';
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException, ServiceUnavailableException } from '@nestjs/common';
+import { INestApplication, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { WeatherModule } from '@weather/weather.module';
-import { WeatherService } from '@modules/weather/weather.service';
+import { WeatherService } from '@weather/services/weather.service';
 import { IWeatherApiClient } from '@modules/weather/interfaces/weather-api.interface';
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 import * as fs from 'node:fs/promises';
@@ -11,21 +11,26 @@ import * as fs from 'node:fs/promises';
 describe('WeatherService (integration)', () => {
   let service: IWeatherService;
   let spyAppendFile: jest.SpyInstance;
+  let app: INestApplication;
   let spyMkdir: jest.SpyInstance;
 
   let visualCrossingClient: IWeatherApiClient;
 
   beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
   afterEach(() => server.resetHandlers());
-  afterAll(() => server.close());
+  afterAll(async () => {
+    await app.close();
+    server.close();
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [WeatherModule],
     }).compile();
 
-    service = module.get(WeatherService);
+    app = module.createNestApplication();
 
+    service = module.get(WeatherService);
     visualCrossingClient = module.get(WEATHER_DI_TOKENS.VISUAL_CROSSING_CLIENT);
 
     jest.spyOn(visualCrossingClient, 'getWeatherData');

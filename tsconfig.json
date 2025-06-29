@@ -23,6 +23,7 @@
       "@logger/*": ["modules/logger/*"],
       "@notification/*": ["modules/notification/*"],
       "@config/*": ["modules/config/*"],
+      "@redis/*": ["modules/redis/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

@@ -22,7 +22,7 @@ export class WeatherHandlerFactory {
     };
   }
 
-  create (): IWeatherHandler {
+  createChain (): IWeatherHandler {
     const priority = this.config.getWeatherProvidersPriority();
 
     let chain: IWeatherHandler | null = null;

@@ -31,4 +31,16 @@ export class ConfigService implements IConfigService {
 
     return priority.split(',').map((item) => item.trim());
   }
+
+  getRedisHost (): string {
+    return this.config.getOrThrow<string>('REDIS_HOST');
+  }
+
+  getRedisPort (): number {
+    return this.config.getOrThrow<number>('REDIS_PORT');
+  }
+
+  getRedisTtl (): number {
+    return this.config.getOrThrow<number>('REDIS_TTL');
+  }
 }
