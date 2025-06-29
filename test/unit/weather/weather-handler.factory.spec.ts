@@ -33,7 +33,7 @@ describe('WeatherHandlerFactory', () => {
       .fn()
       .mockReturnValue([WeatherProviderEnum.WEATHER_API, WeatherProviderEnum.VISUAL_CROSSING]);
 
-    const result = factory.create();
+    const result = factory.createChain();
 
     expect(weatherApiHandlerMock.setNext).toHaveBeenCalledWith(visualCrossingHandlerMock);
     expect(result).toBe(weatherApiHandlerMock);
@@ -44,7 +44,7 @@ describe('WeatherHandlerFactory', () => {
       .fn()
       .mockReturnValue([WeatherProviderEnum.VISUAL_CROSSING, WeatherProviderEnum.WEATHER_API]);
 
-    const result = factory.create();
+    const result = factory.createChain();
 
     expect(visualCrossingHandlerMock.setNext).toHaveBeenCalledWith(weatherApiHandlerMock);
     expect(result).toBe(visualCrossingHandlerMock);
@@ -55,12 +55,12 @@ describe('WeatherHandlerFactory', () => {
       .fn()
       .mockReturnValue(['UNKNOWN_PROVIDER']);
 
-    expect(() => factory.create()).toThrow(/Unknown provider/);
+    expect(() => factory.createChain()).toThrow(/Unknown provider/);
   });
 
   it('should throw an error if priority list is empty', () => {
     configMock.getWeatherProvidersPriority = jest.fn().mockReturnValue([]);
 
-    expect(() => factory.create()).toThrow('No weather providers configured');
+    expect(() => factory.createChain()).toThrow('No weather providers configured');
   });
 });

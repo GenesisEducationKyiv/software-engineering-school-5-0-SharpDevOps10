@@ -6,6 +6,7 @@
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
+  "forceExit": true,
   "testEnvironment": "node",
   "setupFilesAfterEnv": ["<rootDir>/test/setup-msw.ts"],
   "moduleNameMapper": {
@@ -20,6 +21,7 @@
     "^@email/(.*)$": "<rootDir>/src/modules/email/$1",
     "^@logger/(.*)$": "<rootDir>/src/modules/logger/$1",
     "^@notification/(.*)$": "<rootDir>/src/modules/notification/$1",
-    "^@config/(.*)$": "<rootDir>/src/modules/config/$1"
+    "^@config/(.*)$": "<rootDir>/src/modules/config/$1",
+    "^@redis/(.*)$": "<rootDir>/src/modules/redis/$1"
   }
 }

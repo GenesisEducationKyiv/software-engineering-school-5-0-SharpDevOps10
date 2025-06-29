@@ -1,0 +1,4 @@
+export const REDIS_DI_TOKENS = {
+  REDIS_SERVICE: Symbol('REDIS_SERVICE'),
+  REDIS_CLIENT: Symbol('REDIS_CLIENT'),
+};
