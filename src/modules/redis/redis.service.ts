@@ -2,6 +2,7 @@ import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
 import { IRedisService } from '@redis/interfaces/redis.service.interface';
 import { REDIS_DI_TOKENS } from './di-tokens';
 import Redis from 'ioredis';
+import { RedisCacheMetrics } from '@modules/metrics/redis-cache-metrics.decorator';
 
 @Injectable()
 export class RedisService implements OnModuleDestroy, IRedisService {
@@ -10,6 +11,7 @@ export class RedisService implements OnModuleDestroy, IRedisService {
     private readonly client: Redis,
   ) {}
 
+  @RedisCacheMetrics()
   async get<T> (key: string): Promise<T | null> {
     const data = await this.client.get(key);
     
