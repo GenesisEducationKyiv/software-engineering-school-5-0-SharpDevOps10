@@ -21,6 +21,7 @@
     "test:integration:run": "dotenv -e .env.test -- jest -c jest.integration.json -i --detectOpenHandles",
     "test:integration": "npm run test:integration:migrate && npm run test:integration:run",
     "test:all": "npm run test:integration && npm run test:unit",
+    "test:architecture": "npx depcruise --config test/architecture/.dependency-cruiser.js src",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
@@ -56,6 +57,7 @@
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "dependency-cruiser": "^16.10.4",
     "dotenv-cli": "^8.0.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
