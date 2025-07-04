@@ -74,6 +74,8 @@ graph TD
     emailService --> user
 ```
 
+[Full architecture diagram](./pictures/architecture.png)
+
 ## 4. Design Components
 
 ### 4.1. Weather Service
@@ -81,7 +83,7 @@ graph TD
 * **Responsibilities**:
     - Fetch current weather data from WeatherAPI.com
     - Transform external JSON into internal DTO (GetWeatherResponse)
-    - Provide weather data to Notification Worker (NotificationService)
+    - Provide weather data to Notification Worker (NotificationController)
 * **Endpoints**:
     * `GET /weather?city={city}` - retrieves current weather for a given city.
 * **Technologies**:
