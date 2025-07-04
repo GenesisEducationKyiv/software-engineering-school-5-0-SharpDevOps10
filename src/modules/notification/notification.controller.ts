@@ -5,7 +5,7 @@ import type { IEmailJobService } from '@notification/interfaces/email.job.servic
 import { NOTIFICATION_DI_TOKENS } from '@notification/di-tokens';
 
 @Injectable()
-export class NotificationService {
+export class NotificationController {
   constructor (
     @Inject(NOTIFICATION_DI_TOKENS.EMAIL_JOB_SERVICE)
     private readonly emailJobService: IEmailJobService,

@@ -3,7 +3,7 @@ import type { ILoggerService } from '@logger/logger.service.interface';
 
 @Injectable()
 export class LoggerService implements ILoggerService {
-  private readonly logger = new Logger('NotificationService');
+  private readonly logger = new Logger('NotificationController');
 
   log (message: string): void {
     this.logger.log(message);
