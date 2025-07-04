@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { NotificationService } from '@modules/notification/notification.service';
+import { NotificationController } from '@notification/notification.controller';
 import { EmailModule } from '@email/email.module';
 import { SubscriptionModule } from '@subscription/subscription.module';
 import { WeatherModule } from '@weather/weather.module';
@@ -9,7 +9,7 @@ import { NOTIFICATION_DI_TOKENS } from '@notification/di-tokens';
 
 @Module({
   providers: [
-    NotificationService,
+    NotificationController,
     {
       provide: NOTIFICATION_DI_TOKENS.EMAIL_JOB_SERVICE,
       useClass: EmailJobService,
