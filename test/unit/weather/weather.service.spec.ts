@@ -1,4 +1,4 @@
-import { WeatherService } from '@weather/weather.service';
+import { WeatherService } from '@weather/services/weather.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { NotFoundException } from '@nestjs/common';

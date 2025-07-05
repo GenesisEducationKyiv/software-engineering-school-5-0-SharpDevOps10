@@ -1,21 +1,12 @@
 import { TokenService } from '@subscription/token/token.service';
-import { IConfigService } from '@modules/config/config.service.interface';
+import { configServiceMock } from '../../mocks/configs/config.service.mock';
 
 describe('TokenService', () => {
   let service: TokenService;
 
-  const mockConfigService: jest.Mocked<IConfigService> = {
-    getTokenTtlHours: jest.fn().mockReturnValue(1),
-    getWeatherApiKey: jest.fn().mockReturnValue('test-weather-api-key'),
-    getWeatherApiBaseUrl: jest.fn().mockReturnValue('https://api.weather.com'),
-    getVisualCrossingApiKey: jest.fn().mockReturnValue('test-visual-crossing-api-key'),
-    getVisualCrossingBaseUrl: jest.fn().mockReturnValue('https://api.visualcrossing.com'),
-    getWeatherProvidersPriority: jest.fn().mockReturnValue(['WEATHER_API', 'VISUAL_CROSSING']),
-  };
-
   beforeEach(() => {
     jest.useFakeTimers();
-    service = new TokenService(mockConfigService);
+    service = new TokenService(configServiceMock);
   });
 
   afterEach(() => {

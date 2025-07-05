@@ -64,7 +64,6 @@ module.exports = {
     'space-in-parens': 'error',
     eqeqeq: ['error', 'smart'],
     'eol-last': ['error', 'always'],
-    'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-duplicate-imports': 'error',
     'prefer-const': 'error',
     'newline-before-return': 'error',
