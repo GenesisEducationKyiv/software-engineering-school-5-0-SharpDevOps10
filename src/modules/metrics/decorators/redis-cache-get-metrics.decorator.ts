@@ -1,9 +1,9 @@
 import { redisMetrics } from '@metrics/redis.metrics';
 
-export function RedisCacheMetrics () {
+export function RedisCacheGetMetrics () {
   return function (
-    target: object,
-    propertyKey: string | symbol,
+    _: object,
+    __: string | symbol,
     descriptor: PropertyDescriptor,
   ): PropertyDescriptor {
     const originalMethod = descriptor.value;
@@ -15,11 +15,8 @@ export function RedisCacheMetrics () {
       try {
         const result = await originalMethod.apply(this, args);
 
-        if (result !== null && result !== undefined) {
-          redisMetrics.hits.inc();
-        } else {
-          redisMetrics.misses.inc();
-        }
+        if (result !== null && result !== undefined) redisMetrics.hits.inc();
+        else redisMetrics.misses.inc();
 
         return result;
       } catch (err) {
