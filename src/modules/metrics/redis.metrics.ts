@@ -24,4 +24,18 @@ export const redisMetrics = {
     help: REDIS_METRIC_HELP.RESPONSE_TIME_SECONDS,
     buckets: [0.001, 0.01, 0.1, 0.5, 1, 2],
   }),
+
+  writes: new Counter({
+    name: REDIS_METRIC_NAMES.WRITES_TOTAL,
+    help: REDIS_METRIC_HELP.WRITES_TOTAL,
+  }),
+  writeErrors: new Counter({
+    name: REDIS_METRIC_NAMES.WRITE_ERRORS_TOTAL,
+    help: REDIS_METRIC_HELP.WRITE_ERRORS_TOTAL,
+  }),
+  writeResponseTime: new Histogram({
+    name: REDIS_METRIC_NAMES.WRITE_RESPONSE_TIME_SECONDS,
+    help: REDIS_METRIC_HELP.WRITE_RESPONSE_TIME_SECONDS,
+    buckets: [0.001, 0.01, 0.1, 0.5, 1, 2],
+  }),
 };
