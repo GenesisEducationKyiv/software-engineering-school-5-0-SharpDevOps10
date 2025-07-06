@@ -152,6 +152,49 @@ across languages and teams. `gRPC` tooling also makes it easier to evolve and mo
 6. `Notification Service` → `Email Service`: dispatches formatted messages via gRPC including a subject,
    body, recipient.
 
+## Architecture Diagram
+
+```mermaid
+flowchart TD
+  subgraph Client Layer
+    C[Client]
+  end
+
+  subgraph Gateway
+    AG[API Gateway]
+  end
+
+  subgraph Services
+    WS[Weather Service]
+    SS[Subscription Service]
+    NS[Notification Service]
+    ES[Email Service]
+  end
+
+  subgraph Databases
+    PG[(PostgreSQL)]
+    RD[(Redis)]
+  end
+
+  subgraph External APIs
+    WAPI1[WeatherAPI.com]
+    VC[Visual Crossing]
+    SMTP[SMTP Provider]
+  end
+
+  C -->|REST| AG
+  AG -->|gRPC| WS
+  AG -->|gRPC| SS
+  NS -->|gRPC| SS
+  NS -->|gRPC| WS
+  NS -->|gRPC| ES
+  SS --> PG
+  WS --> RD
+  WS --> WAPI1
+  WS --> VC
+  ES --> SMTP
+```
+
 ## Consequences
 
 **Positive:**
