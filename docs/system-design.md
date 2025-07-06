@@ -76,6 +76,8 @@ graph TD
 
 [Full architecture diagram](./pictures/architecture.png)
 
+[Link to the full architecture diagram as well](https://excalidraw.com/#json=20q0kf9qaEpQVUhn7iZEv,MxdZ_FnkeiqwwhvU-JlpWQ)
+
 ## 4. Design Components
 
 ### 4.1. Weather Service
