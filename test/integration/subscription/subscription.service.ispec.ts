@@ -1,15 +1,15 @@
 import { PrismaClient } from '@prisma/client';
-import { SubscriptionService } from '@subscription/subscription.service';
+import { SubscriptionService } from '@subscription/application/subscription.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { SubscriptionRepository } from '@subscription/subscription.repository';
-import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
-import { SubscriptionFrequencyEnum } from '@subscription/enums/subscription-frequency.enum';
+import { SubscriptionRepository } from '@subscription/infrastructure/repositories/subscription.repository';
+import { CreateSubscriptionDto } from '@subscription/presentation/dto/create-subscription.dto';
+import { SubscriptionFrequencyEnum } from '@subscription/domain/enums/subscription-frequency.enum';
 import { BadRequestException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '@database/prisma.service';
-import type { IEmailService } from '@email/interfaces/email-service.interface';
+import type { IEmailService } from '@shared/interfaces/email-service.interface';
 import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
 import { EMAIL_DI_TOKENS } from '@email/di-tokens';
-import { TokenService } from '@subscription/token/token.service';
+import { TokenService } from '@subscription/infrastructure/token/token.service';
 import { CONFIG_DI_TOKENS } from '@modules/config/di-tokens';
 import { configServiceMock } from '../../mocks/configs/config.service.mock';
 

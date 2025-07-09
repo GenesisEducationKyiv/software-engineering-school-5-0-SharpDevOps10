@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EmailJobService } from '@notification/jobs/email-job.service';
-import { SubscriptionFrequencyEnum } from '@subscription/enums/subscription-frequency.enum';
+import { EmailJobService } from '@notification/application/jobs/email-job.service';
+import { SubscriptionFrequencyEnum } from '@subscription/domain/enums/subscription-frequency.enum';
 import { randomUUID } from 'node:crypto';
-import type { ISubscriptionNotifier } from '@subscription/interfaces/subscription.notifier.interface';
-import type { IWeatherService } from '@weather/interfaces/weather.service.interface';
-import type { IEmailService } from '@email/interfaces/email-service.interface';
-import type { ILoggerService } from '@logger/logger.service.interface';
+import type { ISubscriptionNotifier } from '@notification/application/interfaces/subscription.notifier.interface';
+import type { IWeatherService } from '@weather/application/services/interfaces/weather.service.interface';
+import type { IEmailService } from '@shared/interfaces/email-service.interface';
+import type { ILoggerService } from '@shared/interfaces/logger.service.interface';
 import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 import { EMAIL_DI_TOKENS } from '@email/di-tokens';

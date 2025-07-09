@@ -1,5 +1,5 @@
 import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
-import { IRedisService } from '@redis/interfaces/redis.service.interface';
+import { IRedisService } from '@shared/interfaces/redis.service.interface';
 import { REDIS_DI_TOKENS } from './di-tokens';
 import Redis from 'ioredis';
 import { RedisCacheGetMetrics } from '@metrics/decorators/redis-cache-get-metrics.decorator';
@@ -30,9 +30,7 @@ export class RedisService implements OnModuleDestroy, IRedisService {
 
   async onModuleDestroy (): Promise<void> {
     try {
-      if (this.client.status === 'ready') {
-        await this.client.quit();
-      }
+      if (this.client.status === 'ready') await this.client.quit();
     } finally {
       this.client.disconnect();
     }
