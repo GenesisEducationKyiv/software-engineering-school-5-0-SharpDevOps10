@@ -42,16 +42,16 @@ module.exports = {
     },
     {
       name: 'controllers-only-services-or-dto',
-      comment: 'Controllers should import services interfaces, di-tokens, DTOs or utils, but not infrastructure',
+      comment: 'Controllers should import services interfaces, di-tokens, DTOs or shared, but not infrastructure',
       severity: 'error',
       from: { path: '^src/modules/.+\\.controller\\.ts$' },
       to: {
         pathNot: [
           '^src/modules/.+\\.service\\.ts$',
-          '^src/modules/.+/dto/.+\\.ts$',
           '^src/modules/.+/enums/.+\\.ts$',
-          '^src/utils/.+\\.ts$',
+          '^src/shared/.+\\.ts$',
           '^src/modules/.+/di-tokens\\.ts$',
+          '^src/modules/.+/presentation/.+\\.ts$',
         ]
       }
     },

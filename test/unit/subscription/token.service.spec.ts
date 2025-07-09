@@ -1,4 +1,4 @@
-import { TokenService } from '@subscription/token/token.service';
+import { TokenService } from '@subscription/infrastructure/token/token.service';
 import { configServiceMock } from '../../mocks/configs/config.service.mock';
 
 describe('TokenService', () => {

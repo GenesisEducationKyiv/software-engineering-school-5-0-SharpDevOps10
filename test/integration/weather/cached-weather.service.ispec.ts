@@ -1,4 +1,4 @@
-import { IWeatherService } from '@weather/interfaces/weather.service.interface';
+import { IWeatherService } from '@weather/application/services/interfaces/weather.service.interface';
 import { server } from '../../setup-msw';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
@@ -6,7 +6,7 @@ import { WeatherModule } from '@weather/weather.module';
 import { REDIS_DI_TOKENS } from '@modules/redis/di-tokens';
 import Redis from 'ioredis';
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
-import { IWeatherApiClient } from '@modules/weather/interfaces/weather-api.interface';
+import { IWeatherApiClient } from '@weather/application/interfaces/weather-api.interface';
 
 describe('CachedWeatherService (integration)', () => {
   let app: INestApplication;

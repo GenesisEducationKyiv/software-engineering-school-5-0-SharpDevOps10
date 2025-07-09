@@ -1,10 +1,10 @@
-import { IWeatherService } from '@weather/interfaces/weather.service.interface';
+import { IWeatherService } from '@weather/application/services/interfaces/weather.service.interface';
 import { server } from '../../setup-msw';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { WeatherModule } from '@weather/weather.module';
-import { WeatherService } from '@weather/services/weather.service';
-import { IWeatherApiClient } from '@modules/weather/interfaces/weather-api.interface';
+import { WeatherService } from '@weather/application/services/weather.service';
+import { IWeatherApiClient } from '@weather/application/interfaces/weather-api.interface';
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 import * as fs from 'node:fs/promises';
 

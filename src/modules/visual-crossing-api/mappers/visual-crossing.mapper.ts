@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
-import { IVisualCrossingMapper } from '../interfaces/visual-crossing.mapper.interface';
+import { IVisualCrossingMapper } from '@visual-crossing-api/client/interfaces/visual-crossing.mapper.interface';
 import { VisualCrossingResponse } from '@modules/visual-crossing-api/responses/visual-crossing.response';
 
 @Injectable()

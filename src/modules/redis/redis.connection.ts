@@ -1,5 +1,5 @@
 import Redis from 'ioredis';
-import { IConfigService } from '@config/config.service.interface';
+import { IConfigService } from '@shared/interfaces/config.service.interface';
 
 export const createRedisClient = (configService: IConfigService): Redis => {
   return new Redis({
