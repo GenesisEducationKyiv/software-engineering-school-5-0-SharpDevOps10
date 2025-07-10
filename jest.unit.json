@@ -12,7 +12,7 @@
     "^@weather-api/(.*)$": "<rootDir>/src/modules/weather-api/$1",
     "^@visual-crossing-api/(.*)$": "<rootDir>/src/modules/visual-crossing-api/$1",
     "^@weather/(.*)$": "<rootDir>/src/modules/weather/$1",
-    "^@utils/(.*)$": "<rootDir>/src/utils/$1",
+    "^@shared/(.*)$": "<rootDir>/src/shared/$1",
     "^@enums/(.*)$": "<rootDir>/src/enums/$1",
     "^@database/(.*)$": "<rootDir>/src/database/$1",
     "^@subscription/(.*)$": "<rootDir>/src/modules/subscription/$1",

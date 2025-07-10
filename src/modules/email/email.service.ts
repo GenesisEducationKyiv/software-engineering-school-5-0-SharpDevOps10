@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
-import type { IEmailService } from './interfaces/email-service.interface';
+import type { IEmailService } from '@shared/interfaces/email-service.interface';
 
 @Injectable()
 export class EmailService implements IEmailService {

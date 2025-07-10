@@ -1,7 +1,7 @@
-import { WeatherHandlerFactory } from '@weather/factories/weather-handler.factory';
-import { WeatherApiHandler } from '@weather/handlers/weather-api.handler';
-import { VisualCrossingHandler } from '@weather/handlers/visual-crossing.handler';
-import { IConfigService } from '@config/config.service.interface';
+import { WeatherHandlerFactory } from '@weather/application/factories/weather-handler.factory';
+import { WeatherApiHandler } from '@weather/application/handlers/weather-api.handler';
+import { VisualCrossingHandler } from '@weather/application/handlers/visual-crossing.handler';
+import { IConfigService } from '@shared/interfaces/config.service.interface';
 import { WeatherProviderEnum } from '@weather/enums/weather.provider.enum';
 
 describe('WeatherHandlerFactory', () => {

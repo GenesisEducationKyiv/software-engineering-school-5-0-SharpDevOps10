@@ -4,7 +4,7 @@ import { ConfigModule } from '@config/config.module';
 import { REDIS_DI_TOKENS } from '@redis/di-tokens';
 import { createRedisClient } from '@redis/redis.connection';
 import { CONFIG_DI_TOKENS } from '@config/di-tokens';
-import { IConfigService } from '@config/config.service.interface';
+import { IConfigService } from '@shared/interfaces/config.service.interface';
 import Redis from 'ioredis';
 import { MetricsModule } from '@modules/metrics/metrics.module';
 

@@ -1,6 +1,6 @@
 import { promises as fs } from 'node:fs';
 import * as path from 'node:path';
-import { LogResponseToFile } from '@utils/decorators/log-response-to-file.decorator';
+import { LogResponseToFile } from '@shared/decorators/log-response-to-file.decorator';
 
 jest.mock('node:fs', () => ({
   promises: {

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { SubscriptionController } from './subscription.controller';
-import { SubscriptionService } from './subscription.service';
-import { SubscriptionRepository } from './subscription.repository';
+import { SubscriptionController } from './presentation/subscription.controller';
+import { SubscriptionService } from './application/subscription.service';
+import { SubscriptionRepository } from './infrastructure/repositories/subscription.repository';
 import { PrismaModule } from '@database/prisma.module';
 import { EmailModule } from '@email/email.module';
-import { IsCityValidConstraint } from '@utils/validators/is-city-valid.validator';
+import { IsCityValidConstraint } from '@subscription/presentation/validators/is-city-valid.validator';
 import { WeatherModule } from '@weather/weather.module';
-import { TokenService } from '@subscription/token/token.service';
+import { TokenService } from '@subscription/infrastructure/token/token.service';
 import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
 import { ConfigModule } from '@config/config.module';
 

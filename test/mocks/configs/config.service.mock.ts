@@ -1,4 +1,4 @@
-import { IConfigService } from '@config/config.service.interface';
+import { IConfigService } from '@shared/interfaces/config.service.interface';
 
 export const configServiceMock: jest.Mocked<IConfigService> = {
   getTokenTtlHours: jest.fn().mockReturnValue(1),

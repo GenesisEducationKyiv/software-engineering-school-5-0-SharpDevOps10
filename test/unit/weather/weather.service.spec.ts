@@ -1,9 +1,9 @@
-import { WeatherService } from '@weather/services/weather.service';
+import { WeatherService } from '@weather/application/services/weather.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { NotFoundException } from '@nestjs/common';
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
-import { IWeatherHandler } from '@weather/interfaces/weather-handler.interface';
+import { IWeatherHandler } from '@weather/application/handlers/interfaces/weather-handler.interface';
 
 describe('WeatherService', () => {
   let service: WeatherService;

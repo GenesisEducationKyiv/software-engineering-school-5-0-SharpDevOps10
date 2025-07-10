@@ -5,8 +5,8 @@ import * as request from 'supertest';
 import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
 import { PrismaService } from '@database/prisma.service';
-import { IWeatherHandler } from '@weather/interfaces/weather-handler.interface';
-import { IRedisService } from '@modules/redis/interfaces/redis.service.interface';
+import { IWeatherHandler } from '@weather/application/handlers/interfaces/weather-handler.interface';
+import { IRedisService } from '@shared/interfaces/redis.service.interface';
 import { REDIS_DI_TOKENS } from '@redis/di-tokens';
 
 jest.mock('ioredis', () => {

@@ -1,7 +1,7 @@
-import { WeatherApiHandler } from '@weather/handlers/weather-api.handler';
-import { IWeatherApiClient } from '@weather/interfaces/weather-api.interface';
+import { WeatherApiHandler } from '@weather/application/handlers/weather-api.handler';
+import { IWeatherApiClient } from '@weather/application/interfaces/weather-api.interface';
 import { GetWeatherResponse } from '@weather/responses/get-weather.response';
-import { IWeatherHandler } from '@weather/interfaces/weather-handler.interface';
+import { IWeatherHandler } from '@weather/application/handlers/interfaces/weather-handler.interface';
 
 describe('WeatherApiHandler', () => {
   let handler: WeatherApiHandler;

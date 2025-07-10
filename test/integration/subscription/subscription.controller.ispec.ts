@@ -3,10 +3,10 @@ import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '@modules/app/app.module';
 import { PrismaClient } from '@prisma/client';
-import { IEmailService } from '@email/interfaces/email-service.interface';
+import { IEmailService } from '@shared/interfaces/email-service.interface';
 import { EMAIL_DI_TOKENS } from '@email/di-tokens';
-import { CreateSubscriptionDto } from '@subscription/dto/create-subscription.dto';
-import { SubscriptionFrequencyEnum } from '@subscription/enums/subscription-frequency.enum';
+import { CreateSubscriptionDto } from '@subscription/presentation/dto/create-subscription.dto';
+import { SubscriptionFrequencyEnum } from '@subscription/domain/enums/subscription-frequency.enum';
 import { CONFIG_DI_TOKENS } from '@modules/config/di-tokens';
 import { configServiceMock } from '../../mocks/configs/config.service.mock';
 
