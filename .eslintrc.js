@@ -36,7 +36,6 @@ module.exports = {
     ],
     '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/no-shadow': ['error'],
-    '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
     '@typescript-eslint/no-empty-function': 'warn',
     '@typescript-eslint/no-empty-interface': 'warn',
     '@typescript-eslint/ban-ts-comment': [

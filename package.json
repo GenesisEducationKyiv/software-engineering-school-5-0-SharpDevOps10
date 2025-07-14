@@ -4,11 +4,19 @@
   "description": "",
   "author": "",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
+    "start:email": "nest start email --watch",
+
+    "proto:generate": "mkdir -p libs/generated && protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=libs/generated --ts_proto_opt=esModuleInterop=true,forceLong=string -I libs/proto libs/proto/email.proto",
+
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "migrate": "npx prisma migrate deploy",
@@ -27,6 +35,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.13.4",
+    "@grpc/proto-loader": "^0.7.15",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^4.0.2",
@@ -71,6 +81,7 @@
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.3",
     "ts-node": "^10.9.1",
+    "ts-proto": "^2.7.5",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.3"
   },
