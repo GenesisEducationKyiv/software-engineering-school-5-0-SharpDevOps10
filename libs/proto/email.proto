@@ -4,25 +4,13 @@ package email;
 
 import "common/empty.proto";
 
-message GetWeatherResponse {
-  double temperature = 1;
-  double humidity = 2;
-  string description = 3;
-}
-
-message SendConfirmationEmailRequest {
-  string email = 1;
-  string token = 2;
-}
-
-message SendWeatherUpdateEmailRequest {
-  string email = 1;
-  string city = 2;
-  string frequency = 3;
-  GetWeatherResponse weather = 4;
-}
-
 service EmailService {
-  rpc SendConfirmationEmail(SendConfirmationEmailRequest) returns (common.Empty);
-  rpc SendWeatherUpdateEmail(SendWeatherUpdateEmailRequest) returns (common.Empty);
+  rpc SendEmail(SendEmailRequest) returns (common.Empty);
+}
+
+message SendEmailRequest {
+  string to = 1;
+  string subject = 2;
+  string template = 3;
+  map<string, string> context = 4;
 }

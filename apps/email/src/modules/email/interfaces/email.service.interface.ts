@@ -1,7 +1,5 @@
-import { SendConfirmationEmailDto } from '../dto/send-confirmation-email.dto';
-import { SendWeatherUpdateEmailDto } from '../dto/send-weather-update-email.dto';
+import { SendEmailDto } from '../dto/send-email.dto';
 
 export interface IEmailService {
-  sendConfirmationEmail(data: SendConfirmationEmailDto): Promise<void>;
-  sendWeatherUpdateEmail(data: SendWeatherUpdateEmailDto): Promise<void>;
+  sendEmail(dto: SendEmailDto): Promise<void>;
 }
