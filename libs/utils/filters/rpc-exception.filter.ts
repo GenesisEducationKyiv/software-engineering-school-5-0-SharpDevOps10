@@ -11,8 +11,8 @@ export class ExceptionFilter implements RpcExceptionFilter {
     if (exception instanceof RpcException) {
       const error = exception.getError();
 
-      this.logger.warn(`RpcException: ${error}`);
-      
+      this.logger.warn(`RpcException: ${JSON.stringify(error)}`);
+
       return throwError(() => error);
     }
 
