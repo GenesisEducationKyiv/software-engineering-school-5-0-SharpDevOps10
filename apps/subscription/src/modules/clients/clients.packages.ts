@@ -1,0 +1,3 @@
+export const CLIENTS_PACKAGES = {
+  EMAIL_PACKAGE: Symbol('EMAIL_PACKAGE'),
+};

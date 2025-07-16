@@ -7,5 +7,4 @@ export const emailValidationSchema = Joi.object({
   SMTP_USER: Joi.string().email().required(),
   SMTP_PASS: Joi.string().min(8).required(),
   MAIL_FROM: Joi.string().required(),
-  FRONTEND_URL: Joi.string().uri().required(),
 });

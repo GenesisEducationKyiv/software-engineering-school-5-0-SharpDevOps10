@@ -5,5 +5,4 @@ export interface IEmailConfigService {
   getSmtpPass(): string;
   getMailFrom(): string;
 
-  getFrontendUrl(): string;
 }

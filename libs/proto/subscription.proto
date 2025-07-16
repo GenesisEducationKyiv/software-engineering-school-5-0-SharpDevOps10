@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package subscription;
+
+import "common/empty.proto";
+
+service SubscriptionService {
+  rpc Subscribe(CreateSubscriptionRequest) returns (common.Empty);
+  rpc Confirm(TokenRequest) returns (common.Empty);
+  rpc Unsubscribe(TokenRequest) returns (common.Empty);
+  rpc GetConfirmedSubscriptions (common.Empty) returns (ConfirmedSubscriptionsResponse);
+}
+
+message CreateSubscriptionRequest {
+  string email = 1;
+  string city = 2;
+  string frequency = 3;
+}
+
+message TokenRequest {
+  string token = 1;
+}
+
+message Subscription {
+  string id = 1;
+  string email = 2;
+  string city = 3;
+  string frequency = 4;
+  bool confirmed = 5;
+  string token = 6;
+  string createdAt = 7;
+}
+
+message ConfirmedSubscriptionsResponse {
+  repeated Subscription subscriptions = 1;
+}

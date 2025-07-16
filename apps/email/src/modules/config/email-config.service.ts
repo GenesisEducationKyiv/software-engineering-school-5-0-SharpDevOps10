@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
-import { IEmailConfigService } from './interfaces/email-confige.service.interface';
+import { IEmailConfigService } from './interfaces/email-config.service.interface';
 
 @Injectable()
 export class EmailConfigService implements IEmailConfigService {

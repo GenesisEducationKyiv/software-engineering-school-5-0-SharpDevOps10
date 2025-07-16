@@ -12,6 +12,12 @@
       "root": "apps/email",
       "entryFile": "main",
       "sourceRoot": "apps/email/src"
+    },
+    "subscription": {
+      "type": "application",
+      "root": "apps/subscription",
+      "entryFile": "main",
+      "sourceRoot": "apps/subscription/src"
     }
   }
 }
