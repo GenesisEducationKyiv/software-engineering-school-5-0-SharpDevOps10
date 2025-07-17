@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package weather;
+
+service WeatherService {
+  rpc GetWeather(GetWeatherRequest) returns (GetWeatherResponse);
+  rpc IsCityValid(IsCityValidRequest) returns (IsCityValidResponse);
+}
+
+message GetWeatherRequest {
+  string city = 1;
+}
+
+message GetWeatherResponse {
+  double temperature = 1;
+  double humidity = 2;
+  string description = 3;
+}
+
+message IsCityValidRequest {
+  string city = 1;
+}
+
+message IsCityValidResponse {
+  bool isValid = 1;
+}

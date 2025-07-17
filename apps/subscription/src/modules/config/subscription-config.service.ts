@@ -25,4 +25,12 @@ export class SubscriptionConfigService implements ISubscriptionConfigService {
   getEmailClientPort (): number {
     return this.config.get<number>('EMAIL_CLIENT_PORT');
   }
+
+  getWeatherClientHost (): string {
+    return this.config.get<string>('WEATHER_CLIENT_HOST');
+  }
+
+  getWeatherClientPort (): number {
+    return this.config.get<number>('WEATHER_CLIENT_PORT');
+  }
 }

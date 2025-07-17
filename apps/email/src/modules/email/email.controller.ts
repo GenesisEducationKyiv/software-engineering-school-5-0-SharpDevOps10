@@ -5,7 +5,7 @@ import { IEmailService } from './interfaces/email.service.interface';
 import { EmailServiceMethods, GRPC_EMAIL_SERVICE } from './constants/grpc-methods';
 import { Empty } from '@generated/common/empty';
 import { SendEmailRequest } from '@generated/email';
-import { EmailTemplateMapper } from '@utils/proto-mappers/email-template.mapper';
+import { EmailTemplateEnum } from '@shared-types/common/email-template.enum';
 
 @GrpcService()
 export class EmailController {
@@ -18,7 +18,7 @@ export class EmailController {
   async sendConfirmationEmail (request: SendEmailRequest): Promise<Empty> {
     const dto = {
       ...request,
-      template: EmailTemplateMapper.fromGrpc(request.template),
+      template: request.template as EmailTemplateEnum,
     };
 
     await this.emailService.sendEmail(dto);

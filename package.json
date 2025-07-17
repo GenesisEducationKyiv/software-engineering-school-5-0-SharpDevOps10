@@ -15,6 +15,7 @@
     "start": "nest start",
     "start:email": "nest start email --watch",
     "start:subscription": "nest start subscription --watch",
+    "start:weather": "nest start weather --watch",
 
     "proto:generate": "mkdir -p libs/generated && find libs/proto -name '*.proto' | xargs protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=libs/generated --ts_proto_opt=esModuleInterop=true,forceLong=string -I libs/proto",
 
