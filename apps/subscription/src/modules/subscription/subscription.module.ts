@@ -8,6 +8,7 @@ import { SUBSCRIPTION_DI_TOKENS } from './constants/di-tokens';
 import { SubscriptionEmailSender } from './infrastructure/email-sender/subscription.email-sender';
 import { PrismaModule } from '../../database/prisma.module';
 import { SubscriptionController } from './presentation/subscription.controller';
+import { WeatherClientModule } from '../clients/weather-client/weather-client.module';
 
 @Module({
   controllers: [SubscriptionController],
@@ -37,6 +38,7 @@ import { SubscriptionController } from './presentation/subscription.controller';
     PrismaModule,
     SubscriptionConfigModule,
     EmailClientModule,
+    WeatherClientModule,
   ],
   exports: [
     SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_SERVICE,

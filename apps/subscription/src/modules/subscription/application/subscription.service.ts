@@ -6,13 +6,13 @@ import { ISubscriptionRepository } from './interfaces/subscription.repository.in
 import { CreateSubscriptionDto } from '../presentation/dto/create-subscription.dto';
 import { Subscription } from '@prisma/client';
 import { ISubscriptionEmailSender } from './interfaces/subscription.email-sender.interface';
-import { SubscriptionConfirmedException } from '../../../exceptions/subscription-confirmed.exception';
-import { EmailSubscribedException } from '../../../exceptions/email-subscribed.exception';
-import { InvalidTokenException } from '../../../exceptions/invalid-token.exception';
-import { SubscriptionNotConfirmedException } from '../../../exceptions/subscription-not-confirmed.exception';
-import { TokenNotFoundException } from '../../../exceptions/token-not-found.exception';
 import { SubscriptionFrequencyEnum } from '../domain/enums/subscription-frequency.enum';
-import { InvalidFrequencyException } from '../../../exceptions/invalid-frequency.exception';
+import {
+  AlreadyExistsException,
+  InvalidArgumentException,
+  NotFoundRpcException,
+} from '@exceptions/grpc-exceptions';
+import { IWeatherClient } from './interfaces/weather-client.interface';
 
 @Injectable()
 export class SubscriptionService implements ISubscriptionService {
@@ -25,6 +25,9 @@ export class SubscriptionService implements ISubscriptionService {
 
     @Inject(SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_TOKEN_SERVICE)
     private readonly tokenService: ITokenService,
+
+    @Inject(SUBSCRIPTION_DI_TOKENS.WEATHER_CLIENT)
+    private readonly weatherClient: IWeatherClient,
   ) {}
 
   async subscribe (dto: CreateSubscriptionDto): Promise<void> {
@@ -32,8 +35,14 @@ export class SubscriptionService implements ISubscriptionService {
 
     const { email, city } = dto;
 
+    const cityExists = await this.weatherClient.isCityValid(city);
+    console.log(cityExists);
+    if (!cityExists) {
+      throw new NotFoundRpcException(`City "${city}" not found`);
+    }
+
     const existingSubscription = await this.subscriptionRepository.findByEmailAndCity(email, city);
-    if (existingSubscription) throw new EmailSubscribedException();
+    if (existingSubscription) throw new AlreadyExistsException('Email already subscribed for this city');
 
     const token = this.tokenService.generateToken();
 
@@ -44,11 +53,11 @@ export class SubscriptionService implements ISubscriptionService {
   async confirm (token: string): Promise<void> {
     const subscription = await this.getSubscriptionByToken(token);
     if (subscription.confirmed) {
-      throw new SubscriptionConfirmedException();
+      throw new AlreadyExistsException('Subscription already confirmed');
     }
 
     if (this.tokenService.isTokenExpired(subscription.createdAt)) {
-      throw new InvalidTokenException();
+      throw new InvalidArgumentException('Invalid token');
     }
 
     await this.subscriptionRepository.updateSubscription(subscription.id, {
@@ -58,7 +67,7 @@ export class SubscriptionService implements ISubscriptionService {
 
   async unsubscribe (token: string): Promise<void> {
     const subscription = await this.getSubscriptionByToken(token);
-    if (!subscription.confirmed) throw new SubscriptionNotConfirmedException();
+    if (!subscription.confirmed) throw new AlreadyExistsException('Subscription not confirmed');
 
     await this.subscriptionRepository.deleteSubscription(subscription.id);
   }
@@ -69,14 +78,18 @@ export class SubscriptionService implements ISubscriptionService {
 
   private async getSubscriptionByToken (token: string): Promise<Subscription> {
     const subscription = await this.subscriptionRepository.findByToken(token);
-    if (!subscription) throw new TokenNotFoundException();
+    if (!subscription) throw new NotFoundRpcException('Token not found');
 
     return subscription;
   }
 
   private validateFrequency (frequency: string): void {
-    if (!Object.values(SubscriptionFrequencyEnum).includes(frequency as SubscriptionFrequencyEnum)) {
-      throw new InvalidFrequencyException();
+    const allowed = Object.values(SubscriptionFrequencyEnum);
+
+    if (!allowed.includes(frequency as SubscriptionFrequencyEnum)) {
+      throw new InvalidArgumentException(
+        `Invalid frequency "${frequency}". Allowed values: ${allowed.join(', ')}`
+      );
     }
   }
 }

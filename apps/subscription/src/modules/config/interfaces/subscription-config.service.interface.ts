@@ -7,4 +7,7 @@ export interface ISubscriptionConfigService {
 
   getEmailClientHost(): string;
   getEmailClientPort(): number;
+
+  getWeatherClientHost(): string;
+  getWeatherClientPort(): number;
 }

@@ -18,6 +18,12 @@
       "root": "apps/subscription",
       "entryFile": "main",
       "sourceRoot": "apps/subscription/src"
+    },
+    "weather": {
+      "type": "application",
+      "root": "apps/weather",
+      "entryFile": "main",
+      "sourceRoot": "apps/weather/src"
     }
   }
 }

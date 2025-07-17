@@ -9,4 +9,7 @@ export const subscriptionValidationSchema = Joi.object({
 
   EMAIL_CLIENT_HOST: Joi.string().hostname().required(),
   EMAIL_CLIENT_PORT: Joi.number().port().required(),
+
+  WEATHER_CLIENT_HOST: Joi.string().hostname().required(),
+  WEATHER_CLIENT_PORT: Joi.number().port().required(),
 });

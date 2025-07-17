@@ -27,6 +27,7 @@
       "@shared-types/*": ["libs/types/*"],
       "@generated/*": ["libs/generated/*"],
       "@utils/*": ["libs/utils/*"],
+      "@exceptions/*": ["libs/exceptions/*"],
     },
     "incremental": true,
     "skipLibCheck": true,
