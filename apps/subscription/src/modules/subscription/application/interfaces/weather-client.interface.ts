@@ -1,3 +1,5 @@
+import { IsCityValidRequest, IsCityValidResponse } from '@generated/weather';
+
 export interface IWeatherClient {
-  isCityValid(city: string): Promise<boolean>;
+  isCityValid(request: IsCityValidRequest): Promise<IsCityValidResponse>;
 }

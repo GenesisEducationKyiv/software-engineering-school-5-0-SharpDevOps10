@@ -5,6 +5,8 @@ import { SubscriptionConfigService } from '../../config/subscription-config.serv
 import { SUBSCRIPTION_DI_TOKENS } from '../../subscription/constants/di-tokens';
 import { EmailClientService } from './email-client.service';
 import { SubscriptionConfigModule } from '../../config/subscription-config.module';
+import { GRPC_PROTO_PATH } from '@micro-services/proto-path/grpc-proto-path.constants';
+import { GRPC_PACKAGES } from '@micro-services/packages/grpc-packages.constants';
 
 @Module({
   imports: [
@@ -20,8 +22,8 @@ import { SubscriptionConfigModule } from '../../config/subscription-config.modul
             transport: Transport.GRPC,
             options: {
               url: `${host}:${port}`,
-              package: 'email',
-              protoPath: 'libs/proto/email.proto',
+              package: GRPC_PACKAGES.EMAIL,
+              protoPath: GRPC_PROTO_PATH.EMAIL,
             },
           };
         },

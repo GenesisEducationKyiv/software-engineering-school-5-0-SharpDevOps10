@@ -4,6 +4,8 @@ import { WeatherConfigService } from './modules/config/weather-config.service';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { ExceptionFilter } from '@utils/filters/rpc-exception.filter';
 import { Logger } from '@nestjs/common';
+import { GRPC_PROTO_PATH } from '@micro-services/proto-path/grpc-proto-path.constants';
+import { GRPC_PACKAGES } from '@micro-services/packages/grpc-packages.constants';
 
 async function bootstrap (): Promise<void> {
   const appContext = await NestFactory.createApplicationContext(AppModule);
@@ -14,8 +16,8 @@ async function bootstrap (): Promise<void> {
     transport: Transport.GRPC,
     options: {
       url: `0.0.0.0:${port}`,
-      package: 'weather',
-      protoPath: 'libs/proto/weather.proto',
+      package: GRPC_PACKAGES.WEATHER,
+      protoPath: GRPC_PROTO_PATH.WEATHER,
     },
   });
 

@@ -5,6 +5,8 @@ import { SubscriptionConfigService } from '../../config/subscription-config.serv
 import { SUBSCRIPTION_DI_TOKENS } from '../../subscription/constants/di-tokens';
 import { SubscriptionConfigModule } from '../../config/subscription-config.module';
 import { WeatherClientService } from './weather-client.service';
+import { GRPC_PACKAGES } from '@micro-services/packages/grpc-packages.constants';
+import { GRPC_PROTO_PATH } from '@micro-services/proto-path/grpc-proto-path.constants';
 
 @Module({
   imports: [
@@ -20,8 +22,8 @@ import { WeatherClientService } from './weather-client.service';
             transport: Transport.GRPC,
             options: {
               url: `${host}:${port}`,
-              package: 'weather',
-              protoPath: 'libs/proto/weather.proto',
+              package: GRPC_PACKAGES.WEATHER,
+              protoPath: GRPC_PROTO_PATH.WEATHER,
             },
           };
         },
