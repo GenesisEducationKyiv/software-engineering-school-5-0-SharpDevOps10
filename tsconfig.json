@@ -28,6 +28,7 @@
       "@generated/*": ["libs/generated/*"],
       "@utils/*": ["libs/utils/*"],
       "@exceptions/*": ["libs/exceptions/*"],
+      "@micro-services/*": ["libs/micro-services/*"],
     },
     "incremental": true,
     "skipLibCheck": true,

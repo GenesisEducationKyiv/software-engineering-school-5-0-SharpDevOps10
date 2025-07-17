@@ -5,6 +5,8 @@ import * as dotenv from 'dotenv';
 import { EmailConfigService } from './modules/config/email-config.service';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { ExceptionFilter } from '@utils/filters/rpc-exception.filter';
+import { GRPC_PROTO_PATH } from '@micro-services/proto-path/grpc-proto-path.constants';
+import { GRPC_PACKAGES } from '@micro-services/packages/grpc-packages.constants';
 dotenv.config();
 
 async function bootstrap (): Promise<void> {
@@ -16,8 +18,8 @@ async function bootstrap (): Promise<void> {
     transport: Transport.GRPC,
     options: {
       url: `0.0.0.0:${port}`,
-      package: 'email',
-      protoPath: 'libs/proto/email.proto',
+      package: GRPC_PACKAGES.EMAIL,
+      protoPath: GRPC_PROTO_PATH.EMAIL,
     },
   });
 

@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/apps/email"
+    "outDir": "../../dist/apps/weather"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

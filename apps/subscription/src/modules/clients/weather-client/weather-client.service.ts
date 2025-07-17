@@ -3,7 +3,7 @@ import { CLIENTS_PACKAGES } from '../clients.packages';
 import type { ClientGrpc } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { GrpcToObservable } from '@shared-types/common/grpc-to-observable';
-import { IsCityValidResponse, WeatherService } from '@generated/weather';
+import { IsCityValidRequest, IsCityValidResponse, WeatherService } from '@generated/weather';
 import { IWeatherClient } from '../../subscription/application/interfaces/weather-client.interface';
 
 @Injectable()
@@ -19,11 +19,7 @@ export class WeatherClientService implements IWeatherClient, OnModuleInit {
     this.weatherClient = this.client.getService<WeatherService>('WeatherService');
   }
 
-  async isCityValid (city: string): Promise<boolean> {
-    const response = await lastValueFrom(
-      this.weatherClient.IsCityValid({ city })
-    ) as IsCityValidResponse;
-
-    return response.isValid;
+  async isCityValid (request: IsCityValidRequest): Promise<IsCityValidResponse> {
+    return await lastValueFrom(this.weatherClient.IsCityValid(request));
   }
 }

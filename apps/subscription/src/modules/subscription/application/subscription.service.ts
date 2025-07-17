@@ -35,9 +35,8 @@ export class SubscriptionService implements ISubscriptionService {
 
     const { email, city } = dto;
 
-    const cityExists = await this.weatherClient.isCityValid(city);
-    console.log(cityExists);
-    if (!cityExists) {
+    const { isValid } = await this.weatherClient.isCityValid({ city });
+    if (!isValid) {
       throw new NotFoundRpcException(`City "${city}" not found`);
     }
 
