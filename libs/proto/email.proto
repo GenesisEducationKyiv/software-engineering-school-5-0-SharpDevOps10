@@ -12,5 +12,14 @@ message SendEmailRequest {
   string to = 1;
   string subject = 2;
   string template = 3;
-  map<string, string> context = 4;
+  EmailContext context = 4;
+}
+
+message EmailContext {
+  optional string city = 1;
+  optional string frequency = 2;
+  optional int32 temperature = 3;
+  optional int32 humidity = 4;
+  optional string description = 5;
+  optional string confirmUrl = 6;
 }
