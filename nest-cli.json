@@ -24,6 +24,12 @@
       "root": "apps/weather",
       "entryFile": "main",
       "sourceRoot": "apps/weather/src"
+    },
+    "notification": {
+      "type": "application",
+      "root": "apps/notification",
+      "entryFile": "main",
+      "sourceRoot": "apps/notification/src"
     }
   }
 }

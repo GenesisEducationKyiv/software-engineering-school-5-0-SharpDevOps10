@@ -1,5 +1,5 @@
 import { Injectable, Logger, Scope } from '@nestjs/common';
-import type { ILoggerService } from '@shared/interfaces/logger.service.interface';
+import { ILoggerService } from '@utils/modules/logger/logger.service.interface';
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class LoggerService implements ILoggerService {

@@ -51,7 +51,7 @@ describe('EmailJobService', () => {
   const loggerMock: jest.Mocked<ILoggerService> = {
     log: jest.fn(),
     error: jest.fn(),
-  };
+  } as unknown as jest.Mocked<ILoggerService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

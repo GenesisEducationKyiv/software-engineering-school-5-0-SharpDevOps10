@@ -29,8 +29,4 @@ export class EmailConfigService implements IEmailConfigService {
   getMailFrom (): string {
     return this.config.get<string>('MAIL_FROM');
   }
-
-  getFrontendUrl (): string {
-    return this.config.get<string>('FRONTEND_URL');
-  }
 }
