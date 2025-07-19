@@ -1,0 +1,6 @@
+import type { Subscription } from '@prisma/client';
+import { ConfirmedSubscriptionsResponse } from '@generated/subscription';
+
+export interface ISubscriptionNotifier {
+  getConfirmedSubscriptions(): Promise<ConfirmedSubscriptionsResponse>;
+}

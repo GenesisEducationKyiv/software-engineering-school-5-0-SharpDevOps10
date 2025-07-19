@@ -1,15 +1,20 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Scope } from '@nestjs/common';
 import type { ILoggerService } from '@shared/interfaces/logger.service.interface';
 
-@Injectable()
+@Injectable({ scope: Scope.TRANSIENT })
 export class LoggerService implements ILoggerService {
-  private readonly logger = new Logger('NotificationController');
+  private logger: Logger;
+
+  setContext (context: string): void {
+    this.logger = new Logger(context);
+  }
 
   log (message: string): void {
-    this.logger.log(message);
+    this.logger?.log?.(message);
   }
 
   error (message: string, trace?: string): void {
-    this.logger.error(message, trace);
+    this.logger?.error?.(message, trace);
   }
 }
+
