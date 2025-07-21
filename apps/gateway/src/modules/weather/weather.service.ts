@@ -4,7 +4,6 @@ import { GATEWAY_CLIENT_DI_TOKENS } from '../clients/di-tokens';
 import { GetWeatherClientInterface } from '../clients/weather-client/interfaces/get-weather.interface';
 import { GetWeatherResponse } from '@shared-types/common/get-weather.response';
 
-
 @Injectable()
 export class WeatherService implements WeatherServiceInterface {
   constructor (
@@ -13,6 +12,6 @@ export class WeatherService implements WeatherServiceInterface {
   ) {}
 
   async getWeather (city: string): Promise<GetWeatherResponse> {
-    return this.weatherClient.getWeather(city);
+    return await this.weatherClient.getWeather(city);
   }
 }

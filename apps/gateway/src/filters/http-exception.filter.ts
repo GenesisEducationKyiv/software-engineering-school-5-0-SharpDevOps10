@@ -2,7 +2,7 @@ import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
-  HttpException,
+  HttpException, Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -20,6 +20,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (Array.isArray(message)) {
       message = message[0];
     }
+
+    Logger.warn(
+      `HTTP Exception: ${status} - ${message}`,
+    );
+
     response.status(status).send({ message });
   }
 }
