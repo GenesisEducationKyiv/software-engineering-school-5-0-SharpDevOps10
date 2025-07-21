@@ -6,7 +6,7 @@ import { WeatherApiErrorResponse } from '../responses/weather-api.error-response
 import { WEATHER_DI_TOKENS } from '../../weather/constants/di-tokens';
 import { IWeatherApiClient } from '../../weather/application/interfaces/weather-api.interface';
 import { IWeatherMapper } from './interfaces/weather.mapper.interface';
-import { GetWeatherResponse } from '../../weather/responses/get-weather.response';
+import { GetWeatherResponse } from '@shared-types/common/get-weather.response';
 import { WeatherApiResponse } from '../responses/weather-api.response';
 import { LogResponseToFile } from '@utils/decorators/log-response-to-file.decorator';
 import {

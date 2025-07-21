@@ -5,7 +5,7 @@ import { IWeatherService } from './interfaces/weather.service.interface';
 import { WEATHER_DI_TOKENS } from '../../constants/di-tokens';
 import { WEATHER_CONFIG_DI_TOKENS } from '../../../config/di-tokens';
 import { IWeatherConfigService } from '../../../config/interfaces/weather-config.service.interface';
-import { GetWeatherResponse } from '../../responses/get-weather.response';
+import { GetWeatherResponse } from '@shared-types/common/get-weather.response';
 
 @Injectable()
 export class CachedWeatherService implements IWeatherService {

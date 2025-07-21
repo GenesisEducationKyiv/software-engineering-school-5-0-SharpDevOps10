@@ -1,5 +1,5 @@
 import { GetWeatherResponse } from '@generated/weather';
 
-export interface IWeatherClient {
+export interface GetWeatherClientInterface {
   getWeather(city: string) : Promise<GetWeatherResponse>;
 }
