@@ -11,7 +11,7 @@ export function LogResponseToFile (providerName: string): MethodDecorator {
     const originalMethod = descriptor.value;
 
     descriptor.value = async function (...args: unknown[]): Promise<unknown> {
-      const logPath = path.join(cwd(), 'logs', 'provider.log');
+      const logPath = path.join(cwd(), 'apps', 'weather', 'logs', 'provider.log');
       await fs.mkdir(path.dirname(logPath), { recursive: true });
 
       try {
