@@ -7,7 +7,8 @@ RUN npm ci
 
 COPY . .
 COPY ./src/public ./src/public
-RUN npx prisma generate
+COPY ./apps/subscription/prisma ./apps/subscription/prisma
+RUN npx prisma generate --schema=apps/subscription/prisma/schema.prisma
 RUN npm run proto:generate
 RUN npm run build
 
@@ -18,7 +19,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/apps/subscription/prisma ./apps/subscription/prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/email/templates ./email/templates
