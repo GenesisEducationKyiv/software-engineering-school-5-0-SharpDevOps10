@@ -20,6 +20,7 @@
     "start:gateway": "nest start gateway --watch",
 
     "build:email": "webpack --config apps/email/webpack.config.js",
+    "build:weather": "webpack --config apps/weather/webpack.config.js",
 
     "proto:generate": "mkdir -p libs/generated && find libs/proto -name '*.proto' | xargs protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=libs/generated --ts_proto_opt=esModuleInterop=true,forceLong=string -I libs/proto",
     "start:dev": "nest start --watch",

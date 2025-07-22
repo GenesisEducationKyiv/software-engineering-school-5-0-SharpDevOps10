@@ -1,4 +1,4 @@
-import { WeatherProviderEnum } from '@weather/enums/weather.provider.enum';
+import { WeatherProviderEnum } from '../../weather/enums/weather.provider.enum';
 
 export const validateWeatherProvidersPriority = (value: string): string => {
   const allowedValues = Object.values(WeatherProviderEnum);
