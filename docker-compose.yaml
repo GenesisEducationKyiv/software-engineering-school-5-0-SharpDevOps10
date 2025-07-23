@@ -80,6 +80,23 @@ services:
     ports:
       - "3005:3005"
 
+  gateway:
+    build:
+      context: .
+      dockerfile: apps/gateway/Dockerfile
+    container_name: gateway
+    env_file:
+      - apps/gateway/.env
+    depends_on:
+      - subscription-service
+      - weather-service
+      - email-service
+      - notification-service
+    networks:
+      - app-network
+    ports:
+      - "3006:3006"
+
 volumes:
   pgdata:
 
