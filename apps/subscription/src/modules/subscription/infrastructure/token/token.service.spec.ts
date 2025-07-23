@@ -1,8 +1,13 @@
-import { TokenService } from '@subscription/infrastructure/token/token.service';
-import { configServiceMock } from '../../mocks/configs/config.service.mock';
+import { TokenService } from './token.service';
+import { ISubscriptionConfigService } from '../../../config/interfaces/subscription-config.service.interface';
 
 describe('TokenService', () => {
   let service: TokenService;
+
+  const configServiceMock: jest.Mocked<ISubscriptionConfigService> = {
+    getTokenTtlHours: jest.fn().mockReturnValue(1),
+
+  } as unknown as jest.Mocked<ISubscriptionConfigService>;
 
   beforeEach(() => {
     jest.useFakeTimers();

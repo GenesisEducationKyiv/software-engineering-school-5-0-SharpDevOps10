@@ -1,7 +1,7 @@
-import { VisualCrossingHandler } from '@weather/application/handlers/visual-crossing.handler';
-import { IWeatherApiClient } from '@weather/application/interfaces/weather-api.interface';
-import { IWeatherHandler } from '@weather/application/handlers/interfaces/weather-handler.interface';
-import { GetWeatherResponse } from '@weather/responses/get-weather.response';
+import { VisualCrossingHandler } from './visual-crossing.handler';
+import { IWeatherApiClient } from '../interfaces/weather-api.interface';
+import { GetWeatherResponse } from '@shared-types/common/get-weather.response';
+import { IWeatherHandler } from './interfaces/weather-handler.interface';
 
 describe('VisualCrossingHandler', () => {
   let handler: VisualCrossingHandler;

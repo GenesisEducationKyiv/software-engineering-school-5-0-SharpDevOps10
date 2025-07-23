@@ -1,9 +1,11 @@
-import { WeatherService } from '@weather/application/services/weather.service';
+import { WeatherService } from './weather.service';
+import { IWeatherHandler } from '../handlers/interfaces/weather-handler.interface';
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetWeatherResponse } from '@weather/responses/get-weather.response';
-import { NotFoundException } from '@nestjs/common';
-import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
-import { IWeatherHandler } from '@weather/application/handlers/interfaces/weather-handler.interface';
+import { WEATHER_DI_TOKENS } from '../../constants/di-tokens';
+import { GetWeatherResponse } from '@shared-types/common/get-weather.response';
+import { NotFoundRpcException } from '@exceptions/grpc-exceptions';
+import { RpcException } from '@nestjs/microservices';
+import { status } from '@grpc/grpc-js';
 
 describe('WeatherService', () => {
   let service: WeatherService;
@@ -51,9 +53,9 @@ describe('WeatherService', () => {
 
   it('should throw if handler throws NotFoundException', async () => {
     const city = 'InvalidCity';
-    handlerMock.handle.mockRejectedValue(new NotFoundException('City not found'));
+    handlerMock.handle.mockRejectedValue(new NotFoundRpcException('City not found'));
 
-    await expect(service.getWeather(city)).rejects.toThrow(NotFoundException);
+    await expect(service.getWeather(city)).rejects.toThrow(NotFoundRpcException);
     expect(handlerMock.handle).toHaveBeenCalledWith(city);
   });
 
@@ -79,5 +81,38 @@ describe('WeatherService', () => {
     const result = await service.getWeather(city);
 
     expect(result.description).toBe('Cloudy');
+  });
+
+  it('should return true when getWeather succeeds', async () => {
+    const city = 'ValidCity';
+    handlerMock.handle.mockResolvedValue({
+      temperature: 10,
+      humidity: 50,
+      description: 'Clear',
+    });
+
+    const result = await service.isCityValid(city);
+    expect(result).toBe(true);
+    expect(handlerMock.handle).toHaveBeenCalledWith(city);
+  });
+
+  it('should return false when getWeather throws RpcException with NOT_FOUND code', async () => {
+    const city = 'InvalidCity';
+    const rpcError = new RpcException({ code: status.NOT_FOUND, message: 'Not found' });
+
+    handlerMock.handle.mockRejectedValue(rpcError);
+
+    const result = await service.isCityValid(city);
+    expect(result).toBe(false);
+    expect(handlerMock.handle).toHaveBeenCalledWith(city);
+  });
+
+  it('should rethrow when getWeather throws an unexpected error', async () => {
+    const city = 'AnyCity';
+    const error = new Error('Something went wrong');
+    handlerMock.handle.mockRejectedValue(error);
+
+    await expect(service.isCityValid(city)).rejects.toThrow('Something went wrong');
+    expect(handlerMock.handle).toHaveBeenCalledWith(city);
   });
 });

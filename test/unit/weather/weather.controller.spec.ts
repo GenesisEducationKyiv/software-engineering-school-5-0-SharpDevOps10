@@ -78,7 +78,6 @@ describe('WeatherController', () => {
     expect(res.body).toEqual(mockResponse);
   });
 
-
   it('GET /weather?city=InvalidCity - should return 404', async () => {
     weatherHandlerMock.handle.mockRejectedValue(new NotFoundException('City not found'));
 
