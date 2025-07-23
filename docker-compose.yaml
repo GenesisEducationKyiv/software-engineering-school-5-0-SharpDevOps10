@@ -4,7 +4,7 @@ services:
     image: postgres:latest
     restart: always
     env_file:
-      - .env
+      - apps/subscription/.env
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -47,6 +47,20 @@ services:
       - app-network
     ports:
       - "3001:3001"
+
+  subscription-service:
+    build:
+      context: .
+      dockerfile: apps/subscription/Dockerfile
+    container_name: subscription-service
+    env_file:
+      - apps/subscription/.env
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+    ports:
+      - "3002:3002"
 
 volumes:
   pgdata:
