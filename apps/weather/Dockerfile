@@ -20,7 +20,6 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY apps/weather/package*.json apps/weather/
-RUN npm ci --omit=dev
 
 COPY --from=builder /app/apps/weather/dist ./dist
 COPY --from=builder /app/libs/proto ./libs/proto

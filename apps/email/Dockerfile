@@ -24,7 +24,6 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY apps/email/package*.json apps/email/
-RUN npm ci --omit=dev
 
 COPY --from=builder /app/apps/email/dist/ ./dist/
 COPY --from=builder /app/libs/proto ./libs/proto
