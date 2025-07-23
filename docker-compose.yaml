@@ -57,10 +57,28 @@ services:
       - apps/subscription/.env
     depends_on:
       - postgres
+      - weather-service
+      - email-service
     networks:
       - app-network
     ports:
       - "3002:3002"
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: apps/notification/Dockerfile
+    container_name: notification-service
+    env_file:
+      - apps/notification/.env
+    depends_on:
+      - subscription-service
+      - email-service
+      - weather-service
+    networks:
+      - app-network
+    ports:
+      - "3005:3005"
 
 volumes:
   pgdata:
