@@ -1,16 +1,4 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-    env_file:
-      - .env
-    networks:
-      - app-network
 
   postgres:
     image: postgres:latest
@@ -25,6 +13,40 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - app-network
+
+  redis:
+    image: redis:7
+    container_name: weather-redis
+    networks:
+      - app-network
+    ports:
+      - "6379:6379"
+
+  weather-service:
+    build:
+      context: .
+      dockerfile: apps/weather/Dockerfile
+    container_name: weather-service
+    env_file:
+      - apps/weather/.env
+    depends_on:
+      - redis
+    networks:
+      - app-network
+    ports:
+      - "3003:3003"
+
+  email-service:
+    build:
+      context: .
+      dockerfile: apps/email/Dockerfile
+    container_name: email-service
+    env_file:
+      - apps/email/.env
+    networks:
+      - app-network
+    ports:
+      - "3001:3001"
 
 volumes:
   pgdata:
