@@ -1,26 +1,19 @@
 {
   "displayName": "unit",
-  "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": "./",
-  "testRegex": "test/unit/.*\\.spec\\.ts$",
+  "rootDir": ".",
+  "testMatch": ["<rootDir>/{apps,libs}/**/*.spec.ts"],
+  "testEnvironment": "node",
+  "moduleFileExtensions": ["ts", "js", "json"],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
-  "testEnvironment": "node",
+  "coverageDirectory": "./coverage/unit",
+  "collectCoverageFrom": ["<rootDir>/{apps,libs}/**/*.spec.ts"],
   "moduleNameMapper": {
-    "^@modules/(.*)$": "<rootDir>/src/modules/$1",
-    "^@weather-api/(.*)$": "<rootDir>/src/modules/weather-api/$1",
-    "^@visual-crossing-api/(.*)$": "<rootDir>/src/modules/visual-crossing-api/$1",
-    "^@weather/(.*)$": "<rootDir>/src/modules/weather/$1",
-    "^@shared/(.*)$": "<rootDir>/src/shared/$1",
-    "^@enums/(.*)$": "<rootDir>/src/enums/$1",
-    "^@database/(.*)$": "<rootDir>/src/database/$1",
-    "^@subscription/(.*)$": "<rootDir>/src/modules/subscription/$1",
-    "^@email/(.*)$": "<rootDir>/src/modules/email/$1",
-    "^@logger/(.*)$": "<rootDir>/src/modules/logger/$1",
-    "^@notification/(.*)$": "<rootDir>/src/modules/notification/$1",
-    "^@config/(.*)$": "<rootDir>/src/modules/config/$1",
-    "^@redis/(.*)$": "<rootDir>/src/modules/redis/$1",
-    "^@metrics/(.*)$": "<rootDir>/src/modules/metrics/$1"
+    "^@shared-types/(.*)$": "<rootDir>/libs/types/$1",
+    "^@generated/(.*)$": "<rootDir>/libs/generated/$1",
+    "^@utils/(.*)$": "<rootDir>/libs/utils/$1",
+    "^@exceptions/(.*)$": "<rootDir>/libs/exceptions/$1",
+    "^@micro-services/(.*)$": "<rootDir>/libs/micro-services/$1"
   }
 }

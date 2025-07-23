@@ -6,7 +6,7 @@ import { IWeatherClient } from '../interfaces/weather.client.interface';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 import { ILoggerService } from '@utils/modules/logger/logger.service.interface';
 import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
-import { NotificationEmailSenderService } from '../../infrastructure/email-sender/notification.email-sender.service';
+import { INotificationEmailSender } from '../interfaces/notification.email-sender.interface';
 
 @Injectable()
 export class EmailJobService implements IEmailJobService {
@@ -18,7 +18,7 @@ export class EmailJobService implements IEmailJobService {
     private readonly weatherService: IWeatherClient,
 
     @Inject(NOTIFICATION_DI_TOKENS.NOTIFICATION_EMAIL_SENDER)
-    private readonly emailService: NotificationEmailSenderService,
+    private readonly emailService: INotificationEmailSender,
 
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: ILoggerService,

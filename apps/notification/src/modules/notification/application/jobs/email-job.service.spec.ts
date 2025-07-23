@@ -1,15 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EmailJobService } from '@notification/application/jobs/email-job.service';
-import { SubscriptionFrequencyEnum } from '@subscription/domain/enums/subscription-frequency.enum';
 import { randomUUID } from 'node:crypto';
-import type { ISubscriptionNotifier } from '@notification/application/interfaces/subscription.notifier.interface';
-import type { IWeatherService } from '@weather/application/services/interfaces/weather.service.interface';
-import type { IEmailService } from '@shared/interfaces/email-service.interface';
-import type { ILoggerService } from '@shared/interfaces/logger.service.interface';
-import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
-import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
-import { EMAIL_DI_TOKENS } from '@email/di-tokens';
-import { LOGGER_DI_TOKENS } from '@logger/di-tokens';
+import { EmailJobService } from './email-job.service';
+import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
+import { ISubscriptionNotifier } from '../interfaces/subscription.notifier.interface';
+import { IWeatherClient } from '../interfaces/weather.client.interface';
+import { INotificationEmailSender } from '../interfaces/notification.email-sender.interface';
+import { ILoggerService } from '@utils/modules/logger/logger.service.interface';
+import { NOTIFICATION_DI_TOKENS } from '../../di-tokens';
+import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 
 describe('EmailJobService', () => {
   let service: EmailJobService;
@@ -22,7 +20,7 @@ describe('EmailJobService', () => {
       frequency: SubscriptionFrequencyEnum.HOURLY,
       confirmed: true,
       token: randomUUID(),
-      createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+      createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
     },
     {
       id: randomUUID(),
@@ -31,7 +29,7 @@ describe('EmailJobService', () => {
       frequency: SubscriptionFrequencyEnum.DAILY,
       confirmed: true,
       token: randomUUID(),
-      createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+      createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
     },
   ];
 
@@ -39,27 +37,27 @@ describe('EmailJobService', () => {
     getConfirmedSubscriptions: jest.fn().mockResolvedValue(mockSubs),
   };
 
-  const weatherServiceMock: jest.Mocked<IWeatherService> = {
+  const weatherServiceMock: jest.Mocked<IWeatherClient> = {
     getWeather: jest.fn(),
   };
 
-  const emailServiceMock: jest.Mocked<IEmailService> = {
+  const emailServiceMock: jest.Mocked<INotificationEmailSender> = {
     sendWeatherUpdateEmail: jest.fn(),
-    sendConfirmationEmail: jest.fn(),
   };
 
   const loggerMock: jest.Mocked<ILoggerService> = {
     log: jest.fn(),
     error: jest.fn(),
-  } as unknown as jest.Mocked<ILoggerService>;
+    setContext: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         EmailJobService,
-        { provide: SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_NOTIFIER, useValue: subscriptionNotifierMock },
-        { provide: WEATHER_DI_TOKENS.WEATHER_SERVICE, useValue: weatherServiceMock },
-        { provide: EMAIL_DI_TOKENS.EMAIL_SERVICE, useValue: emailServiceMock },
+        { provide: NOTIFICATION_DI_TOKENS.SUBSCRIPTION_CLIENT, useValue: subscriptionNotifierMock },
+        { provide: NOTIFICATION_DI_TOKENS.WEATHER_CLIENT, useValue: weatherServiceMock },
+        { provide: NOTIFICATION_DI_TOKENS.NOTIFICATION_EMAIL_SENDER, useValue: emailServiceMock },
         { provide: LOGGER_DI_TOKENS.LOGGER_SERVICE, useValue: loggerMock },
       ],
     }).compile();
@@ -73,7 +71,9 @@ describe('EmailJobService', () => {
 
   it('should filter subscriptions by frequency and send emails', async () => {
     const city = 'Paris';
-    subscriptionNotifierMock.getConfirmedSubscriptions.mockResolvedValue(mockSubs);
+    subscriptionNotifierMock.getConfirmedSubscriptions.mockResolvedValue({
+      subscriptions: mockSubs,
+    });
     weatherServiceMock.getWeather.mockResolvedValue({
       temperature: 20,
       humidity: 50,
@@ -83,32 +83,34 @@ describe('EmailJobService', () => {
     await service.sendWeatherEmailsByFrequency(SubscriptionFrequencyEnum.DAILY);
 
     expect(weatherServiceMock.getWeather).toHaveBeenCalledWith(city);
-    expect(emailServiceMock.sendWeatherUpdateEmail).toHaveBeenCalledWith(
-      'john@example.com',
-      city,
-      {
+    expect(emailServiceMock.sendWeatherUpdateEmail).toHaveBeenCalledWith({
+      email: 'john@example.com',
+      city: 'Paris',
+      weather: {
         temperature: 20,
         humidity: 50,
         description: 'Sunny',
       },
-      'daily',
-    );
+      frequency: 'daily',
+    });
 
     expect(loggerMock.log).toHaveBeenCalledWith('Sent weather to john@example.com [Paris]');
   });
 
   it('should log error if email sending fails', async () => {
-    subscriptionNotifierMock.getConfirmedSubscriptions.mockResolvedValue([
-      {
-        id: randomUUID(),
-        email: 'fail@example.com',
-        city: 'Odesa',
-        frequency: SubscriptionFrequencyEnum.HOURLY,
-        confirmed: true,
-        token: 'mock-token',
-        createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
-      },
-    ]);
+    subscriptionNotifierMock.getConfirmedSubscriptions.mockResolvedValue({
+      subscriptions: [
+        {
+          id: randomUUID(),
+          email: 'fail@example.com',
+          city: 'Odesa',
+          frequency: SubscriptionFrequencyEnum.HOURLY,
+          confirmed: true,
+          token: 'mock-token',
+          createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        },
+      ],
+    });
     weatherServiceMock.getWeather.mockResolvedValue({
       temperature: 10,
       humidity: 70,

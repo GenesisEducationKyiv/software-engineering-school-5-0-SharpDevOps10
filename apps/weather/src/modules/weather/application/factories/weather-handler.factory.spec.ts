@@ -1,8 +1,8 @@
-import { WeatherHandlerFactory } from '@weather/application/factories/weather-handler.factory';
-import { WeatherApiHandler } from '@weather/application/handlers/weather-api.handler';
-import { VisualCrossingHandler } from '@weather/application/handlers/visual-crossing.handler';
-import { IConfigService } from '@shared/interfaces/config.service.interface';
-import { WeatherProviderEnum } from '@weather/enums/weather.provider.enum';
+import { WeatherHandlerFactory } from './weather-handler.factory';
+import { WeatherApiHandler } from '../handlers/weather-api.handler';
+import { VisualCrossingHandler } from '../handlers/visual-crossing.handler';
+import { IWeatherConfigService } from '../../../config/interfaces/weather-config.service.interface';
+import { WeatherProviderEnum } from '../../enums/weather.provider.enum';
 
 describe('WeatherHandlerFactory', () => {
   let factory: WeatherHandlerFactory;
@@ -17,7 +17,7 @@ describe('WeatherHandlerFactory', () => {
 
   const configMock = {
     getWeatherProvidersPriority: jest.fn(),
-  } as unknown as IConfigService;
+  } as unknown as IWeatherConfigService;
 
   beforeEach(() => {
     jest.clearAllMocks();
