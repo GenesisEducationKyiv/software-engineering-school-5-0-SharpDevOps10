@@ -16,9 +16,10 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['.eslintrc.js', '**/*.d.ts'],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/no-duplicate-enum-values': 'off',
     '@typescript-eslint/explicit-function-return-type': [
       'warn',
       {

@@ -9,7 +9,7 @@ export class SubscriptionRepository implements ISubscriptionRepository {
   constructor (private readonly prismaService: PrismaService) {}
 
   async findByEmailAndCity (email: string, city: string): Promise<Subscription> {
-    return this.prismaService.subscription.findFirst({
+    return await this.prismaService.subscription.findFirst({
       where: {
         email,
         city,
@@ -30,7 +30,7 @@ export class SubscriptionRepository implements ISubscriptionRepository {
   }
 
   async findByToken (token: string): Promise<Subscription> {
-    return this.prismaService.subscription.findFirst({
+    return await this.prismaService.subscription.findFirst({
       where: {
         token,
       },
@@ -51,7 +51,7 @@ export class SubscriptionRepository implements ISubscriptionRepository {
   }
 
   async getConfirmedSubscriptions (): Promise<Subscription[]> {
-    return this.prismaService.subscription.findMany({
+    return await this.prismaService.subscription.findMany({
       where: { confirmed: true },
     });
   }

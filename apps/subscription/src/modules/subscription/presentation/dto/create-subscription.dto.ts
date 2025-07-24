@@ -1,4 +1,4 @@
-import { SubscriptionFrequencyEnum } from '@subscription/domain/enums/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
 
 export type CreateSubscriptionDto = {
   email: string;

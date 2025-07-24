@@ -1,5 +1,5 @@
-import { GetWeatherResponse } from '@weather/responses/get-weather.response';
-import { VisualCrossingResponse } from '@visual-crossing-api/responses/visual-crossing.response';
+import { GetWeatherResponse } from '@shared-types/common/get-weather.response';
+import { VisualCrossingResponse } from '../../responses/visual-crossing.response';
 
 export interface IVisualCrossingMapper {
   mapToGetWeatherResponse(apiResponse: VisualCrossingResponse): GetWeatherResponse
