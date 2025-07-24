@@ -18,13 +18,11 @@
     "start:weather": "nest start weather --watch",
     "start:notification": "nest start notification --watch",
     "start:gateway": "nest start gateway --watch",
-
     "build:email": "webpack --config apps/email/webpack.config.js",
     "build:weather": "webpack --config apps/weather/webpack.config.js",
     "build:subscription": "webpack --config apps/subscription/webpack.config.js",
     "build:notification": "webpack --config apps/notification/webpack.config.js",
     "build:gateway": "webpack --config apps/gateway/webpack.config.js",
-
     "proto:generate": "mkdir -p libs/generated && find libs/proto -name '*.proto' | xargs protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=libs/generated --ts_proto_opt=esModuleInterop=true,forceLong=string -I libs/proto",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -34,7 +32,6 @@
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "test:unit": "npm run client:generate && jest -c jest.unit.json",
-
     "test:integration:migrate": "dotenv -e apps/subscription/.env.test -- npm run migrate",
     "test:integration:run": "npm run proto:generate && npm run test:weather:integration && npm run test:subscription:integration",
     "test:weather:integration": "dotenv -e apps/weather/.env.test -- jest apps/weather --config jest.integration.json",
@@ -46,6 +43,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
   "dependencies": {
+    "@fastify/static": "^7.0.4",
     "@grpc/grpc-js": "^1.13.4",
     "@grpc/proto-loader": "^0.7.15",
     "@nestjs-modules/mailer": "^2.0.2",
