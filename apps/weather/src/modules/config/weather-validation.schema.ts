@@ -15,4 +15,8 @@ export const weatherValidationSchema = Joi.object({
   REDIS_HOST: Joi.string().hostname().required(),
   REDIS_PORT: Joi.number().port().required(),
   REDIS_TTL: Joi.number().integer().positive().default(600).required(),
+
+  PROMETHEUS_PUSH_GATEWAY_URL: Joi.string().uri().required(),
+  PROMETHEUS_METRICS_JOB_NAME: Joi.string().min(1).required(),
+  PROMETHEUS_METRICS_PUSH_INTERVAL: Joi.number().integer().positive().default(60000).required(),
 });

@@ -35,4 +35,16 @@ export class WeatherConfigService implements IWeatherConfigService {
   getRedisTtl (): number {
     return this.config.getOrThrow<number>('REDIS_TTL');
   }
+
+  getPushGatewayUrl (): string {
+    return this.config.getOrThrow<string>('PROMETHEUS_PUSH_GATEWAY_URL');
+  }
+
+  getMetricsJobName (): string {
+    return this.config.getOrThrow<string>('PROMETHEUS_METRICS_JOB_NAME');
+  }
+
+  getMetricsPushInterval (): number {
+    return this.config.getOrThrow<number>('PROMETHEUS_METRICS_PUSH_INTERVAL', 60000);
+  }
 }

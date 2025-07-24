@@ -11,6 +11,7 @@ import { WEATHER_DI_TOKENS } from './constants/di-tokens';
 import { WeatherHandlerFactory } from './application/factories/weather-handler.factory';
 import { CachedWeatherService } from './application/services/cached-weather.service';
 import { IWeatherHandler } from './application/handlers/interfaces/weather-handler.interface';
+import { WeatherMetricsModule } from '../metrics/weather-metrics.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { IWeatherHandler } from './application/handlers/interfaces/weather-handl
     VisualCrossingModule,
     WeatherConfigModule,
     RedisModule,
+    WeatherMetricsModule,
   ],
   controllers: [WeatherController],
   providers: [

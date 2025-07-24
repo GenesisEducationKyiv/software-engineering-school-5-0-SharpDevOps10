@@ -31,6 +31,7 @@ services:
       - apps/weather/.env
     depends_on:
       - redis
+      - pushgateway
     networks:
       - app-network
     ports:
@@ -96,6 +97,11 @@ services:
       - app-network
     ports:
       - "3006:3006"
+
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - '9091:9091'
 
 volumes:
   pgdata:
