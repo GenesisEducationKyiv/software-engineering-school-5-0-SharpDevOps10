@@ -1,12 +1,13 @@
-import { IWeatherService } from '@weather/application/services/interfaces/weather.service.interface';
-import { server } from '../../setup-msw';
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
-import { WeatherModule } from '@weather/weather.module';
-import { WeatherService } from '@weather/application/services/weather.service';
-import { IWeatherApiClient } from '@weather/application/interfaces/weather-api.interface';
-import { WEATHER_DI_TOKENS } from '@weather/di-tokens';
+import { INestApplication } from '@nestjs/common';
 import * as fs from 'node:fs/promises';
+import { IWeatherService } from './interfaces/weather.service.interface';
+import { IWeatherApiClient } from '../interfaces/weather-api.interface';
+import { server } from '../../../../test-utils/msw/setup-msw';
+import { WeatherModule } from '../../weather.module';
+import { WeatherService } from './weather.service';
+import { WEATHER_DI_TOKENS } from '../../constants/di-tokens';
+import { NotFoundRpcException, UnavailableException } from '@exceptions/grpc-exceptions';
 
 describe('WeatherService (integration)', () => {
   let service: IWeatherService;
@@ -51,10 +52,10 @@ describe('WeatherService (integration)', () => {
     });
   });
 
-  it('should throw NotFoundException for invalid city', async () => {
+  it('should throw NotFoundRpcException for invalid city', async () => {
     const city = 'InvalidCity';
 
-    await expect(service.getWeather(city)).rejects.toThrow(NotFoundException);
+    await expect(service.getWeather(city)).rejects.toThrow(NotFoundRpcException);
   });
 
   it('should fallback to VisualCrossing if WeatherApi fails', async () => {
@@ -69,10 +70,10 @@ describe('WeatherService (integration)', () => {
     });
   });
 
-  it('should throw ServiceUnavailableException if all providers fail unexpectedly', async () => {
+  it('should throw UnavailableException if all providers fail unexpectedly', async () => {
     const city = 'FailsEverywhere';
 
-    await expect(service.getWeather(city)).rejects.toThrow(ServiceUnavailableException);
+    await expect(service.getWeather(city)).rejects.toThrow(UnavailableException);
   });
 
   it('should not fallback to VisualCrossing if WeatherApi succeeds', async () => {
@@ -104,11 +105,11 @@ describe('WeatherService (integration)', () => {
   it('should log error if provider fails', async () => {
     const city = 'InvalidCity';
 
-    await expect(service.getWeather(city)).rejects.toThrow(NotFoundException);
+    await expect(service.getWeather(city)).rejects.toThrow(NotFoundRpcException);
 
     expect(spyAppendFile).toHaveBeenCalledWith(
       expect.stringContaining('logs/provider.log'),
-      expect.stringMatching(/Error: NotFoundException:/),
+      expect.stringMatching(/Error: .*InvalidCity/),
     );
   });
 });

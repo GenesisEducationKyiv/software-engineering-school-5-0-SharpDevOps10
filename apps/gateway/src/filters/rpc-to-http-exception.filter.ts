@@ -26,7 +26,6 @@ export class RpcToHttpExceptionFilter implements ExceptionFilter {
 
       Logger.error(
         `gRPC Error (${code}): ${message}`,
-        exception.stack,
         RpcToHttpExceptionFilter.name,
       );
 
