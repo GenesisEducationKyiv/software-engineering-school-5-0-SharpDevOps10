@@ -10,4 +10,9 @@ export interface IWeatherConfigService {
   getWeatherProvidersPriority(): string[];
 
   getRedisTtl(): number;
+
+  getPushGatewayUrl(): string;
+  getMetricsJobName(): string;
+
+  getMetricsPushInterval(): number;
 }

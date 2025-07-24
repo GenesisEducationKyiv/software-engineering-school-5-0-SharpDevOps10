@@ -14,3 +14,9 @@ services:
     container_name: test-redis
     ports:
       - "6379:6379"
+
+
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - '9091:9091'
