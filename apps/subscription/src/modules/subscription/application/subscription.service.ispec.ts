@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException, ConflictException } from '@nestjs/common';
 import { ISubscriptionConfigService } from '../../config/interfaces/subscription-config.service.interface';
 import { SubscriptionService } from './subscription.service';
 import { ISubscriptionEmailSender } from './interfaces/subscription.email-sender.interface';
