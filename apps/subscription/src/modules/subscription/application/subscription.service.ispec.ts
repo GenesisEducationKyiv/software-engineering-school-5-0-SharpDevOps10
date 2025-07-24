@@ -1,26 +1,34 @@
 import { PrismaClient } from '@prisma/client';
-import { SubscriptionService } from '@subscription/application/subscription.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { SubscriptionRepository } from '@subscription/infrastructure/repositories/subscription.repository';
-import { CreateSubscriptionDto } from '@subscription/presentation/dto/create-subscription.dto';
-import { SubscriptionFrequencyEnum } from '@subscription/domain/enums/subscription-frequency.enum';
 import { BadRequestException, ConflictException } from '@nestjs/common';
-import { PrismaService } from '@database/prisma.service';
-import type { IEmailService } from '@shared/interfaces/email-service.interface';
-import { SUBSCRIPTION_DI_TOKENS } from '@subscription/di-tokens';
-import { EMAIL_DI_TOKENS } from '@email/di-tokens';
-import { TokenService } from '@subscription/infrastructure/token/token.service';
-import { CONFIG_DI_TOKENS } from '@modules/config/di-tokens';
-import { configServiceMock } from '../../mocks/configs/config.service.mock';
+import { ISubscriptionConfigService } from '../../config/interfaces/subscription-config.service.interface';
+import { SubscriptionService } from './subscription.service';
+import { ISubscriptionEmailSender } from './interfaces/subscription.email-sender.interface';
+import { PrismaService } from '../../../database/prisma.service';
+import { TokenService } from '../infrastructure/token/token.service';
+import { SUBSCRIPTION_DI_TOKENS } from '../constants/di-tokens';
+import { SubscriptionRepository } from '../infrastructure/repositories/subscription.repository';
+import { SUBSCRIPTION_CONFIG_DI_TOKENS } from '../../config/di-tokens';
+import { CreateSubscriptionDto } from '../presentation/dto/create-subscription.dto';
+import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
+import { AlreadyExistsException, InvalidArgumentException } from '@exceptions/grpc-exceptions';
 
 describe('SubscriptionService (integration)', () => {
   let service: SubscriptionService;
   let prisma: PrismaClient;
 
-  const emailServiceMock: jest.Mocked<IEmailService> = {
+  const emailServiceMock: jest.Mocked<ISubscriptionEmailSender> = {
     sendConfirmationEmail: jest.fn(),
-    sendWeatherUpdateEmail: jest.fn(),
   };
+
+  const weatherClientMock = {
+    isCityValid: jest.fn().mockResolvedValue({ isValid: true }),
+  };
+
+  const configServiceMock: jest.Mocked<ISubscriptionConfigService> = {
+    getTokenTtlHours: jest.fn().mockReturnValue(1),
+
+  } as unknown as jest.Mocked<ISubscriptionConfigService>;
 
   beforeAll(async () => {
     prisma = new PrismaClient();
@@ -48,7 +56,7 @@ describe('SubscriptionService (integration)', () => {
           useClass: SubscriptionRepository,
         },
         {
-          provide: EMAIL_DI_TOKENS.EMAIL_SERVICE,
+          provide: SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_EMAIL_SENDER,
           useValue: emailServiceMock,
         },
         {
@@ -56,8 +64,12 @@ describe('SubscriptionService (integration)', () => {
           useExisting: TokenService,
         },
         {
-          provide: CONFIG_DI_TOKENS.CONFIG_SERVICE,
+          provide: SUBSCRIPTION_CONFIG_DI_TOKENS.SUBSCRIPTION_CONFIG_SERVICE,
           useValue: configServiceMock,
+        },
+        {
+          provide: SUBSCRIPTION_DI_TOKENS.WEATHER_CLIENT,
+          useValue: weatherClientMock,
         },
       ],
     }).compile();
@@ -92,7 +104,7 @@ describe('SubscriptionService (integration)', () => {
 
     await service.subscribe(dto);
 
-    await expect(service.subscribe(dto)).rejects.toThrow(ConflictException);
+    await expect(service.subscribe(dto)).rejects.toThrow(AlreadyExistsException);
   });
 
   it('should confirm a subscription', async () => {
@@ -108,7 +120,7 @@ describe('SubscriptionService (integration)', () => {
       where: { email: dto.email },
     });
 
-    await service.confirm(sub);
+    await service.confirm(sub.token);
 
     const updated = await prisma.subscription.findUnique({ where: { id: sub.id } });
 
@@ -124,9 +136,9 @@ describe('SubscriptionService (integration)', () => {
 
     await service.subscribe(dto);
     const sub = await prisma.subscription.findFirstOrThrow({ where: { email: dto.email } });
-    await service.confirm(sub);
+    await service.confirm(sub.token);
 
-    await expect(service.confirm({ ...sub, confirmed: true })).rejects.toThrow(ConflictException);
+    await expect(service.confirm(sub.token)).rejects.toThrow(AlreadyExistsException);
   });
 
   it('should unsubscribe confirmed user', async () => {
@@ -139,9 +151,9 @@ describe('SubscriptionService (integration)', () => {
     await service.subscribe(dto);
     const sub = await prisma.subscription.findFirstOrThrow({ where: { email: dto.email } });
 
-    await service.confirm(sub);
+    await service.confirm(sub.token);
 
-    await service.unsubscribe({ ...sub, confirmed: true });
+    await service.unsubscribe(sub.token);
 
     const found = await prisma.subscription.findUnique({ where: { id: sub.id } });
     expect(found).toBeNull();
@@ -157,7 +169,7 @@ describe('SubscriptionService (integration)', () => {
     await service.subscribe(dto);
     const sub = await prisma.subscription.findFirstOrThrow({ where: { email: dto.email } });
 
-    await expect(service.unsubscribe(sub)).rejects.toThrow(ConflictException);
+    await expect(service.unsubscribe(sub.token)).rejects.toThrow(AlreadyExistsException);
   });
 
   it('should throw BadRequestException if token is expired', async () => {
@@ -179,6 +191,6 @@ describe('SubscriptionService (integration)', () => {
 
     const expiredSub = await prisma.subscription.findFirstOrThrow({ where: { id: sub.id } });
 
-    await expect(service.confirm(expiredSub)).rejects.toThrow(BadRequestException);
+    await expect(service.confirm(expiredSub.token)).rejects.toThrow(InvalidArgumentException);
   });
 });
