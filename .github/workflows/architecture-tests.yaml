@@ -1,0 +1,21 @@
+name: Check Architecture Rules
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+jobs:
+  dependency-cruiser:
+    name: Enforce architecture with dependency-cruiser
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node and install dependencies
+        uses: ./.github/actions/install
+
+      - name: Run dependency-cruiser validation
+        run: npm run test:architecture:all

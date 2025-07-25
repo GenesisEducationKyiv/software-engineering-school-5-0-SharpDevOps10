@@ -37,7 +37,12 @@
     "test:weather:integration": "dotenv -e apps/weather/.env.test -- jest apps/weather --config jest.integration.json",
     "test:subscription:integration": "npm run client:generate && npm run test:integration:migrate && dotenv -e apps/subscription/.env.test -- jest apps/subscription --config jest.integration.json",
     "test:all": "npm run test:integration && npm run test:unit",
-    "test:architecture": "npx depcruise --config test/architecture/.dependency-cruiser.js src",
+    "test:architecture:email": "npx depcruise --config apps/email/.dependency-cruiser.js apps/email/src",
+    "test:architecture:subscription": "npx depcruise --config apps/subscription/.dependency-cruiser.js apps/subscription/src",
+    "test:architecture:weather": "npx depcruise --config apps/weather/.dependency-cruiser.js apps/weather/src",
+    "test:architecture:notification": "npx depcruise --config apps/notification/.dependency-cruiser.js apps/notification/src",
+    "test:architecture:gateway": "npx depcruise --config apps/gateway/.dependency-cruiser.js apps/gateway/src",
+    "test:architecture:all": "npm run test:architecture:email && npm run test:architecture:subscription && npm run test:architecture:weather && npm run test:architecture:notification && npm run test:architecture:gateway",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
