@@ -1,31 +1,22 @@
-import { Inject } from '@nestjs/common';
-import { GrpcMethod, GrpcService } from '@nestjs/microservices';
+import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { WEATHER_DI_TOKENS } from '../constants/di-tokens';
 import { IWeatherService } from '../application/services/interfaces/weather.service.interface';
-import {
-  GetWeatherRequest,
-  GetWeatherResponse,
-  IsCityValidRequest,
-  IsCityValidResponse,
-} from '@generated/weather';
-import { GRPC_WEATHER_SERVICE, WeatherServiceMethods } from '../constants/grpc-methods';
+import { GetWeatherResponse } from '@shared-types/common/get-weather.response';
 
-@GrpcService()
+@Controller('weather')
 export class WeatherController {
   constructor (
     @Inject(WEATHER_DI_TOKENS.WEATHER_SERVICE)
     private readonly weatherService: IWeatherService,
   ) {}
 
-  @GrpcMethod(GRPC_WEATHER_SERVICE, WeatherServiceMethods.GET_WEATHER)
-  async getWeather (request: GetWeatherRequest): Promise<GetWeatherResponse> {
-    return this.weatherService.getWeather(request.city);
+  @Get()
+  async getWeather (@Query('city') city: string): Promise<GetWeatherResponse> {
+    return await this.weatherService.getWeather(city);
   }
 
-  @GrpcMethod(GRPC_WEATHER_SERVICE, WeatherServiceMethods.IS_CITY_VALID)
-  async isCityValid (request: IsCityValidRequest): Promise<IsCityValidResponse> {
-    const isValid = await this.weatherService.isCityValid(request.city);
-
-    return { isValid };
+  @Get('is-city-valid')
+  async isCityValid (@Query('city') city: string): Promise<boolean> {
+    return await this.weatherService.isCityValid(city);
   }
 }
