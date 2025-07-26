@@ -124,4 +124,14 @@ describe('EmailJobService', () => {
       expect.stringContaining('Failed to send to fail@example.com: SMTP Error'),
     );
   });
+
+  it('should do nothing if there are no subscriptions for given frequency', async () => {
+    subscriptionNotifierMock.getConfirmedSubscriptions.mockResolvedValue({ subscriptions: [] });
+
+    await service.sendWeatherEmailsByFrequency(SubscriptionFrequencyEnum.DAILY);
+
+    expect(weatherServiceMock.getWeather).not.toHaveBeenCalled();
+    expect(emailServiceMock.sendWeatherUpdateEmail).not.toHaveBeenCalled();
+    expect(loggerMock.log).not.toHaveBeenCalled();
+  });
 });

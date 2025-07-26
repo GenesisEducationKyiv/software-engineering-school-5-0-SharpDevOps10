@@ -71,8 +71,8 @@ export class SubscriptionService implements ISubscriptionService {
     await this.subscriptionRepository.deleteSubscription(subscription.id);
   }
 
-  async getConfirmedSubscriptions (): Promise<Subscription[]> {
-    return this.subscriptionRepository.getConfirmedSubscriptions();
+  async getConfirmedSubscriptions (frequency: SubscriptionFrequencyEnum): Promise<Subscription[]> {
+    return this.subscriptionRepository.getConfirmedSubscriptions(frequency);
   }
 
   private async getSubscriptionByToken (token: string): Promise<Subscription> {

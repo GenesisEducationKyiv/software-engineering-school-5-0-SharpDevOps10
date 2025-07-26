@@ -27,12 +27,10 @@ export class EmailJobService implements IEmailJobService {
   }
 
   async sendWeatherEmailsByFrequency (frequency: SubscriptionFrequencyEnum): Promise<void> {
-    const { subscriptions } = await this.subscriptionService.getConfirmedSubscriptions();
-    const filtered = subscriptions.filter((sub) => sub.frequency === frequency);
-
+    const { subscriptions } = await this.subscriptionService.getConfirmedSubscriptions({ frequency });
     const label = frequency === SubscriptionFrequencyEnum.HOURLY ? 'hourly' : 'daily';
 
-    for (const sub of filtered) {
+    for (const sub of subscriptions) {
       try {
         const weather = await this.weatherService.getWeather(sub.city);
         await this.emailService.sendWeatherUpdateEmail({

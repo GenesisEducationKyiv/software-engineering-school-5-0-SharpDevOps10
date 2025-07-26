@@ -3,6 +3,7 @@ import type { Subscription } from '@prisma/client';
 import { ISubscriptionRepository } from '../../application/interfaces/subscription.repository.interface';
 import { PrismaService } from '../../../../database/prisma.service';
 import { CreateSubscriptionDto } from '../../presentation/dto/create-subscription.dto';
+import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
 
 @Injectable()
 export class SubscriptionRepository implements ISubscriptionRepository {
@@ -50,9 +51,12 @@ export class SubscriptionRepository implements ISubscriptionRepository {
     });
   }
 
-  async getConfirmedSubscriptions (): Promise<Subscription[]> {
+  async getConfirmedSubscriptions (frequency: SubscriptionFrequencyEnum): Promise<Subscription[]> {
     return await this.prismaService.subscription.findMany({
-      where: { confirmed: true },
+      where: {
+        confirmed: true,
+        frequency,
+      },
     });
   }
 }

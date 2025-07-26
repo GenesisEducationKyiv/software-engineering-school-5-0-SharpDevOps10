@@ -4,8 +4,11 @@ import type { ClientGrpc } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { GrpcToObservable } from '@shared-types/common/grpc-to-observable';
 import { ISubscriptionNotifier } from '../../notification/application/interfaces/subscription.notifier.interface';
-import { ConfirmedSubscriptionsResponse, SubscriptionService } from '@generated/subscription';
-import { Empty } from '@generated/common/empty';
+import {
+  ConfirmedSubscriptionsResponse,
+  GetConfirmedSubscriptionsRequest,
+  SubscriptionService,
+} from '@generated/subscription';
 
 @Injectable()
 export class SubscriptionClientService implements ISubscriptionNotifier, OnModuleInit {
@@ -20,7 +23,15 @@ export class SubscriptionClientService implements ISubscriptionNotifier, OnModul
     this.subscriptionClient = this.client.getService<SubscriptionService>('SubscriptionService');
   }
 
-  async getConfirmedSubscriptions (): Promise<ConfirmedSubscriptionsResponse> {
-    return await lastValueFrom(this.subscriptionClient.GetConfirmedSubscriptions(Empty));
+  async getConfirmedSubscriptions (
+    request: GetConfirmedSubscriptionsRequest,
+  ): Promise<ConfirmedSubscriptionsResponse> {
+    const resp: ConfirmedSubscriptionsResponse = await lastValueFrom(
+      this.subscriptionClient.GetConfirmedSubscriptions(request),
+    );
+
+    return {
+      subscriptions: resp?.subscriptions ?? [],
+    };
   }
 }
