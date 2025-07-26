@@ -1,16 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { IEmailService } from './interfaces/email.service.interface';
+import { EmailServiceInterface } from './interfaces/email.service.interface';
 import { SendEmailDto } from './dto/send-email.dto';
-import { EmailTemplateEnum } from '@shared-types/common/email-template.enum';
-import { InvalidArgumentException } from '@exceptions/grpc-exceptions';
+import { EmailTemplateValidatorInterface } from './interfaces/email-template.validator.interface';
+import { EMAIL_DI_TOKENS } from './constants/di-tokens';
 
 @Injectable()
-export class EmailService implements IEmailService {
-  constructor (private readonly mailerService: MailerService) {}
+export class EmailService implements EmailServiceInterface {
+  constructor (
+    private readonly mailerService: MailerService,
+
+    @Inject(EMAIL_DI_TOKENS.EMAIL_TEMPLATE_VALIDATOR)
+    private readonly templateValidator: EmailTemplateValidatorInterface,
+  ) {}
 
   async sendEmail ({ to, subject, template, context }: SendEmailDto): Promise<void> {
-    this.validateTemplates(template);
+    this.templateValidator.validate(template);
 
     await this.mailerService.sendMail({
       to,
@@ -18,16 +23,6 @@ export class EmailService implements IEmailService {
       template,
       context,
     });
-  }
-
-  private validateTemplates (template: string): void {
-    const allowed = Object.values(EmailTemplateEnum);
-
-    if (!allowed.includes(template as EmailTemplateEnum)) {
-      throw new InvalidArgumentException(
-        `Invalid email template "${template}". Allowed templates: ${allowed.join(', ')}`
-      );
-    }
   }
 
 }
