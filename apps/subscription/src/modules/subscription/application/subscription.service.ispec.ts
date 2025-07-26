@@ -192,4 +192,45 @@ describe('SubscriptionService (integration)', () => {
 
     await expect(service.confirm(expiredSub.token)).rejects.toThrow(InvalidArgumentException);
   });
+
+  it('should return only confirmed subscriptions for given frequency', async () => {
+    const dto1: CreateSubscriptionDto = {
+      email: 'hourly1@example.com',
+      city: 'Berlin',
+      frequency: SubscriptionFrequencyEnum.HOURLY,
+    };
+
+    const dto2: CreateSubscriptionDto = {
+      email: 'daily1@example.com',
+      city: 'Berlin',
+      frequency: SubscriptionFrequencyEnum.DAILY,
+    };
+
+    await service.subscribe(dto1);
+    await service.subscribe(dto2);
+
+    const sub1 = await prisma.subscription.findFirstOrThrow({ where: { email: dto1.email } });
+    await service.confirm(sub1.token);
+
+    const result = await service.getConfirmedSubscriptions(SubscriptionFrequencyEnum.HOURLY);
+
+    expect(result).toHaveLength(1);
+    expect(result[0].email).toBe(dto1.email);
+    expect(result[0].frequency).toBe(SubscriptionFrequencyEnum.HOURLY);
+    expect(result[0].confirmed).toBe(true);
+  });
+
+  it('should return empty array if no confirmed subscriptions for given frequency', async () => {
+    const dto: CreateSubscriptionDto = {
+      email: 'not-confirmed2@example.com',
+      city: 'Madrid',
+      frequency: SubscriptionFrequencyEnum.HOURLY,
+    };
+
+    await service.subscribe(dto);
+
+    const result = await service.getConfirmedSubscriptions(SubscriptionFrequencyEnum.HOURLY);
+
+    expect(result).toEqual([]);
+  });
 });

@@ -4,7 +4,7 @@ import { SUBSCRIPTION_DI_TOKENS } from '../constants/di-tokens';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { GrpcMethod, GrpcService } from '@nestjs/microservices';
 import { GRPC_SUBSCRIPTION_SERVICE, SubscriptionServiceMethods } from '../constants/grpc-methods';
-import { CreateSubscriptionRequest, TokenRequest } from '@generated/subscription';
+import { CreateSubscriptionRequest, GetConfirmedSubscriptionsRequest, TokenRequest } from '@generated/subscription';
 import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
 import { Empty } from '@generated/common/empty';
 import { Subscription } from '@prisma/client';
@@ -44,8 +44,9 @@ export class SubscriptionController {
   }
 
   @GrpcMethod(GRPC_SUBSCRIPTION_SERVICE, SubscriptionServiceMethods.GET_CONFIRMED_SUBSCRIPTIONS)
-  async getConfirmedSubscriptions (): Promise<{ subscriptions: Subscription[] }> {
-    const subscriptions = await this.subscriptionService.getConfirmedSubscriptions();
+  async getConfirmedSubscriptions (request: GetConfirmedSubscriptionsRequest): Promise<{ subscriptions: Subscription[] }> {
+    const frequency = request.frequency as SubscriptionFrequencyEnum;
+    const subscriptions = await this.subscriptionService.getConfirmedSubscriptions(frequency);
 
     return { subscriptions };
   }

@@ -1,5 +1,5 @@
-import { ConfirmedSubscriptionsResponse } from '@generated/subscription';
+import { ConfirmedSubscriptionsResponse, GetConfirmedSubscriptionsRequest } from '@generated/subscription';
 
 export interface ISubscriptionNotifier {
-  getConfirmedSubscriptions(): Promise<ConfirmedSubscriptionsResponse>;
+  getConfirmedSubscriptions(request: GetConfirmedSubscriptionsRequest): Promise<ConfirmedSubscriptionsResponse>;
 }

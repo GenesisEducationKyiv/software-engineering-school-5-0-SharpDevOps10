@@ -3,6 +3,7 @@ import { INotificationEmailSender } from '../../application/interfaces/notificat
 import { NOTIFICATION_DI_TOKENS } from '../../di-tokens';
 import { IEmailClient } from '@shared-types/email/email-client.interface';
 import { SendWeatherUpdateEmailDto } from '../../dto/send-weather-update-email.dto';
+import { EmailTemplateEnum } from '@shared-types/common/email-template.enum';
 
 @Injectable()
 export class NotificationEmailSenderService implements INotificationEmailSender {
@@ -20,7 +21,7 @@ export class NotificationEmailSenderService implements INotificationEmailSender 
     await this.emailClient.sendEmail({
       to: email,
       subject: `Weather update for ${ city }`,
-      template: 'weather-update',
+      template: EmailTemplateEnum.WEATHER_UPDATE,
       context: {
         city,
         frequency,

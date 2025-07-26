@@ -8,7 +8,7 @@ service SubscriptionService {
   rpc Subscribe(CreateSubscriptionRequest) returns (common.Empty);
   rpc Confirm(TokenRequest) returns (common.Empty);
   rpc Unsubscribe(TokenRequest) returns (common.Empty);
-  rpc GetConfirmedSubscriptions (common.Empty) returns (ConfirmedSubscriptionsResponse);
+  rpc GetConfirmedSubscriptions (GetConfirmedSubscriptionsRequest) returns (ConfirmedSubscriptionsResponse);
 }
 
 message CreateSubscriptionRequest {
@@ -19,6 +19,10 @@ message CreateSubscriptionRequest {
 
 message TokenRequest {
   string token = 1;
+}
+
+message GetConfirmedSubscriptionsRequest {
+  string frequency = 1;
 }
 
 message Subscription {
