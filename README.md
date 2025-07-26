@@ -2,11 +2,28 @@
 
 ## Description
 
-This is a case project for Genesis Academy. The backend is built using NestJS and allows users to
-subscribe to weather updates for their city using the WeatherAPI.com service. Subscribers can choose the frequency of
-updates: `hourly` or `daily`. Confirmed subscribers receive weather updates by email at scheduled intervals. The
-application
-stores all subscriptions in PostgreSQL and supports confirmation and unsubscription flows.
+A modular microservice system for managing weather-based email subscriptions. Built with NestJS, the system allows users
+to subscribe to weather updates for their cities and receive scheduled notifications based on their preferred
+frequency (`hourly` or `daily`). The solution is deployed using Docker and supports PostgreSQL, Redis, and external
+APIs.
+
+## Architecture Overview
+
+The system consists of the following microservices:
+
+* **Weather Service** — Retrieves weather data from external APIs and caches results.
+* **Email Service** — Sends emails using templates via SMTP.
+* **Notification Service** — Schedules and dispatches weather update emails.
+* **Subscription Service** — Manages subscriptions, confirmation, and unsubscription.
+* **Gateway Service** — Routes and aggregates external API requests.
+
+Each microservice has its own README with installation and configuration details:
+
+* [Weather Service](apps/weather/README.md)
+* [Subscription Service](apps/subscription/README.md)
+* [Email Service](apps/email/README.md)
+* [Notification Service](apps/notification/README.md)
+* [Gateway](apps/gateway/README.md)
 
 ## Features:
 
@@ -25,126 +42,46 @@ stores all subscriptions in PostgreSQL and supports confirmation and unsubscript
 * After that, you have to clone this repository and enter the working folder:
 
 ```bash
-$ git clone https://github.com/SharpDevOps10/genesis-case-task.git
-$ cd genesis-case-task
-```
-
-* Then you have to install the dependencies for this project:
-
-```bash
+$ git clone https://github.com/GenesisEducationKyiv/software-engineering-school-5-0-SharpDevOps10.git
+$ cd software-engineering-school-5-0-SharpDevOps10
 $ npm install
 ```
 
-* Setup environment variables. Copy `.env.example` to `.env`.
-* Run migrations:
+## Environment Setup
+
+Each microservice has its own `.env` file. See individual service READMEs for required variables.
+
+## Run with Docker Compose
+
+To run the entire system using Docker Compose, execute the following command from the root directory:
 
 ```bash
-$ npx prisma migrate deploy
+$ docker compose up -d
 ```
 
-* Generate Prisma client:
+## Run Individually
+
+To run each service individually, navigate to the respective service directory and run:
 
 ```bash
-$ npx prisma generate
+$ npm run start:gateway
+$ npm run start:subscription
+$ npm run start:email
+$ npm run start:weather
+$ npm run start:notification
 ```
-
-* Start the application:
-
-```bash 
-$ npm run start:dev
-```
-
-* Or build and run in production mode (it will automatically run migrations + generate Prisma client):
-
-```bash
-$ npm run build
-$ npm run start:prod
-```
-
-* Or you can run the whole project using Docker. Visit my `Dockerization` section of README file for more
-  information.
-
-## API Usage
-
-`GET /api/weather?city=Kyiv`
-
-Fetch current weather for a city.
-
-* Query parameters: `city` (required)
-* Response: JSON object with weather data:
-
-```json
-{
-  "temperature": 8.9,
-  "humidity": 97,
-  "description": "Mist"
-}
-```
-
-`POST /api/subscribe`
-
-Subscribe to weather updates for a city.
-
-* Body:
-
-```json
-{
-  "email": "user@example.com",
-  "city": "Kyiv",
-  "frequency": "daily"
-}
-```
-
-`GET /api/confirm/{token}`
-Confirm email subscription using token from confirmation email.
-
-* `Path param`: token (UUID)
-
-`GET /api/unsubscribe/{token}`
-Unsubscribe using token (sent in weather updates).
-
-* `Path param`: token (UUID)
 
 ## Extra Task
 
 I've also added an HTML form for subscribing to weather updates. You can find it in the `src/public/` folder. Here
 is the link to the form: http://16.171.151.84/
 
-## Dockerization
-
-* If you want to build my image, you should write these commands:
-
-```bash
-$ docker build -t weather-subscription-app .
-```
-
-* After that, you can run the container using the following command:
-
-```bash
-$ docker run -d --env-file .env -p 3000:3000 weather-subscription-app
-```
-
-* Or you can run the whole project using Docker Compose. Just run the following command:
-
-```bash
-$ docker-compose up -d
-```
-
-## Scheduled Emails
-
-Using `@nestjs/schedule`, the service:
-
-* Sends weather emails every hour to users with `hourly` frequency
-* Sends weather emails every day to users with `daily` frequency
-
-The email includes temperature, humidity, and description for the subscriber's city.
-
 ## Tests
 
-The test-cases are located in the `test` folder. You can run them using the following command:
+The test-cases are located in the microservice apps. You can run them using the following command:
 
 ```bash
-$ npm run test
+$ npm run test:all
 ```
 
 ## Continuous Integration and Continuous Deployment

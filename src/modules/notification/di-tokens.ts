@@ -1,3 +1,0 @@
-export const NOTIFICATION_DI_TOKENS = {
-  EMAIL_JOB_SERVICE: Symbol('EMAIL_JOB_SERVICE'),
-};

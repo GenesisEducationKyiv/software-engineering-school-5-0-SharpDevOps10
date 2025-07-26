@@ -1,22 +1,10 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-    env_file:
-      - .env
-    networks:
-      - app-network
 
   postgres:
     image: postgres:latest
     restart: always
     env_file:
-      - .env
+      - apps/subscription/.env
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -25,6 +13,95 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - app-network
+
+  redis:
+    image: redis:7
+    container_name: weather-redis
+    networks:
+      - app-network
+    ports:
+      - "6379:6379"
+
+  weather-service:
+    build:
+      context: .
+      dockerfile: apps/weather/Dockerfile
+    container_name: weather-service
+    env_file:
+      - apps/weather/.env
+    depends_on:
+      - redis
+      - pushgateway
+    networks:
+      - app-network
+    ports:
+      - "3003:3003"
+
+  email-service:
+    build:
+      context: .
+      dockerfile: apps/email/Dockerfile
+    container_name: email-service
+    env_file:
+      - apps/email/.env
+    networks:
+      - app-network
+    ports:
+      - "3001:3001"
+
+  subscription-service:
+    build:
+      context: .
+      dockerfile: apps/subscription/Dockerfile
+    container_name: subscription-service
+    env_file:
+      - apps/subscription/.env
+    depends_on:
+      - postgres
+      - weather-service
+      - email-service
+    networks:
+      - app-network
+    ports:
+      - "3002:3002"
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: apps/notification/Dockerfile
+    container_name: notification-service
+    env_file:
+      - apps/notification/.env
+    depends_on:
+      - subscription-service
+      - email-service
+      - weather-service
+    networks:
+      - app-network
+    ports:
+      - "3005:3005"
+
+  gateway:
+    build:
+      context: .
+      dockerfile: apps/gateway/Dockerfile
+    container_name: gateway
+    env_file:
+      - apps/gateway/.env
+    depends_on:
+      - subscription-service
+      - weather-service
+      - email-service
+      - notification-service
+    networks:
+      - app-network
+    ports:
+      - "3006:3006"
+
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - '9091:9091'
 
 volumes:
   pgdata:

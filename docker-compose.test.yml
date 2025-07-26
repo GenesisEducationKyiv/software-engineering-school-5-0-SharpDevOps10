@@ -1,7 +1,7 @@
 services:
-  test-db:
+  postgres:
     image: postgres:15
-    container_name: test-db
+    container_name: postgres
     environment:
       POSTGRES_DB: testdb
       POSTGRES_USER: testuser
@@ -14,3 +14,9 @@ services:
     container_name: test-redis
     ports:
       - "6379:6379"
+
+
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - '9091:9091'

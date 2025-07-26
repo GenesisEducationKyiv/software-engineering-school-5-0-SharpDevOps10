@@ -18,4 +18,4 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Run dependency-cruiser validation
-        run: npm run test:architecture
+        run: npm run test:architecture:all

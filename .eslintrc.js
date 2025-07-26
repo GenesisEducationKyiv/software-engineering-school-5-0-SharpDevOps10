@@ -16,9 +16,10 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['.eslintrc.js', '**/*.d.ts'],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/no-duplicate-enum-values': 'off',
     '@typescript-eslint/explicit-function-return-type': [
       'warn',
       {
@@ -36,7 +37,6 @@ module.exports = {
     ],
     '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/no-shadow': ['error'],
-    '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
     '@typescript-eslint/no-empty-function': 'warn',
     '@typescript-eslint/no-empty-interface': 'warn',
     '@typescript-eslint/ban-ts-comment': [

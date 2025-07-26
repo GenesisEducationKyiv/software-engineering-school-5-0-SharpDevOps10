@@ -1,0 +1,3 @@
+export const WEATHER_DI_TOKENS = {
+  WEATHER_SERVICE: Symbol('WEATHER_SERVICE'),
+};
