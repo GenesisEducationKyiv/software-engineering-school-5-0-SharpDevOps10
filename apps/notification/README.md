@@ -52,3 +52,12 @@ From the root directory of the whole project, run:
 ```bash
 $ npm run start:notification
 ```
+
+## Scheduled Emails
+
+Using `@nestjs/schedule`, the service:
+
+* Sends weather emails every hour to users with `hourly` frequency
+* Sends weather emails every day to users with `daily` frequency
+
+The email includes temperature, humidity, and description for the subscriber's city.
