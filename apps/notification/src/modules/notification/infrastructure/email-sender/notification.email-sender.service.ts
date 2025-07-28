@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { INotificationEmailSender } from '../../application/interfaces/notification.email-sender.interface';
 import { SendWeatherUpdateEmailDto } from '../../dto/send-weather-update-email.dto';
-import { EmailTemplateEnum } from '@shared-types/grpc/common/email-template.enum';
 import { EMAIL_PRODUCER_DI_TOKENS } from '@utils/modules/producers/email-producer/di-tokens';
 import { EmailProducerInterface } from '@utils/modules/producers/email-producer/interfaces/email-producer.interface';
+import { EmailTemplateEnum } from '@grpc-types/email-template.enum';
 
 @Injectable()
 export class NotificationEmailSenderService implements INotificationEmailSender {

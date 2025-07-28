@@ -2,9 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ISubscriptionEmailSender } from '../../application/interfaces/subscription.email-sender.interface';
 import { SUBSCRIPTION_CONFIG_DI_TOKENS } from '../../../config/di-tokens';
 import { ISubscriptionConfigService } from '../../../config/interfaces/subscription-config.service.interface';
-import { EmailTemplateEnum } from '@shared-types/grpc/common/email-template.enum';
 import { EmailProducerInterface } from '@utils/modules/producers/email-producer/interfaces/email-producer.interface';
 import { EMAIL_PRODUCER_DI_TOKENS } from '@utils/modules/producers/email-producer/di-tokens';
+import { EmailTemplateEnum } from '@grpc-types/email-template.enum';
+
 
 @Injectable()
 export class SubscriptionEmailSender implements ISubscriptionEmailSender {

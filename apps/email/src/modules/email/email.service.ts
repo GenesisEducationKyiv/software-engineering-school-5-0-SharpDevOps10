@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { EmailServiceInterface } from './interfaces/email.service.interface';
-import { SendEmailDto } from '@shared-types/amqp/send-email.dto';
 import { EmailTemplateValidatorInterface } from './interfaces/email-template.validator.interface';
 import { EMAIL_DI_TOKENS } from './constants/di-tokens';
+import { SendEmailDto } from '@amqp-types/send-email.dto';
 
 @Injectable()
 export class EmailService implements EmailServiceInterface {

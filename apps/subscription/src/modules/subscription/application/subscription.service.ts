@@ -6,7 +6,7 @@ import { ISubscriptionRepository } from './interfaces/subscription.repository.in
 import { CreateSubscriptionDto } from '../presentation/dto/create-subscription.dto';
 import { Subscription } from '@prisma/client';
 import { ISubscriptionEmailSender } from './interfaces/subscription.email-sender.interface';
-import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 import {
   AlreadyExistsException,
   InvalidArgumentException,

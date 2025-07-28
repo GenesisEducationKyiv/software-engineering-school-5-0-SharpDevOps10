@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { randomUUID } from 'node:crypto';
 import { EmailJobService } from './email-job.service';
-import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
 import { ISubscriptionNotifier } from '../interfaces/subscription.notifier.interface';
 import { IWeatherClient } from '../interfaces/weather.client.interface';
 import { INotificationEmailSender } from '../interfaces/notification.email-sender.interface';
 import { ILoggerService } from '@utils/modules/logger/logger.service.interface';
 import { NOTIFICATION_DI_TOKENS } from '../../di-tokens';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
+import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 
 describe('EmailJobService', () => {
   let service: EmailJobService;

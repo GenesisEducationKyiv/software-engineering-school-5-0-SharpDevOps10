@@ -1,6 +1,6 @@
 import type { Subscription } from '@prisma/client';
 import { CreateSubscriptionDto } from '../../presentation/dto/create-subscription.dto';
-import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 
 export interface ISubscriptionRepository {
   findByEmailAndCity (email: string, city: string): Promise<Subscription>;

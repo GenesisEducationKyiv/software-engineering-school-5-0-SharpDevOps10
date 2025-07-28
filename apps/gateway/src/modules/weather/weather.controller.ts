@@ -1,7 +1,7 @@
 import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { WEATHER_DI_TOKENS } from './di-tokens';
-import { GetWeatherResponse } from '@shared-types/grpc/common/get-weather.response';
 import { WeatherServiceInterface } from './interfaces/weather-service.interface';
+import { GetWeatherResponse } from '@grpc-types/get-weather.response';
 
 @Controller('weather')
 export class WeatherController {

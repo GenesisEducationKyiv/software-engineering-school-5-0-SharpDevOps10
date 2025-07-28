@@ -1,4 +1,4 @@
-import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 
 export type CreateSubscriptionDto = {
   email: string;

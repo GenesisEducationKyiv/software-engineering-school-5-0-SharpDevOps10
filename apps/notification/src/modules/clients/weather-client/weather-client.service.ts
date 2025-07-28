@@ -3,8 +3,8 @@ import { CLIENTS_PACKAGES } from '../clients.packages';
 import type { ClientGrpc } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { IWeatherClient } from '../../notification/application/interfaces/weather.client.interface';
-import { GrpcToObservable } from '@shared-types/grpc/common/grpc-to-observable';
 import { GetWeatherResponse, WeatherService } from '@generated/weather';
+import { GrpcToObservable } from '@grpc-types/grpc-to-observable';
 
 @Injectable()
 export class WeatherClientService implements IWeatherClient, OnModuleInit {
