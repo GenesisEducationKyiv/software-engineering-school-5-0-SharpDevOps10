@@ -3,7 +3,7 @@ import type { Subscription } from '@prisma/client';
 import { ISubscriptionRepository } from '../../application/interfaces/subscription.repository.interface';
 import { PrismaService } from '../../../../database/prisma.service';
 import { CreateSubscriptionDto } from '../../presentation/dto/create-subscription.dto';
-import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 
 @Injectable()
 export class SubscriptionRepository implements ISubscriptionRepository {

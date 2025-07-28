@@ -10,7 +10,8 @@
   "coverageDirectory": "./coverage/integration",
   "collectCoverageFrom": ["<rootDir>/{apps,libs}/**/*.ispec.ts"],
   "moduleNameMapper": {
-    "^@shared-types/(.*)$": "<rootDir>/libs/types/$1",
+    "^@grpc-types/(.*)$": "<rootDir>/libs/types/grpc/$1",
+    "^@amqp-types/(.*)$": "<rootDir>/libs/types/amqp/$1",
     "^@generated/(.*)$": "<rootDir>/libs/generated/$1",
     "^@utils/(.*)$": "<rootDir>/libs/utils/$1",
     "^@exceptions/(.*)$": "<rootDir>/libs/exceptions/$1",

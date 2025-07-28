@@ -5,8 +5,8 @@ import { ISubscriptionNotifier } from '../interfaces/subscription.notifier.inter
 import { IWeatherClient } from '../interfaces/weather.client.interface';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 import { ILoggerService } from '@utils/modules/logger/logger.service.interface';
-import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
 import { INotificationEmailSender } from '../interfaces/notification.email-sender.interface';
+import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 
 @Injectable()
 export class EmailJobService implements IEmailJobService {

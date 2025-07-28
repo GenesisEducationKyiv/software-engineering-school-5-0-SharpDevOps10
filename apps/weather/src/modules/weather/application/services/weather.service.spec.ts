@@ -2,10 +2,10 @@ import { WeatherService } from './weather.service';
 import { IWeatherHandler } from '../handlers/interfaces/weather-handler.interface';
 import { Test, TestingModule } from '@nestjs/testing';
 import { WEATHER_DI_TOKENS } from '../../constants/di-tokens';
-import { GetWeatherResponse } from '@shared-types/grpc/common/get-weather.response';
 import { NotFoundRpcException } from '@exceptions/grpc-exceptions';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
+import { GetWeatherResponse } from '@grpc-types/get-weather.response';
 
 describe('WeatherService', () => {
   let service: WeatherService;

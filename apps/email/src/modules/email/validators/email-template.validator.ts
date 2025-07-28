@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { EmailTemplateEnum } from '@shared-types/grpc/common/email-template.enum';
 import { EmailTemplateValidatorInterface } from '../interfaces/email-template.validator.interface';
 import { EmailInvalidArgumentException } from '@exceptions/amqp-exceptions';
+import { EmailTemplateEnum } from '@grpc-types/email-template.enum';
 
 @Injectable()
 export class EmailTemplateValidator implements EmailTemplateValidatorInterface {

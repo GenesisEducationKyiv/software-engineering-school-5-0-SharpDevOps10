@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { BaseWeatherHandler } from './base-weather.handler';
 import { WEATHER_DI_TOKENS } from '../../constants/di-tokens';
 import { IWeatherApiClient } from '../interfaces/weather-api.interface';
-import { GetWeatherResponse } from '@shared-types/grpc/common/get-weather.response';
+import { GetWeatherResponse } from '@grpc-types/get-weather.response';
 
 @Injectable()
 export class WeatherApiHandler extends BaseWeatherHandler {

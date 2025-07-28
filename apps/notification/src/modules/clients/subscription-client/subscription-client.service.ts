@@ -2,13 +2,13 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { CLIENTS_PACKAGES } from '../clients.packages';
 import type { ClientGrpc } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { GrpcToObservable } from '@shared-types/grpc/common/grpc-to-observable';
 import { ISubscriptionNotifier } from '../../notification/application/interfaces/subscription.notifier.interface';
 import {
   ConfirmedSubscriptionsResponse,
   GetConfirmedSubscriptionsRequest,
   SubscriptionService,
 } from '@generated/subscription';
+import { GrpcToObservable } from '@grpc-types/grpc-to-observable';
 
 @Injectable()
 export class SubscriptionClientService implements ISubscriptionNotifier, OnModuleInit {

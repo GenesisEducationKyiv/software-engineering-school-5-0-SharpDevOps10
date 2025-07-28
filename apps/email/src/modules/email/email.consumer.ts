@@ -3,7 +3,7 @@ import { EMAIL_DI_TOKENS } from './constants/di-tokens';
 import { EmailServiceInterface } from './interfaces/email.service.interface';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { EMAIL_EVENT_PATTERNS } from '@utils/constants/brokers/email-event.patterns';
-import { SendEmailDto } from '@shared-types/amqp/send-email.dto';
+import { SendEmailDto } from '@amqp-types/send-email.dto';
 
 @Controller()
 export class EmailConsumer {

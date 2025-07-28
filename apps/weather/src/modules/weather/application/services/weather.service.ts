@@ -1,11 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { GetWeatherResponse } from '@shared-types/grpc/common/get-weather.response';
 import type { IWeatherService } from './interfaces/weather.service.interface';
 import { WEATHER_DI_TOKENS } from '../../constants/di-tokens';
 import { IWeatherHandler } from '../handlers/interfaces/weather-handler.interface';
 import { RpcException } from '@nestjs/microservices';
-import { RpcError } from '@shared-types/grpc/common/grpc-error.type';
 import { status } from '@grpc/grpc-js';
+import { RpcError } from '@grpc-types/grpc-error.type';
+import { GetWeatherResponse } from '@grpc-types/get-weather.response';
 
 @Injectable()
 export class WeatherService implements IWeatherService {

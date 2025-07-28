@@ -5,7 +5,7 @@ import { EmailServiceInterface } from './interfaces/email.service.interface';
 import { EmailServiceMethods, GRPC_EMAIL_SERVICE } from './constants/grpc-methods';
 import { Empty } from '@generated/common/empty';
 import { SendEmailRequest } from '@generated/email';
-import { EmailTemplateEnum } from '@shared-types/grpc/common/email-template.enum';
+import { EmailTemplateEnum } from '@grpc-types/email-template.enum';
 
 @GrpcService()
 export class EmailController {

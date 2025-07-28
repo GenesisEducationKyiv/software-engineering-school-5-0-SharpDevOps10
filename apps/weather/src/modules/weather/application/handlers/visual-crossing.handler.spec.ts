@@ -1,7 +1,7 @@
 import { VisualCrossingHandler } from './visual-crossing.handler';
 import { IWeatherApiClient } from '../interfaces/weather-api.interface';
-import { GetWeatherResponse } from '@shared-types/grpc/common/get-weather.response';
 import { IWeatherHandler } from './interfaces/weather-handler.interface';
+import { GetWeatherResponse } from '@grpc-types/get-weather.response';
 
 describe('VisualCrossingHandler', () => {
   let handler: VisualCrossingHandler;

@@ -1,4 +1,4 @@
-import { EmailTemplateEnum } from '../grpc/common/email-template.enum';
+import { EmailTemplateEnum } from '@grpc-types/email-template.enum';
 import { EmailContext } from './email.context';
 
 export type SendEmailDto = {
