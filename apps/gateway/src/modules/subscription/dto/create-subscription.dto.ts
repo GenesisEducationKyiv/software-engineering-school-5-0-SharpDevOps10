@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsString } from 'class-validator';
-import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
 
 export class CreateSubscriptionDto {
   @IsEmail()

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { randomUUID } from 'node:crypto';
 import { EmailJobService } from './email-job.service';
-import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
 import { ISubscriptionNotifier } from '../interfaces/subscription.notifier.interface';
 import { IWeatherClient } from '../interfaces/weather.client.interface';
 import { INotificationEmailSender } from '../interfaces/notification.email-sender.interface';
@@ -116,7 +116,9 @@ describe('EmailJobService', () => {
       humidity: 70,
       description: 'Rainy',
     });
-    emailServiceMock.sendWeatherUpdateEmail.mockRejectedValueOnce(new Error('SMTP Error'));
+    (emailServiceMock.sendWeatherUpdateEmail as jest.Mock).mockImplementationOnce(() => {
+      throw new Error('SMTP Error');
+    });
 
     await service.sendWeatherEmailsByFrequency(SubscriptionFrequencyEnum.HOURLY);
 

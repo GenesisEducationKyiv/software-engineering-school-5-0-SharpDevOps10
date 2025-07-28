@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { SubscriptionConfigModule } from '../config/subscription-config.module';
-import { EmailClientModule } from '../clients/email-client/email-client.module';
 import { SubscriptionRepository } from './infrastructure/repositories/subscription.repository';
 import { SubscriptionService } from './application/subscription.service';
 import { TokenService } from './infrastructure/token/token.service';
@@ -9,6 +8,7 @@ import { SubscriptionEmailSender } from './infrastructure/email-sender/subscript
 import { PrismaModule } from '../../database/prisma.module';
 import { SubscriptionController } from './presentation/subscription.controller';
 import { WeatherClientModule } from '../clients/weather-client/weather-client.module';
+import { EmailProducerModule } from '@utils/modules/producers/email-producer/email-producer.module';
 
 @Module({
   controllers: [SubscriptionController],
@@ -37,7 +37,7 @@ import { WeatherClientModule } from '../clients/weather-client/weather-client.mo
   imports: [
     PrismaModule,
     SubscriptionConfigModule,
-    EmailClientModule,
+    EmailProducerModule,
     WeatherClientModule,
   ],
   exports: [

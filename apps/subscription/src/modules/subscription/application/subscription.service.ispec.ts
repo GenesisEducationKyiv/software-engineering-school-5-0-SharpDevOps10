@@ -9,7 +9,7 @@ import { SUBSCRIPTION_DI_TOKENS } from '../constants/di-tokens';
 import { SubscriptionRepository } from '../infrastructure/repositories/subscription.repository';
 import { SUBSCRIPTION_CONFIG_DI_TOKENS } from '../../config/di-tokens';
 import { CreateSubscriptionDto } from '../presentation/dto/create-subscription.dto';
-import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
 import { AlreadyExistsException, InvalidArgumentException } from '@exceptions/grpc-exceptions';
 
 describe('SubscriptionService (integration)', () => {

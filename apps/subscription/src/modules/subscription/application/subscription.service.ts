@@ -6,7 +6,7 @@ import { ISubscriptionRepository } from './interfaces/subscription.repository.in
 import { CreateSubscriptionDto } from '../presentation/dto/create-subscription.dto';
 import { Subscription } from '@prisma/client';
 import { ISubscriptionEmailSender } from './interfaces/subscription.email-sender.interface';
-import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
 import {
   AlreadyExistsException,
   InvalidArgumentException,
@@ -46,7 +46,7 @@ export class SubscriptionService implements ISubscriptionService {
     const token = this.tokenService.generateToken();
 
     await this.subscriptionRepository.createSubscription({ ...dto, token });
-    await this.emailService.sendConfirmationEmail(email, token);
+    this.emailService.sendConfirmationEmail(email, token);
   }
 
   async confirm (token: string): Promise<void> {

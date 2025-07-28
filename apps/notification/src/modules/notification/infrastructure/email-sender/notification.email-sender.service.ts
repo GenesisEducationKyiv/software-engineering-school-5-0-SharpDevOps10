@@ -1,24 +1,24 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { INotificationEmailSender } from '../../application/interfaces/notification.email-sender.interface';
-import { NOTIFICATION_DI_TOKENS } from '../../di-tokens';
-import { IEmailClient } from '@shared-types/email/email-client.interface';
 import { SendWeatherUpdateEmailDto } from '../../dto/send-weather-update-email.dto';
-import { EmailTemplateEnum } from '@shared-types/common/email-template.enum';
+import { EmailTemplateEnum } from '@shared-types/grpc/common/email-template.enum';
+import { EMAIL_PRODUCER_DI_TOKENS } from '@utils/modules/producers/email-producer/di-tokens';
+import { EmailProducerInterface } from '@utils/modules/producers/email-producer/interfaces/email-producer.interface';
 
 @Injectable()
 export class NotificationEmailSenderService implements INotificationEmailSender {
   constructor (
-    @Inject(NOTIFICATION_DI_TOKENS.EMAIL_CLIENT)
-    private readonly emailClient: IEmailClient,
+    @Inject(EMAIL_PRODUCER_DI_TOKENS.EMAIL_PRODUCER)
+    private readonly emailProducer: EmailProducerInterface,
   ) {}
 
-  async sendWeatherUpdateEmail ({
+  sendWeatherUpdateEmail ({
     email,
     city,
     weather,
     frequency,
-  }: SendWeatherUpdateEmailDto): Promise<void> {
-    await this.emailClient.sendEmail({
+  }: SendWeatherUpdateEmailDto): void {
+    this.emailProducer.sendEmail({
       to: email,
       subject: `Weather update for ${ city }`,
       template: EmailTemplateEnum.WEATHER_UPDATE,

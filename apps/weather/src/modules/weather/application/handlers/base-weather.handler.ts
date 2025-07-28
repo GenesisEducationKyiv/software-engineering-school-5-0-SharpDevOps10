@@ -1,5 +1,5 @@
 import { IWeatherHandler } from './interfaces/weather-handler.interface';
-import { GetWeatherResponse } from '@shared-types/common/get-weather.response';
+import { GetWeatherResponse } from '@shared-types/grpc/common/get-weather.response';
 import { NotFoundRpcException, UnavailableException } from '@exceptions/grpc-exceptions';
 
 export abstract class BaseWeatherHandler implements IWeatherHandler {

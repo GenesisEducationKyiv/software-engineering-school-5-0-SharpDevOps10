@@ -29,4 +29,12 @@ export class EmailConfigService implements IEmailConfigService {
   getMailFrom (): string {
     return this.config.get<string>('MAIL_FROM');
   }
+
+  getRabbitMqHost (): string {
+    return this.config.get<string>('RABBITMQ_HOST');
+  }
+
+  getRabbitMqPort (): number {
+    return this.config.get<number>('RABBITMQ_PORT');
+  }
 }
