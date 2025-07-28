@@ -3,7 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { NOTIFICATION_DI_TOKENS } from '../di-tokens';
 import { IEmailJobService } from '../application/interfaces/email.job.service.interface';
 import { CRON_CONSTANTS } from './constants/cron.constants';
-import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
 
 @Injectable()
 export class NotificationController {

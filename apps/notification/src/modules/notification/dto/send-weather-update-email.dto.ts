@@ -1,4 +1,4 @@
-import { GetWeatherResponse } from '@generated/weather';
+import { GetWeatherResponse } from '@shared-types/grpc/common/get-weather.response';
 
 export type SendWeatherUpdateEmailDto = {
   email: string;

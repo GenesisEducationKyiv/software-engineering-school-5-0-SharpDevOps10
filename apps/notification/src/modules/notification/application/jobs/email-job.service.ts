@@ -5,7 +5,7 @@ import { ISubscriptionNotifier } from '../interfaces/subscription.notifier.inter
 import { IWeatherClient } from '../interfaces/weather.client.interface';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 import { ILoggerService } from '@utils/modules/logger/logger.service.interface';
-import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
+import { SubscriptionFrequencyEnum } from '@shared-types/grpc/common/subscription-frequency.enum';
 import { INotificationEmailSender } from '../interfaces/notification.email-sender.interface';
 
 @Injectable()
@@ -33,7 +33,7 @@ export class EmailJobService implements IEmailJobService {
     for (const sub of subscriptions) {
       try {
         const weather = await this.weatherService.getWeather(sub.city);
-        await this.emailService.sendWeatherUpdateEmail({
+        this.emailService.sendWeatherUpdateEmail({
           email: sub.email,
           city: sub.city,
           weather,

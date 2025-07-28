@@ -6,4 +6,6 @@ export interface IEmailConfigService {
   getSmtpPass(): string;
   getMailFrom(): string;
 
+  getRabbitMqHost(): string;
+  getRabbitMqPort(): number;
 }

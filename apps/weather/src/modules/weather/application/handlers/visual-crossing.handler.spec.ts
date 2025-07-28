@@ -1,6 +1,6 @@
 import { VisualCrossingHandler } from './visual-crossing.handler';
 import { IWeatherApiClient } from '../interfaces/weather-api.interface';
-import { GetWeatherResponse } from '@shared-types/common/get-weather.response';
+import { GetWeatherResponse } from '@shared-types/grpc/common/get-weather.response';
 import { IWeatherHandler } from './interfaces/weather-handler.interface';
 
 describe('VisualCrossingHandler', () => {

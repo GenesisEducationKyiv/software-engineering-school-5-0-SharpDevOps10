@@ -2,7 +2,7 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { CLIENTS_PACKAGES } from '../clients.packages';
 import type { ClientGrpc } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { GrpcToObservable } from '@shared-types/common/grpc-to-observable';
+import { GrpcToObservable } from '@shared-types/grpc/common/grpc-to-observable';
 import { IsCityValidRequest, IsCityValidResponse, WeatherService } from '@generated/weather';
 import { IWeatherClient } from '../../subscription/application/interfaces/weather-client.interface';
 

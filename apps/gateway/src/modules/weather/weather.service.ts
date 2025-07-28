@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { WeatherServiceInterface } from './interfaces/weather-service.interface';
 import { GATEWAY_CLIENT_DI_TOKENS } from '../clients/di-tokens';
 import { GetWeatherClientInterface } from '../clients/weather-client/interfaces/get-weather.interface';
-import { GetWeatherResponse } from '@shared-types/common/get-weather.response';
+import { GetWeatherResponse } from '@shared-types/grpc/common/get-weather.response';
 
 @Injectable()
 export class WeatherService implements WeatherServiceInterface {

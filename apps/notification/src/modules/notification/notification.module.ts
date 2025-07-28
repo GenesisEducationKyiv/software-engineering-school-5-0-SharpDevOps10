@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { EmailClientModule } from '../clients/email-client/email-client.module';
 import { SubscriptionClientModule } from '../clients/subscription-client/subscription-client.module';
 import { NotificationController } from './presentation/notification.controller';
 import { NOTIFICATION_DI_TOKENS } from './di-tokens';
@@ -7,6 +6,7 @@ import { EmailJobService } from './application/jobs/email-job.service';
 import { LoggerModule } from '@utils/modules/logger/logger.module';
 import { WeatherClientModule } from '../clients/weather-client/weather-client.module';
 import { NotificationEmailSenderService } from './infrastructure/email-sender/notification.email-sender.service';
+import { EmailProducerModule } from '@utils/modules/producers/email-producer/email-producer.module';
 
 @Module({
   providers: [
@@ -20,6 +20,10 @@ import { NotificationEmailSenderService } from './infrastructure/email-sender/no
       useClass: NotificationEmailSenderService,
     },
   ],
-  imports: [WeatherClientModule, SubscriptionClientModule, EmailClientModule, LoggerModule],
+  imports: [
+    WeatherClientModule,
+    SubscriptionClientModule,
+    EmailProducerModule,
+    LoggerModule],
 })
 export class NotificationModule {}

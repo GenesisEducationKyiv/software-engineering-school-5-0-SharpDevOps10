@@ -12,4 +12,7 @@ export const subscriptionValidationSchema = Joi.object({
 
   WEATHER_CLIENT_HOST: Joi.string().hostname().required(),
   WEATHER_CLIENT_PORT: Joi.number().port().required(),
+
+  RABBITMQ_HOST: Joi.string().hostname().required(),
+  RABBITMQ_PORT: Joi.number().port().required(),
 });
