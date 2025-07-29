@@ -1,6 +1,6 @@
 import { Controller, Inject } from '@nestjs/common';
-import { SUBSCRIPTION_DI_TOKENS } from '../subscription/constants/di-tokens';
-import { ISubscriptionService } from '../subscription/application/interfaces/subscription.service.interface';
+import { SUBSCRIPTION_DI_TOKENS } from '../constants/di-tokens';
+import { ISubscriptionService } from '../application/interfaces/subscription.service.interface';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { SUBSCRIPTION_EVENT_PATTERNS } from '@utils/constants/brokers/subscription-event.pattern';
 import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';

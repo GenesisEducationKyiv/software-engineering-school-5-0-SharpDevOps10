@@ -8,9 +8,9 @@ import { scheduler } from 'node:timers/promises';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { QUEUES } from '@utils/constants/brokers/queues';
 import type { Subscription } from '@prisma/client';
-import { ISubscriptionService } from '../subscription/application/interfaces/subscription.service.interface';
-import { SubscriptionModule } from '../subscription/subscription.module';
-import { SUBSCRIPTION_DI_TOKENS } from '../subscription/constants/di-tokens';
+import { ISubscriptionService } from '../application/interfaces/subscription.service.interface';
+import { SubscriptionModule } from '../subscription.module';
+import { SUBSCRIPTION_DI_TOKENS } from '../constants/di-tokens';
 
 describe('SubscriptionConsumer (integration)', () => {
   let app: INestApplication;
