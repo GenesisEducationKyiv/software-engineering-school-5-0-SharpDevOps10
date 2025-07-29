@@ -9,9 +9,10 @@ import { PrismaModule } from '../../database/prisma.module';
 import { SubscriptionController } from './presentation/subscription.controller';
 import { WeatherClientModule } from '../clients/weather-client/weather-client.module';
 import { EmailProducerModule } from '@utils/modules/producers/email-producer/email-producer.module';
+import { SubscriptionConsumer } from '../consumers/subscription-consumer.service';
 
 @Module({
-  controllers: [SubscriptionController],
+  controllers: [SubscriptionController, SubscriptionConsumer],
   providers: [
     {
       provide: SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_REPOSITORY,
