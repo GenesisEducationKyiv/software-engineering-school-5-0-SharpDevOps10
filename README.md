@@ -89,3 +89,5 @@ $ npm run test:all
 I have also added CI/CD pipelines using GitHub Actions (located in `.github` folder) for building + pushing the image to
 [Dockerhub](https://hub.docker.com/repository/docker/rerorerio8/genesis-case-task/general) and running tests. Here you
 can find my [All Workflows](https://github.com/SharpDevOps10/genesis-case-task/actions)
+
+## Logs
