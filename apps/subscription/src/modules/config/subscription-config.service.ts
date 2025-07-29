@@ -25,4 +25,12 @@ export class SubscriptionConfigService implements ISubscriptionConfigService {
   getWeatherClientPort (): number {
     return this.config.get<number>('WEATHER_CLIENT_PORT');
   }
+
+  getRabbitMqHost (): string {
+    return this.config.get<string>('RABBITMQ_HOST');
+  }
+
+  getRabbitMqPort (): number {
+    return this.config.get<number>('RABBITMQ_PORT');
+  }
 }

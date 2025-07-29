@@ -4,7 +4,7 @@ import { Logger } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { EmailConfigService } from './modules/config/email-config.service';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { EMAIL_QUEUE } from '@utils/constants/brokers/email.queue';
+import { QUEUES } from '../../../libs/utils/constants/brokers/queues';
 dotenv.config();
 
 async function bootstrap (): Promise<void> {
@@ -17,13 +17,13 @@ async function bootstrap (): Promise<void> {
     transport: Transport.RMQ,
     options: {
       urls: [`amqp://${host}:${port}`],
-      queue: EMAIL_QUEUE,
+      queue: QUEUES.EMAIL_QUEUE,
       queueOptions: { durable: true },
       noAck: false,
     },
   });
 
   await app.startAllMicroservices();
-  Logger.log(`Email Service is listening to RabbitMQ queue: ${EMAIL_QUEUE}, ${port}`);
+  Logger.log(`Email Service is listening to RabbitMQ queue: ${QUEUES.EMAIL_QUEUE}, ${port}`);
 }
 bootstrap();

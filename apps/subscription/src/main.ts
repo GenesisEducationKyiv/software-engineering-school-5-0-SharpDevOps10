@@ -6,24 +6,38 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { ExceptionFilter } from '@utils/filters/rpc-exception.filter';
 import { GRPC_PROTO_PATH } from '@micro-services/proto-path/grpc-proto-path.constants';
 import { GRPC_PACKAGES } from '@micro-services/packages/grpc-packages.constants';
+import { QUEUES } from '@utils/constants/brokers/queues';
 
 async function bootstrap (): Promise<void> {
-  const appContext = await NestFactory.createApplicationContext(AppModule);
-  const configService = appContext.get(SubscriptionConfigService);
-  const port = configService.getPort();
+  const app = await NestFactory.create(AppModule);
+  const configService = app.get(SubscriptionConfigService);
 
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+  const grpcPort = configService.getPort();
+  const rmqHost = configService.getRabbitMqHost();
+  const rmqPort = configService.getRabbitMqPort();
+
+  app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
-      url: `0.0.0.0:${port}`,
+      url: `0.0.0.0:${grpcPort}`,
       package: GRPC_PACKAGES.SUBSCRIPTION,
       protoPath: GRPC_PROTO_PATH.SUBSCRIPTION,
     },
   });
 
-  app.useGlobalFilters(new ExceptionFilter());
-  await app.listen();
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: [`amqp://${rmqHost}:${rmqPort}`],
+      queue: QUEUES.SUBSCRIPTION_QUEUE,
+      queueOptions: { durable: true },
+    },
+  });
 
-  Logger.log(`Subscription Service is running on port ${port}`);
+  app.useGlobalFilters(new ExceptionFilter());
+  await app.init();
+
+  await app.startAllMicroservices();
+  Logger.log(`Subscription Service is running (gRPC: ${grpcPort}, RMQ queue: ${QUEUES.SUBSCRIPTION_QUEUE})`);
 }
 bootstrap();

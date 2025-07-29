@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IEmailJobService } from '../interfaces/email.job.service.interface';
 import { NOTIFICATION_DI_TOKENS } from '../../di-tokens';
-import { ISubscriptionNotifier } from '../interfaces/subscription.notifier.interface';
 import { IWeatherClient } from '../interfaces/weather.client.interface';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 import { ILoggerService } from '@utils/modules/logger/logger.service.interface';
 import { INotificationEmailSender } from '../interfaces/notification.email-sender.interface';
 import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
+import { SubscriptionProducerInterface } from '../interfaces/subscription-producer.interface';
 
 @Injectable()
 export class EmailJobService implements IEmailJobService {
   constructor (
-    @Inject(NOTIFICATION_DI_TOKENS.SUBSCRIPTION_CLIENT)
-    private readonly subscriptionService: ISubscriptionNotifier,
+    @Inject(NOTIFICATION_DI_TOKENS.SUBSCRIPTION_PRODUCER)
+    private readonly subscriptionProducer: SubscriptionProducerInterface,
 
     @Inject(NOTIFICATION_DI_TOKENS.WEATHER_CLIENT)
     private readonly weatherService: IWeatherClient,
@@ -27,7 +27,7 @@ export class EmailJobService implements IEmailJobService {
   }
 
   async sendWeatherEmailsByFrequency (frequency: SubscriptionFrequencyEnum): Promise<void> {
-    const { subscriptions } = await this.subscriptionService.getConfirmedSubscriptions({ frequency });
+    const { subscriptions } = await this.subscriptionProducer.getConfirmedSubscriptions(frequency);
     const label = frequency === SubscriptionFrequencyEnum.HOURLY ? 'hourly' : 'daily';
 
     for (const sub of subscriptions) {

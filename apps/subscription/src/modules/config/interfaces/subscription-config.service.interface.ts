@@ -7,4 +7,7 @@ export interface ISubscriptionConfigService {
 
   getWeatherClientHost(): string;
   getWeatherClientPort(): number;
+
+  getRabbitMqHost(): string;
+  getRabbitMqPort(): number;
 }
