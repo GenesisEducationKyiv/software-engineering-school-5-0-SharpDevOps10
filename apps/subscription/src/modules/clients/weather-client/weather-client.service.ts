@@ -16,7 +16,6 @@ export class WeatherClientService implements IWeatherClient, OnModuleInit {
   ) {}
 
   onModuleInit (): void {
-    console.log('✅ WeatherClientService: onModuleInit');
     this.weatherClient = this.client.getService<WeatherService>('WeatherService');
   }
 
