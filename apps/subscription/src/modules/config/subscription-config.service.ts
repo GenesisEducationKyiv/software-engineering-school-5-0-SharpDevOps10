@@ -18,14 +18,6 @@ export class SubscriptionConfigService implements ISubscriptionConfigService {
     return this.config.get<string>('FRONTEND_URL');
   }
 
-  getEmailClientHost (): string {
-    return this.config.get<string>('EMAIL_CLIENT_HOST');
-  }
-
-  getEmailClientPort (): number {
-    return this.config.get<number>('EMAIL_CLIENT_PORT');
-  }
-
   getWeatherClientHost (): string {
     return this.config.get<string>('WEATHER_CLIENT_HOST');
   }

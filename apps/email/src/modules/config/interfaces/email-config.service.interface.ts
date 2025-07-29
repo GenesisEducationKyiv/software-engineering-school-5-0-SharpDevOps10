@@ -1,5 +1,4 @@
 export interface IEmailConfigService {
-  getPort(): number;
   getSmtpHost(): string;
   getSmtpPort(): number;
   getSmtpUser(): string;

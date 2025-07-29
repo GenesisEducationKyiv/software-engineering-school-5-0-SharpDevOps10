@@ -113,6 +113,4 @@ describe('EmailConsumer (integration)', () => {
     await scheduler.wait(300);
     expect(sendEmailMock).not.toHaveBeenCalled();
   });
-
-
 });

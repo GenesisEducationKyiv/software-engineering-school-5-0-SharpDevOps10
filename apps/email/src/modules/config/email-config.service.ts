@@ -6,10 +6,6 @@ import { IEmailConfigService } from './interfaces/email-config.service.interface
 export class EmailConfigService implements IEmailConfigService {
   constructor (private readonly config: NestConfigService) {}
 
-  getPort (): number {
-    return this.config.get<number>('PORT', 3001);
-  }
-
   getSmtpHost (): string {
     return this.config.get<string>('SMTP_HOST');
   }

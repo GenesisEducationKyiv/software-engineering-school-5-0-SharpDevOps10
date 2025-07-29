@@ -42,12 +42,4 @@ export class SubscriptionController {
     
     return {};
   }
-
-  @GrpcMethod(GRPC_SUBSCRIPTION_SERVICE, SubscriptionServiceMethods.GET_CONFIRMED_SUBSCRIPTIONS)
-  async getConfirmedSubscriptions (request: GetConfirmedSubscriptionsRequest): Promise<{ subscriptions: Subscription[] }> {
-    const frequency = request.frequency as SubscriptionFrequencyEnum;
-    const subscriptions = await this.subscriptionService.getConfirmedSubscriptions(frequency);
-
-    return { subscriptions };
-  }
 }
