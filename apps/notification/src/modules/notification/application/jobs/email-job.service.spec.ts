@@ -55,7 +55,7 @@ describe('EmailJobService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         EmailJobService,
-        { provide: NOTIFICATION_DI_TOKENS.SUBSCRIPTION_CLIENT, useValue: subscriptionNotifierMock },
+        { provide: NOTIFICATION_DI_TOKENS.SUBSCRIPTION_PRODUCER, useValue: subscriptionNotifierMock },
         { provide: NOTIFICATION_DI_TOKENS.WEATHER_CLIENT, useValue: weatherServiceMock },
         { provide: NOTIFICATION_DI_TOKENS.NOTIFICATION_EMAIL_SENDER, useValue: emailServiceMock },
         { provide: LOGGER_DI_TOKENS.LOGGER_SERVICE, useValue: loggerMock },

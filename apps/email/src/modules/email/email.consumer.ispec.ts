@@ -3,7 +3,6 @@ import { INestApplication } from '@nestjs/common';
 import * as amqp from 'amqplib';
 import { EmailModule } from './email.module';
 import { ConfigModule } from '@nestjs/config';
-import { EMAIL_QUEUE } from '@utils/constants/brokers/email.queue';
 import { EMAIL_EVENT_PATTERNS } from '@utils/constants/brokers/email-event.patterns';
 import { SendEmailDto } from '@amqp-types/send-email.dto';
 import { EmailServiceInterface } from './interfaces/email.service.interface';
@@ -12,6 +11,7 @@ import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.en
 import { scheduler } from 'node:timers/promises';
 import { EMAIL_DI_TOKENS } from './constants/di-tokens';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { QUEUES } from '../../../../../libs/utils/constants/brokers/queues';
 
 describe('EmailConsumer (integration)', () => {
   let app: INestApplication;
@@ -45,7 +45,7 @@ describe('EmailConsumer (integration)', () => {
       transport: Transport.RMQ,
       options: {
         urls: ['amqp://localhost:5672'],
-        queue: EMAIL_QUEUE,
+        queue: QUEUES.EMAIL_QUEUE,
         queueOptions: {
           durable: false,
         },
@@ -59,8 +59,8 @@ describe('EmailConsumer (integration)', () => {
 
     channelModel = await amqp.connect('amqp://localhost:5672');
     channel = await channelModel.createChannel();
-    await channel.assertQueue(EMAIL_QUEUE, { durable: false });
-    await channel.bindQueue(EMAIL_QUEUE, 'amq.topic', EMAIL_EVENT_PATTERNS.SEND_EMAIL);
+    await channel.assertQueue(QUEUES.EMAIL_QUEUE, { durable: false });
+    await channel.bindQueue(QUEUES.EMAIL_QUEUE, 'amq.topic', EMAIL_EVENT_PATTERNS.SEND_EMAIL);
 
     publish = (pattern: string, data: object): void => {
       channel.publish(
@@ -85,7 +85,7 @@ describe('EmailConsumer (integration)', () => {
   });
 
   beforeEach(async () => {
-    await channel.purgeQueue(EMAIL_QUEUE);
+    await channel.purgeQueue(QUEUES.EMAIL_QUEUE);
     jest.clearAllMocks();
   });
 

@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { type ClientOptions, ClientsModule, Transport } from '@nestjs/microservices';
-import { EMAIL_PRODUCER_DI_TOKENS } from './di-tokens';
-import { EmailProducerService } from './email-producer.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { QUEUES } from '../../../constants/brokers/queues';
+import { type ClientOptions, ClientsModule, Transport } from '@nestjs/microservices';
+import { QUEUES } from '@utils/constants/brokers/queues';
+import { SUBSCRIPTION__PRODUCER_DI_TOKENS } from './di-tokens';
+import { SubscriptionProducerService } from './subscription-producer.service';
+import { NOTIFICATION_DI_TOKENS } from '../di-tokens';
 
 @Module({
   imports: [
     ConfigModule,
     ClientsModule.registerAsync([
       {
-        name: EMAIL_PRODUCER_DI_TOKENS.EMAIL_BROKER_CLIENT,
+        name: SUBSCRIPTION__PRODUCER_DI_TOKENS.NOTIFICATION_BROKER_CLIENT,
         imports: [ConfigModule],
         useFactory: (config: ConfigService): ClientOptions => {
           const host = config.get<string>('RABBITMQ_HOST');
@@ -20,7 +21,7 @@ import { QUEUES } from '../../../constants/brokers/queues';
             transport: Transport.RMQ,
             options: {
               urls: [`amqp://${host}:${port}`],
-              queue: QUEUES.EMAIL_QUEUE,
+              queue: QUEUES.SUBSCRIPTION_QUEUE,
               queueOptions: { durable: true },
             },
           };
@@ -31,10 +32,10 @@ import { QUEUES } from '../../../constants/brokers/queues';
   ],
   providers: [
     {
-      provide: EMAIL_PRODUCER_DI_TOKENS.EMAIL_PRODUCER,
-      useClass: EmailProducerService,
+      provide: NOTIFICATION_DI_TOKENS.SUBSCRIPTION_PRODUCER,
+      useClass: SubscriptionProducerService,
     },
   ],
-  exports: [EMAIL_PRODUCER_DI_TOKENS.EMAIL_PRODUCER],
+  exports: [NOTIFICATION_DI_TOKENS.SUBSCRIPTION_PRODUCER],
 })
-export class EmailProducerModule {}
+export class SubscriptionProducerModule {}

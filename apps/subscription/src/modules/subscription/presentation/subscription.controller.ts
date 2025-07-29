@@ -4,9 +4,8 @@ import { SUBSCRIPTION_DI_TOKENS } from '../constants/di-tokens';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { GrpcMethod, GrpcService } from '@nestjs/microservices';
 import { GRPC_SUBSCRIPTION_SERVICE, SubscriptionServiceMethods } from '../constants/grpc-methods';
-import { CreateSubscriptionRequest, GetConfirmedSubscriptionsRequest, TokenRequest } from '@generated/subscription';
+import { CreateSubscriptionRequest, TokenRequest } from '@generated/subscription';
 import { Empty } from '@generated/common/empty';
-import { Subscription } from '@prisma/client';
 import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 
 @GrpcService()
