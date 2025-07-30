@@ -1,18 +1,28 @@
 import { VisualCrossingHandler } from './visual-crossing.handler';
 import { IWeatherApiClient } from '../interfaces/weather-api.interface';
-import { IWeatherHandler } from './interfaces/weather-handler.interface';
+import { WeatherHandlerInterface } from './interfaces/weather-handler.interface';
 import { GetWeatherResponse } from '@grpc-types/get-weather.response';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
 
 describe('VisualCrossingHandler', () => {
   let handler: VisualCrossingHandler;
   let mockClient: jest.Mocked<IWeatherApiClient>;
+
+  const mockLogger: jest.Mocked<LoggerServiceInterface> = {
+    setContext: jest.fn(),
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  };
+
 
   beforeEach(() => {
     mockClient = {
       getWeatherData: jest.fn(),
     };
 
-    handler = new VisualCrossingHandler(mockClient);
+    handler = new VisualCrossingHandler(mockClient, mockLogger);
   });
 
   it('should return weather data from client', async () => {
@@ -34,7 +44,7 @@ describe('VisualCrossingHandler', () => {
     const error = new Error('API failure');
     mockClient.getWeatherData.mockRejectedValue(error);
 
-    const nextHandler: IWeatherHandler = {
+    const nextHandler: WeatherHandlerInterface = {
       handle: jest.fn().mockResolvedValue('fallback-response'),
       setNext: jest.fn().mockReturnThis(),
     };

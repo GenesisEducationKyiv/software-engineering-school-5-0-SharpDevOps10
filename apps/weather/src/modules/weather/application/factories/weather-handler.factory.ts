@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IWeatherHandler } from '../handlers/interfaces/weather-handler.interface';
+import { WeatherHandlerInterface } from '../handlers/interfaces/weather-handler.interface';
 import { WeatherProviderEnum } from '../../enums/weather.provider.enum';
 import { WeatherApiHandler } from '../handlers/weather-api.handler';
 import { VisualCrossingHandler } from '../handlers/visual-crossing.handler';
@@ -8,7 +8,7 @@ import { IWeatherConfigService } from '../../../config/interfaces/weather-config
 
 @Injectable()
 export class WeatherHandlerFactory {
-  private readonly strategies: Record<WeatherProviderEnum, IWeatherHandler>;
+  private readonly strategies: Record<WeatherProviderEnum, WeatherHandlerInterface>;
 
   constructor (
     weatherApi: WeatherApiHandler,
@@ -23,10 +23,10 @@ export class WeatherHandlerFactory {
     };
   }
 
-  createChain (): IWeatherHandler {
+  createChain (): WeatherHandlerInterface {
     const priority = this.config.getWeatherProvidersPriority();
 
-    let chain: IWeatherHandler | null = null;
+    let chain: WeatherHandlerInterface | null = null;
     for (const name of priority.reverse()) {
       const handler = this.strategies[name];
       if (!handler) throw new Error(`Unknown provider: ${name}`);
