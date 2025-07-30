@@ -10,6 +10,7 @@ import { SubscriptionController } from './presentation/subscription.controller';
 import { WeatherClientModule } from '../clients/weather-client/weather-client.module';
 import { EmailProducerModule } from '@utils/modules/producers/email-producer/email-producer.module';
 import { SubscriptionConsumer } from './consumers/subscription-consumer.service';
+import { LoggerModule } from '@utils/modules/logger/logger.module';
 
 @Module({
   controllers: [SubscriptionController, SubscriptionConsumer],
@@ -40,6 +41,7 @@ import { SubscriptionConsumer } from './consumers/subscription-consumer.service'
     SubscriptionConfigModule,
     EmailProducerModule,
     WeatherClientModule,
+    LoggerModule,
   ],
   exports: [
     SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_SERVICE,

@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import type { ISubscriptionService } from '../application/interfaces/subscription.service.interface';
+import type { SubscriptionServiceInterface } from '../application/interfaces/subscription.service.interface';
 import { SUBSCRIPTION_DI_TOKENS } from '../constants/di-tokens';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { GrpcMethod, GrpcService } from '@nestjs/microservices';
@@ -12,7 +12,7 @@ import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.en
 export class SubscriptionController {
   constructor (
     @Inject(SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_SERVICE)
-    private readonly subscriptionService: ISubscriptionService,
+    private readonly subscriptionService: SubscriptionServiceInterface,
   ) {}
 
   @GrpcMethod(GRPC_SUBSCRIPTION_SERVICE, SubscriptionServiceMethods.SUBSCRIBE)

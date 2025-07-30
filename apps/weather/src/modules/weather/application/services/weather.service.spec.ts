@@ -1,20 +1,30 @@
 import { WeatherService } from './weather.service';
-import { IWeatherHandler } from '../handlers/interfaces/weather-handler.interface';
+import { WeatherHandlerInterface } from '../handlers/interfaces/weather-handler.interface';
 import { Test, TestingModule } from '@nestjs/testing';
 import { WEATHER_DI_TOKENS } from '../../constants/di-tokens';
 import { NotFoundRpcException } from '@exceptions/grpc-exceptions';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { GetWeatherResponse } from '@grpc-types/get-weather.response';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
+import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 
 describe('WeatherService', () => {
   let service: WeatherService;
-  let handlerMock: jest.Mocked<IWeatherHandler>;
+  let handlerMock: jest.Mocked<WeatherHandlerInterface>;
 
   beforeEach(async () => {
-    const mockHandler: jest.Mocked<IWeatherHandler> = {
+    const mockHandler: jest.Mocked<WeatherHandlerInterface> = {
       setNext: jest.fn(),
       handle: jest.fn(),
+    };
+
+    const loggerMock: jest.Mocked<LoggerServiceInterface> = {
+      setContext: jest.fn(),
+      info: jest.fn(),
+      warn: jest.fn(),
+      error: jest.fn(),
+      debug: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -23,6 +33,10 @@ describe('WeatherService', () => {
         {
           provide: WEATHER_DI_TOKENS.WEATHER_HANDLER,
           useValue: mockHandler,
+        },
+        {
+          provide: LOGGER_DI_TOKENS.LOGGER_SERVICE,
+          useValue: loggerMock,
         },
       ],
     }).compile();

@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ISubscriptionConfigService } from '../../config/interfaces/subscription-config.service.interface';
 import { SubscriptionService } from './subscription.service';
-import { ISubscriptionEmailSender } from './interfaces/subscription.email-sender.interface';
+import { SubscriptionEmailSenderInterface } from './interfaces/subscription.email-sender.interface';
 import { PrismaService } from '../../../database/prisma.service';
 import { TokenService } from '../infrastructure/token/token.service';
 import { SUBSCRIPTION_DI_TOKENS } from '../constants/di-tokens';
@@ -11,17 +11,27 @@ import { SUBSCRIPTION_CONFIG_DI_TOKENS } from '../../config/di-tokens';
 import { CreateSubscriptionDto } from '../presentation/dto/create-subscription.dto';
 import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 import { AlreadyExistsException, InvalidArgumentException } from '@exceptions/grpc-exceptions';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
+import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 
 describe('SubscriptionService (integration)', () => {
   let service: SubscriptionService;
   let prisma: PrismaClient;
 
-  const emailServiceMock: jest.Mocked<ISubscriptionEmailSender> = {
+  const emailServiceMock: jest.Mocked<SubscriptionEmailSenderInterface> = {
     sendConfirmationEmail: jest.fn(),
   };
 
   const weatherClientMock = {
     isCityValid: jest.fn().mockResolvedValue({ isValid: true }),
+  };
+
+  const loggerMock: jest.Mocked<LoggerServiceInterface> = {
+    setContext: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn(),
   };
 
   const configServiceMock: jest.Mocked<ISubscriptionConfigService> = {
@@ -69,6 +79,10 @@ describe('SubscriptionService (integration)', () => {
         {
           provide: SUBSCRIPTION_DI_TOKENS.WEATHER_CLIENT,
           useValue: weatherClientMock,
+        },
+        {
+          provide: LOGGER_DI_TOKENS.LOGGER_SERVICE,
+          useValue: loggerMock,
         },
       ],
     }).compile();

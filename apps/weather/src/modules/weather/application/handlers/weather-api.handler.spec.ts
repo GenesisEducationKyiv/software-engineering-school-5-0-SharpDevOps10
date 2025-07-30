@@ -1,7 +1,8 @@
 import { WeatherApiHandler } from './weather-api.handler';
 import { IWeatherApiClient } from '../interfaces/weather-api.interface';
-import { IWeatherHandler } from './interfaces/weather-handler.interface';
+import { WeatherHandlerInterface } from './interfaces/weather-handler.interface';
 import { GetWeatherResponse } from '@grpc-types/get-weather.response';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
 
 describe('WeatherApiHandler', () => {
   let handler: WeatherApiHandler;
@@ -13,12 +14,21 @@ describe('WeatherApiHandler', () => {
     description: 'Clear',
   };
 
+  const mockLogger: jest.Mocked<LoggerServiceInterface> = {
+    setContext: jest.fn(),
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  };
+
   beforeEach(() => {
     mockClient = {
       getWeatherData: jest.fn(),
     };
 
-    handler = new WeatherApiHandler(mockClient);
+
+    handler = new WeatherApiHandler(mockClient, mockLogger);
   });
 
   it('should return weather data if client succeeds', async () => {
@@ -34,7 +44,7 @@ describe('WeatherApiHandler', () => {
     const error = new Error('API failure');
     mockClient.getWeatherData.mockRejectedValue(error);
 
-    const nextHandler: IWeatherHandler = {
+    const nextHandler: WeatherHandlerInterface = {
       handle: jest.fn().mockResolvedValue('next-response'),
       setNext: jest.fn().mockReturnThis(),
     };

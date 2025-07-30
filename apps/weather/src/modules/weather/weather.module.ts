@@ -10,8 +10,9 @@ import { VisualCrossingHandler } from './application/handlers/visual-crossing.ha
 import { WEATHER_DI_TOKENS } from './constants/di-tokens';
 import { WeatherHandlerFactory } from './application/factories/weather-handler.factory';
 import { CachedWeatherService } from './application/services/cached-weather.service';
-import { IWeatherHandler } from './application/handlers/interfaces/weather-handler.interface';
+import { WeatherHandlerInterface } from './application/handlers/interfaces/weather-handler.interface';
 import { WeatherMetricsModule } from '../metrics/weather-metrics.module';
+import { LoggerModule } from '@utils/modules/logger/logger.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { WeatherMetricsModule } from '../metrics/weather-metrics.module';
     WeatherConfigModule,
     RedisModule,
     WeatherMetricsModule,
+    LoggerModule,
   ],
   controllers: [WeatherController],
   providers: [
@@ -37,7 +39,7 @@ import { WeatherMetricsModule } from '../metrics/weather-metrics.module';
     },
     {
       provide: WEATHER_DI_TOKENS.WEATHER_HANDLER,
-      useFactory: (factory: WeatherHandlerFactory): IWeatherHandler => {
+      useFactory: (factory: WeatherHandlerFactory): WeatherHandlerInterface => {
         return factory.createChain();
       },
       inject: [WeatherHandlerFactory],

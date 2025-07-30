@@ -2,7 +2,7 @@ import { CreateSubscriptionDto } from '../../presentation/dto/create-subscriptio
 import type { Subscription } from '@prisma/client';
 import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 
-export interface ISubscriptionService {
+export interface SubscriptionServiceInterface {
   subscribe(dto: CreateSubscriptionDto): Promise<void>;
   confirm(token: string): Promise<void>;
   unsubscribe(token: string): Promise<void>;

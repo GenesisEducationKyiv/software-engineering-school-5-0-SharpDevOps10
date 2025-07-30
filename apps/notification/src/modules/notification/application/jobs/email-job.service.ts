@@ -30,6 +30,11 @@ export class EmailJobService implements IEmailJobService {
     const { subscriptions } = await this.subscriptionProducer.getConfirmedSubscriptions(frequency);
     const label = frequency === SubscriptionFrequencyEnum.HOURLY ? 'hourly' : 'daily';
 
+    this.logger.debug(
+      `Fetched ${subscriptions.length} subscriptions for ${label} frequency`,
+      { subscriptions },
+    );
+
     for (const sub of subscriptions) {
       try {
         const weather = await this.weatherService.getWeather(sub.city);

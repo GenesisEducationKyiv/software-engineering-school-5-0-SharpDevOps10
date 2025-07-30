@@ -9,12 +9,22 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { GATEWAY_CLIENT_DI_TOKENS } from '../clients/di-tokens';
 import { HttpExceptionFilter } from '../../filters/http-exception.filter';
 import { RpcToHttpExceptionFilter } from '../../filters/rpc-to-http-exception.filter';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
+import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 
 describe('WeatherController', () => {
   let app: INestApplication;
 
   const weatherClientMock: jest.Mocked<WeatherServiceInterface> = {
     getWeather: jest.fn(),
+  };
+
+  const loggerMock: jest.Mocked<LoggerServiceInterface> = {
+    setContext: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn(),
   };
 
   beforeAll(async () => {
@@ -28,6 +38,10 @@ describe('WeatherController', () => {
         {
           provide: GATEWAY_CLIENT_DI_TOKENS.WEATHER_CLIENT,
           useValue: weatherClientMock,
+        },
+        {
+          provide: LOGGER_DI_TOKENS.LOGGER_SERVICE,
+          useValue: loggerMock,
         },
       ],
     }).compile();
