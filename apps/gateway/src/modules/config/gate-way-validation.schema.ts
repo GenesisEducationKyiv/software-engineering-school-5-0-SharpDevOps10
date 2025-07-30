@@ -8,4 +8,6 @@ export const gateWayValidationSchema = Joi.object({
 
   SUBSCRIPTION_CLIENT_HOST: Joi.string().hostname().required(),
   SUBSCRIPTION_CLIENT_PORT: Joi.number().port().required(),
+
+  NODE_ENV: Joi.string().required(),
 });

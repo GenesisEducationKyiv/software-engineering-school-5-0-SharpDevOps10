@@ -4,7 +4,7 @@ import { EmailJobService } from './email-job.service';
 import { ISubscriptionNotifier } from '../interfaces/subscription.notifier.interface';
 import { IWeatherClient } from '../interfaces/weather.client.interface';
 import { INotificationEmailSender } from '../interfaces/notification.email-sender.interface';
-import { ILoggerService } from '@utils/modules/logger/logger.service.interface';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
 import { NOTIFICATION_DI_TOKENS } from '../../di-tokens';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
@@ -45,10 +45,12 @@ describe('EmailJobService', () => {
     sendWeatherUpdateEmail: jest.fn(),
   };
 
-  const loggerMock: jest.Mocked<ILoggerService> = {
-    log: jest.fn(),
+  const loggerMock: jest.Mocked<LoggerServiceInterface> = {
+    info: jest.fn(),
     error: jest.fn(),
     setContext: jest.fn(),
+    debug: jest.fn(),
+    warn: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -94,7 +96,7 @@ describe('EmailJobService', () => {
       frequency: 'daily',
     });
 
-    expect(loggerMock.log).toHaveBeenCalledWith('Sent weather to john@example.com [Paris]');
+    expect(loggerMock.info).toHaveBeenCalledWith('Sent weather to john@example.com [Paris]');
   });
 
   it('should log error if email sending fails', async () => {
@@ -134,6 +136,6 @@ describe('EmailJobService', () => {
 
     expect(weatherServiceMock.getWeather).not.toHaveBeenCalled();
     expect(emailServiceMock.sendWeatherUpdateEmail).not.toHaveBeenCalled();
-    expect(loggerMock.log).not.toHaveBeenCalled();
+    expect(loggerMock.info).not.toHaveBeenCalled();
   });
 });
