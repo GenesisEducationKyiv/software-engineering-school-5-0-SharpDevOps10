@@ -9,4 +9,6 @@ export const emailValidationSchema = Joi.object({
 
   RABBITMQ_HOST: Joi.string().hostname().required(),
   RABBITMQ_PORT: Joi.number().port().required(),
+
+  NODE_ENV: Joi.string().required(),
 });

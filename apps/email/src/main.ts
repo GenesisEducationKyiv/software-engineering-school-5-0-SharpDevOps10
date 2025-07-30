@@ -4,12 +4,16 @@ import { Logger } from '@nestjs/common';
 import { EmailConfigService } from './modules/config/email-config.service';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { QUEUES } from '@utils/constants/brokers/queues';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
+import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 
 async function bootstrap (): Promise<void> {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(EmailConfigService);
   const host = configService.getRabbitMqHost();
   const port = configService.getRabbitMqPort();
+
+  const logger = app.get<LoggerServiceInterface>(LOGGER_DI_TOKENS.LOGGER_SERVICE);
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
@@ -22,6 +26,6 @@ async function bootstrap (): Promise<void> {
   });
 
   await app.startAllMicroservices();
-  Logger.log(`Email Service is listening to RabbitMQ queue: ${QUEUES.EMAIL_QUEUE}, ${port}`);
+  logger.info(`Email Service is listening to RabbitMQ queue: ${QUEUES.EMAIL_QUEUE}, ${port}`);
 }
 bootstrap();
