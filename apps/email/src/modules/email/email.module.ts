@@ -3,10 +3,10 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { createEmailConfig } from './email.config';
 import { EmailService } from './email.service';
 import { Module } from '@nestjs/common';
-import { EmailController } from './email.controller';
 import { EMAIL_CONFIG_DI_TOKENS } from '../config/di-tokens';
 import { EMAIL_DI_TOKENS } from './constants/di-tokens';
 import { EmailTemplateValidator } from './validators/email-template.validator';
+import { EmailConsumer } from './email.consumer';
 
 @Module({
   imports: [
@@ -27,6 +27,6 @@ import { EmailTemplateValidator } from './validators/email-template.validator';
       useClass: EmailTemplateValidator,
     },
   ],
-  controllers: [EmailController],
+  controllers: [EmailConsumer],
 })
 export class EmailModule {}

@@ -9,6 +9,6 @@ export const notificationValidationSchema = Joi.object({
   SUBSCRIPTION_CLIENT_HOST: Joi.string().hostname().required(),
   SUBSCRIPTION_CLIENT_PORT: Joi.number().port().required(),
 
-  EMAIL_CLIENT_HOST: Joi.string().hostname().required(),
-  EMAIL_CLIENT_PORT: Joi.number().port().required(),
+  RABBITMQ_HOST: Joi.string().hostname().required(),
+  RABBITMQ_PORT: Joi.number().port().required(),
 });

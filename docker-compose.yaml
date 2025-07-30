@@ -103,6 +103,14 @@ services:
     ports:
       - '9091:9091'
 
+  rabbitmq:
+    image: rabbitmq:4-management
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - app-network
+
 volumes:
   pgdata:
 

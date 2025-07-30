@@ -14,7 +14,7 @@ module.exports = (serviceName) => ({
     extensions: ['.ts', '.js'],
     plugins: [
       new TsconfigPathsPlugin({
-        configFile: path.resolve(__dirname, `apps/${serviceName}/tsconfig.json`),
+        configFile: path.resolve(__dirname, 'tsconfig.json'),
       }),
     ],
   },
@@ -35,7 +35,7 @@ module.exports = (serviceName) => ({
         use: {
           loader: 'ts-loader',
           options: {
-            configFile: path.resolve(__dirname, `apps/${serviceName}/tsconfig.json`),
+            configFile: path.resolve(__dirname, 'tsconfig.json'),
             transpileOnly: true,
           },
         },

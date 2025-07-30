@@ -26,11 +26,11 @@ export class NotificationConfigService implements INotificationConfigService {
     return this.config.get<number>('SUBSCRIPTION_CLIENT_PORT');
   }
 
-  getEmailClientHost (): string {
-    return this.config.get<string>('EMAIL_CLIENT_HOST');
+  getRabbitMqHost (): string {
+    return this.config.get<string>('RABBITMQ_HOST');
   }
 
-  getEmailClientPort (): number {
-    return this.config.get<number>('EMAIL_CLIENT_PORT');
+  getRabbitMqPort (): number {
+    return this.config.get<number>('RABBITMQ_PORT');
   }
 }

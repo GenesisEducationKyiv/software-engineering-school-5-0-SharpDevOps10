@@ -5,9 +5,9 @@ export interface ISubscriptionConfigService {
 
   getFrontendUrl(): string;
 
-  getEmailClientHost(): string;
-  getEmailClientPort(): number;
-
   getWeatherClientHost(): string;
   getWeatherClientPort(): number;
+
+  getRabbitMqHost(): string;
+  getRabbitMqPort(): number;
 }

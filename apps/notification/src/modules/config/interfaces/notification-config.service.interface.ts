@@ -7,6 +7,6 @@ export interface INotificationConfigService {
   getSubscriptionClientHost(): string;
   getSubscriptionClientPort(): number;
 
-  getEmailClientHost(): string;
-  getEmailClientPort(): number;
+  getRabbitMqHost(): string;
+  getRabbitMqPort(): number;
 }

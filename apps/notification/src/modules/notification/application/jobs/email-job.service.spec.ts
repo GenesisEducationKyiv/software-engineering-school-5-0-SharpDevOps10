@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { randomUUID } from 'node:crypto';
 import { EmailJobService } from './email-job.service';
-import { SubscriptionFrequencyEnum } from '@shared-types/common/subscription-frequency.enum';
 import { ISubscriptionNotifier } from '../interfaces/subscription.notifier.interface';
 import { IWeatherClient } from '../interfaces/weather.client.interface';
 import { INotificationEmailSender } from '../interfaces/notification.email-sender.interface';
 import { ILoggerService } from '@utils/modules/logger/logger.service.interface';
 import { NOTIFICATION_DI_TOKENS } from '../../di-tokens';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
+import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 
 describe('EmailJobService', () => {
   let service: EmailJobService;
@@ -55,7 +55,7 @@ describe('EmailJobService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         EmailJobService,
-        { provide: NOTIFICATION_DI_TOKENS.SUBSCRIPTION_CLIENT, useValue: subscriptionNotifierMock },
+        { provide: NOTIFICATION_DI_TOKENS.SUBSCRIPTION_PRODUCER, useValue: subscriptionNotifierMock },
         { provide: NOTIFICATION_DI_TOKENS.WEATHER_CLIENT, useValue: weatherServiceMock },
         { provide: NOTIFICATION_DI_TOKENS.NOTIFICATION_EMAIL_SENDER, useValue: emailServiceMock },
         { provide: LOGGER_DI_TOKENS.LOGGER_SERVICE, useValue: loggerMock },
@@ -116,7 +116,9 @@ describe('EmailJobService', () => {
       humidity: 70,
       description: 'Rainy',
     });
-    emailServiceMock.sendWeatherUpdateEmail.mockRejectedValueOnce(new Error('SMTP Error'));
+    (emailServiceMock.sendWeatherUpdateEmail as jest.Mock).mockImplementationOnce(() => {
+      throw new Error('SMTP Error');
+    });
 
     await service.sendWeatherEmailsByFrequency(SubscriptionFrequencyEnum.HOURLY);
 
