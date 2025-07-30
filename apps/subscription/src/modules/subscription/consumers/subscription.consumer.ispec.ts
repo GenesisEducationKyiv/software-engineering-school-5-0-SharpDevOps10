@@ -8,9 +8,11 @@ import { scheduler } from 'node:timers/promises';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { QUEUES } from '@utils/constants/brokers/queues';
 import type { Subscription } from '@prisma/client';
-import { ISubscriptionService } from '../application/interfaces/subscription.service.interface';
+import { SubscriptionServiceInterface } from '../application/interfaces/subscription.service.interface';
 import { SubscriptionModule } from '../subscription.module';
 import { SUBSCRIPTION_DI_TOKENS } from '../constants/di-tokens';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
+import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 
 describe('SubscriptionConsumer (integration)', () => {
   let app: INestApplication;
@@ -19,8 +21,16 @@ describe('SubscriptionConsumer (integration)', () => {
 
   const getConfirmedSubscriptionsMock = jest.fn();
 
-  const subscriptionServiceMock: Partial<ISubscriptionService> = {
+  const subscriptionServiceMock: Partial<SubscriptionServiceInterface> = {
     getConfirmedSubscriptions: getConfirmedSubscriptionsMock,
+  };
+
+  const loggerMock: jest.Mocked<LoggerServiceInterface> = {
+    setContext: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn(),
   };
 
   let publish: (pattern: string, data: object) => void;
@@ -33,6 +43,12 @@ describe('SubscriptionConsumer (integration)', () => {
           envFilePath: 'apps/subscription/.env.test',
         }),
         SubscriptionModule,
+      ],
+      providers: [
+        {
+          provide: LOGGER_DI_TOKENS.LOGGER_SERVICE,
+          useValue: loggerMock,
+        },
       ],
     })
       .overrideProvider(SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_SERVICE)

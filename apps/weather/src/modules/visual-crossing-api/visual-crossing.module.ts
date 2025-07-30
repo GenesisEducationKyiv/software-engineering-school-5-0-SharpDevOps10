@@ -3,9 +3,10 @@ import { WeatherConfigModule } from '../config/weather-config.module';
 import { WEATHER_DI_TOKENS } from '../weather/constants/di-tokens';
 import { VisualCrossingClient } from './client/visual-crossing.client';
 import { VisualCrossingMapper } from './mappers/visual-crossing.mapper';
+import { LoggerModule } from '@utils/modules/logger/logger.module';
 
 @Module({
-  imports: [WeatherConfigModule],
+  imports: [WeatherConfigModule, LoggerModule],
   providers: [
     {
       provide: WEATHER_DI_TOKENS.VISUAL_CROSSING_CLIENT,

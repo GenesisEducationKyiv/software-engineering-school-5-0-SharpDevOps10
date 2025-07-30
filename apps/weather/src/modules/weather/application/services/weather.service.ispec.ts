@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as fs from 'node:fs/promises';
-import { IWeatherService } from './interfaces/weather.service.interface';
+import { WeatherServiceInterface } from './interfaces/weather.service.interface';
 import { IWeatherApiClient } from '../interfaces/weather-api.interface';
 import { server } from '../../../../test-utils/msw/setup-msw';
 import { WeatherModule } from '../../weather.module';
@@ -10,7 +10,7 @@ import { WEATHER_DI_TOKENS } from '../../constants/di-tokens';
 import { NotFoundRpcException, UnavailableException } from '@exceptions/grpc-exceptions';
 
 describe('WeatherService (integration)', () => {
-  let service: IWeatherService;
+  let service: WeatherServiceInterface;
   let spyAppendFile: jest.SpyInstance;
   let app: INestApplication;
   let spyMkdir: jest.SpyInstance;

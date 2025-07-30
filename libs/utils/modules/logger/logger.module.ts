@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 import { LoggerService } from '@utils/modules/logger/logger.service';
-import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
+import { LoggerModule as PinoLoggerModule, Params } from 'nestjs-pino';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
@@ -9,10 +9,20 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     PinoLoggerModule.forRootAsync({
       inject: [ConfigService],
       imports: [ConfigModule],
-      useFactory: (config: ConfigService) => ({
-        level: config.getOrThrow('NODE_ENV') === 'production' ? 'info' : 'debug',
+      useFactory: (config: ConfigService): Params => ({
         pinoHttp: {
           autoLogging: false,
+          level: config.getOrThrow('NODE_ENV') === 'production' ? 'info' : 'debug',
+          transport: config.get('NODE_ENV') === 'production'
+            ? undefined
+            : {
+              target: 'pino-pretty',
+              options: {
+                colorize: true,
+                translateTime: 'SYS:standard',
+                ignore: 'pid,hostname',
+              },
+            },
         },
       }),
     }),

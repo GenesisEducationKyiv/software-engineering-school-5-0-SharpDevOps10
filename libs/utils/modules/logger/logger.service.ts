@@ -10,20 +10,21 @@ export class LoggerService implements LoggerServiceInterface {
     this.logger.setContext(context);
   }
 
-  info (message: string): void {
-    this.logger.info(message);
+  debug (message: string, meta?: unknown): void {
+    this.logger.debug(meta ?? {}, message);
   }
 
-  error (message: string, trace?: string): void {
-    this.logger.error({ trace }, message);
+  info (message: string, meta?: unknown): void {
+    this.logger.info(meta ?? {}, message);
   }
 
-  warn (message: string): void {
-    this.logger.warn(message);
+  warn (message: string, meta?: unknown): void {
+    this.logger.warn(meta ?? {}, message);
   }
 
-  debug (message: string): void {
-    this.logger.debug(message);
+  error (message: string, meta?: unknown): void {
+    const safeMeta = typeof meta === 'object' && meta !== null ? meta : {};
+    this.logger.error(safeMeta, message);
   }
 }
 

@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { GrpcMethod, GrpcService } from '@nestjs/microservices';
 import { WEATHER_DI_TOKENS } from '../constants/di-tokens';
-import { IWeatherService } from '../application/services/interfaces/weather.service.interface';
+import { WeatherServiceInterface } from '../application/services/interfaces/weather.service.interface';
 import {
   GetWeatherRequest,
   GetWeatherResponse,
@@ -14,7 +14,7 @@ import { GRPC_WEATHER_SERVICE, WeatherServiceMethods } from '../constants/grpc-m
 export class WeatherController {
   constructor (
     @Inject(WEATHER_DI_TOKENS.WEATHER_SERVICE)
-    private readonly weatherService: IWeatherService,
+    private readonly weatherService: WeatherServiceInterface,
   ) {}
 
   @GrpcMethod(GRPC_WEATHER_SERVICE, WeatherServiceMethods.GET_WEATHER)

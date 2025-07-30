@@ -1,12 +1,12 @@
 import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
 import { REDIS_DI_TOKENS } from './di-tokens';
 import Redis from 'ioredis';
-import { IRedisService } from './interfaces/redis.service.interface';
+import { RedisServiceInterface } from './interfaces/redis.service.interface';
 import { RedisCacheGetMetrics } from '@utils/modules/metrics/decorators/redis-cache-get-metrics.decorator';
 import { RedisCacheSetMetrics } from '@utils/modules/metrics/decorators/redis-cache-set-metrics.decorator';
 
 @Injectable()
-export class RedisService implements OnModuleDestroy, IRedisService {
+export class RedisService implements OnModuleDestroy, RedisServiceInterface {
   constructor (
     @Inject(REDIS_DI_TOKENS.REDIS_CLIENT)
     private readonly client: Redis,

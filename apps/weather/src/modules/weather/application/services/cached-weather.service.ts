@@ -1,32 +1,45 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { REDIS_DI_TOKENS } from '@utils/modules/redis/di-tokens';
-import { IRedisService } from '@utils/modules/redis/interfaces/redis.service.interface';
-import { IWeatherService } from './interfaces/weather.service.interface';
+import { RedisServiceInterface } from '@utils/modules/redis/interfaces/redis.service.interface';
+import { WeatherServiceInterface } from './interfaces/weather.service.interface';
 import { WEATHER_DI_TOKENS } from '../../constants/di-tokens';
 import { WEATHER_CONFIG_DI_TOKENS } from '../../../config/di-tokens';
 import { IWeatherConfigService } from '../../../config/interfaces/weather-config.service.interface';
 import { GetWeatherResponse } from '@grpc-types/get-weather.response';
+import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
 
 @Injectable()
-export class CachedWeatherService implements IWeatherService {
+export class CachedWeatherService implements WeatherServiceInterface {
   constructor (
     @Inject(WEATHER_DI_TOKENS.BASE_WEATHER_SERVICE)
-    private readonly service: IWeatherService,
+    private readonly service: WeatherServiceInterface,
 
     @Inject(WEATHER_CONFIG_DI_TOKENS.WEATHER_CONFIG_SERVICE)
     private readonly configService: IWeatherConfigService,
 
     @Inject(REDIS_DI_TOKENS.REDIS_SERVICE)
-    private readonly cache: IRedisService,
+    private readonly cache: RedisServiceInterface,
+
+    @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
+    private readonly logger: LoggerServiceInterface,
   ) {
+    this.logger.setContext(CachedWeatherService.name);
   }
 
   async getWeather (city: string): Promise<GetWeatherResponse> {
     const key = this.getCacheKey(city);
     const cachedData = await this.cache.get<GetWeatherResponse>(key);
-    if (cachedData) return cachedData;
+    if (cachedData) {
+      this.logger.debug(`Cache hit for "${city}"`);
 
+      return cachedData;
+    }
+
+    this.logger.debug(`Cache miss for "${city}". Fetching from base service.`);
     const weatherData = await this.service.getWeather(city);
+
+    this.logger.debug(`Caching weather data for "${city}" with TTL ${this.getCacheTtl()}s`);
     await this.cache.set(key, weatherData, this.getCacheTtl());
 
     return weatherData;
@@ -35,9 +48,16 @@ export class CachedWeatherService implements IWeatherService {
   async isCityValid (city: string): Promise<boolean> {
     const key = this.getValidCityCacheKey(city);
     const cached = await this.cache.get<boolean>(key);
-    if (cached !== null) return cached;
+    if (cached !== null) {
+      this.logger.debug(`Cache hit for valid city check: "${city}"`);
 
+      return cached;
+    }
+
+    this.logger.debug(`Cache miss for valid city check: "${city}"`);
     const valid = await this.service.isCityValid(city);
+
+    this.logger.debug(`Caching valid city check for "${city}" with TTL ${this.getCacheTtl()}s`);
     await this.cache.set(key, valid, this.getCacheTtl());
 
     return valid;

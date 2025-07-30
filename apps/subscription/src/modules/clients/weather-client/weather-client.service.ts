@@ -3,11 +3,11 @@ import { CLIENTS_PACKAGES } from '../clients.packages';
 import type { ClientGrpc } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { IsCityValidRequest, IsCityValidResponse, WeatherService } from '@generated/weather';
-import { IWeatherClient } from '../../subscription/application/interfaces/weather-client.interface';
+import { WeatherClientInterface } from '../../subscription/application/interfaces/weather-client.interface';
 import { GrpcToObservable } from '@grpc-types/grpc-to-observable';
 
 @Injectable()
-export class WeatherClientService implements IWeatherClient, OnModuleInit {
+export class WeatherClientService implements WeatherClientInterface, OnModuleInit {
   private weatherClient: GrpcToObservable<WeatherService>;
 
   constructor (

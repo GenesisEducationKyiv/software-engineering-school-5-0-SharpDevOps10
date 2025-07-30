@@ -1,6 +1,6 @@
 import { GetWeatherResponse } from '@grpc-types/get-weather.response';
 
-export interface IWeatherService {
+export interface WeatherServiceInterface {
   getWeather(city: string): Promise<GetWeatherResponse>;
   isCityValid(city: string): Promise<boolean>;
 }
