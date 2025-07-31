@@ -24,22 +24,31 @@ export class CachedWeatherService implements WeatherServiceInterface {
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: LoggerServiceInterface,
   ) {
-    this.logger.setContext(CachedWeatherService.name);
   }
 
   async getWeather (city: string): Promise<GetWeatherResponse> {
     const key = this.getCacheKey(city);
     const cachedData = await this.cache.get<GetWeatherResponse>(key);
     if (cachedData) {
-      this.logger.debug(`Cache hit for "${city}"`);
+      this.logger.debug(`Cache hit for "${city}"`, {
+        context: this.constructor.name,
+        method: this.getWeather.name,
+      });
 
       return cachedData;
     }
 
-    this.logger.debug(`Cache miss for "${city}". Fetching from base service.`);
+    this.logger.debug(`Cache miss for "${city}". Fetching from base service.`, {
+      context: this.constructor.name,
+      method: this.getWeather.name,
+    });
     const weatherData = await this.service.getWeather(city);
 
-    this.logger.debug(`Caching weather data for "${city}" with TTL ${this.getCacheTtl()}s`);
+    this.logger.debug(`Caching weather data for "${city}" with TTL ${this.getCacheTtl()}s`, {
+      context: this.constructor.name,
+      method: this.getWeather.name,
+      data: weatherData,
+    });
     await this.cache.set(key, weatherData, this.getCacheTtl());
 
     return weatherData;
@@ -49,15 +58,24 @@ export class CachedWeatherService implements WeatherServiceInterface {
     const key = this.getValidCityCacheKey(city);
     const cached = await this.cache.get<boolean>(key);
     if (cached !== null) {
-      this.logger.debug(`Cache hit for valid city check: "${city}"`);
+      this.logger.debug(`Cache hit for valid city check: "${city}"`, {
+        context: this.constructor.name,
+        method: this.isCityValid.name,
+      });
 
       return cached;
     }
 
-    this.logger.debug(`Cache miss for valid city check: "${city}"`);
+    this.logger.debug(`Cache miss for valid city check: "${city}"`, {
+      context: this.constructor.name,
+      method: this.isCityValid.name,
+    });
     const valid = await this.service.isCityValid(city);
 
-    this.logger.debug(`Caching valid city check for "${city}" with TTL ${this.getCacheTtl()}s`);
+    this.logger.debug(`Caching valid city check for "${city}" with TTL ${this.getCacheTtl()}s`, {
+      context: this.constructor.name,
+      method: this.isCityValid.name,
+    });
     await this.cache.set(key, valid, this.getCacheTtl());
 
     return valid;

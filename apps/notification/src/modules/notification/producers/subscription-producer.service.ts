@@ -18,7 +18,6 @@ export class SubscriptionProducerService implements SubscriptionProducerInterfac
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: LoggerServiceInterface,
   ) {
-    this.logger.setContext(SubscriptionProducerService.name);
   }
 
   async getConfirmedSubscriptions (frequency: SubscriptionFrequencyEnum): Promise<{ subscriptions: Subscription[] }> {

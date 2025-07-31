@@ -12,7 +12,6 @@ export abstract class BaseWeatherHandler implements WeatherHandlerInterface {
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     protected readonly logger: LoggerServiceInterface,
   ) {
-    this.logger.setContext(BaseWeatherHandler.name);
   }
 
   setNext (handler: WeatherHandlerInterface): WeatherHandlerInterface {
@@ -23,17 +22,24 @@ export abstract class BaseWeatherHandler implements WeatherHandlerInterface {
 
   async handle (city: string, lastError?: unknown): Promise<GetWeatherResponse> {
     if (this.nextHandler) {
-      this.logger.debug(`Passing city "${city}" to next weather provider...`);
+      this.logger.debug(`Passing city "${city}" to next weather provider...`, {
+        context: this.constructor.name,
+      });
 
       return this.nextHandler.handle(city, lastError);
     }
 
     if (lastError instanceof NotFoundRpcException) {
-      this.logger.warn(`City "${city}" not found in all weather providers.`);
+      this.logger.warn(`City "${city}" not found in all weather providers.`, {
+        context: this.constructor.name,
+      });
       throw lastError;
     }
 
-    this.logger.error(`All providers failed for city "${city}".`, lastError);
+    this.logger.error(`All providers failed for city "${city}".`, {
+      context: this.constructor.name,
+      error: lastError,
+    });
     throw new UnavailableException(
       `No weather providers could handle request for city "${city}".`,
     );

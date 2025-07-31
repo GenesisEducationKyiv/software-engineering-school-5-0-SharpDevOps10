@@ -16,7 +16,6 @@ export class SubscriptionController {
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: LoggerServiceInterface,
   ) {
-    this.logger.setContext(SubscriptionController.name);
   }
 
   @Post('subscribe')

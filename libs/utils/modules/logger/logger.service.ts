@@ -6,10 +6,6 @@ import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.int
 export class LoggerService implements LoggerServiceInterface {
   constructor (private readonly logger: PinoLogger) {}
 
-  setContext (context: string): void {
-    this.logger.setContext(context);
-  }
-
   debug (message: string, meta?: unknown): void {
     this.logger.debug(meta ?? {}, message);
   }
