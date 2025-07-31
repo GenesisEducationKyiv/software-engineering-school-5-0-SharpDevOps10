@@ -15,7 +15,6 @@ describe('WeatherApiHandler', () => {
   };
 
   const mockLogger: jest.Mocked<LoggerServiceInterface> = {
-    setContext: jest.fn(),
     debug: jest.fn(),
     info: jest.fn(),
     warn: jest.fn(),

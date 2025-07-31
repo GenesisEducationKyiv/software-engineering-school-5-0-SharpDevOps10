@@ -27,7 +27,6 @@ async function bootstrap (): Promise<void> {
   app.useGlobalFilters(new ExceptionFilter());
   await app.listen();
 
-  logger.setContext('Bootstrap');
   logger.info(`Weather Service is running on port ${port}`);
 }
 bootstrap();

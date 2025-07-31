@@ -23,17 +23,11 @@ export class EmailJobService implements IEmailJobService {
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: LoggerServiceInterface,
   ) {
-    this.logger.setContext(EmailJobService.name);
   }
 
   async sendWeatherEmailsByFrequency (frequency: SubscriptionFrequencyEnum): Promise<void> {
     const { subscriptions } = await this.subscriptionProducer.getConfirmedSubscriptions(frequency);
     const label = frequency === SubscriptionFrequencyEnum.HOURLY ? 'hourly' : 'daily';
-
-    this.logger.debug(
-      `Fetched ${subscriptions.length} subscriptions for ${label} frequency`,
-      { subscriptions },
-    );
 
     for (const sub of subscriptions) {
       try {
@@ -45,9 +39,16 @@ export class EmailJobService implements IEmailJobService {
           frequency: label,
         });
 
-        this.logger.info(`Sent weather to ${sub.email} [${sub.city}]`);
+        this.logger.info(`Sent weather to ${sub.email} [${sub.city}]`, {
+          context: this.constructor.name,
+          method: this.sendWeatherEmailsByFrequency.name,
+        });
       } catch (err) {
-        this.logger.error(`Failed to send to ${sub.email}: ${err.message}`);
+        this.logger.error(`Failed to send to ${sub.email}`, {
+          context: this.constructor.name,
+          method: this.sendWeatherEmailsByFrequency.name,
+          error: err,
+        });
       }
     }
   }

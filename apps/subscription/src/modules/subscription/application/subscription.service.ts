@@ -34,7 +34,6 @@ export class SubscriptionService implements SubscriptionServiceInterface {
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: LoggerServiceInterface,
   ) {
-    this.logger.setContext(SubscriptionService.name);
   }
 
   async subscribe (dto: CreateSubscriptionDto): Promise<void> {
@@ -44,35 +43,53 @@ export class SubscriptionService implements SubscriptionServiceInterface {
 
     const { isValid } = await this.weatherClient.isCityValid({ city });
     if (!isValid) {
-      this.logger.warn(`Attempted to subscribe with invalid city "${city}"`);
+      this.logger.warn(`Attempted to subscribe with invalid city "${city}"`, {
+        context: this.constructor.name,
+        method: this.subscribe.name,
+      });
       throw new NotFoundRpcException(`City "${city}" not found`);
     }
 
     const existingSubscription = await this.subscriptionRepository.findByEmailAndCity(email, city);
     if (existingSubscription) {
-      this.logger.warn(`Duplicate subscription attempt: ${email} already subscribed to ${city}`);
+      this.logger.warn(`Duplicate subscription attempt: ${email} already subscribed to ${city}`, {
+        context: this.constructor.name,
+        method: this.subscribe.name,
+      });
       throw new AlreadyExistsException('Email already subscribed for this city');
     }
 
     const token = this.tokenService.generateToken();
 
     await this.subscriptionRepository.createSubscription({ ...dto, token });
-    this.logger.info(`Creating new subscription for ${email} in ${city}`);
+    this.logger.info(`Creating new subscription for ${email} in ${city}`, {
+      context: this.constructor.name,
+      method: this.subscribe.name,
+    });
 
     this.emailService.sendConfirmationEmail(email, token);
 
-    this.logger.info(`Confirmation email sent to ${email} for city ${city}`);
+    this.logger.info(`Confirmation email sent to ${email} for city ${city}`, {
+      context: this.constructor.name,
+      method: this.subscribe.name,
+    });
   }
 
   async confirm (token: string): Promise<void> {
     const subscription = await this.getSubscriptionByToken(token);
     if (subscription.confirmed) {
-      this.logger.warn(`Subscription with token "${token}" already confirmed`);
+      this.logger.warn(`Subscription with token "${token}" already confirmed`, {
+        context: this.constructor.name,
+        method: this.confirm.name,
+      });
       throw new AlreadyExistsException('Subscription already confirmed');
     }
 
     if (this.tokenService.isTokenExpired(subscription.createdAt)) {
-      this.logger.warn(`Expired token used for confirmation: "${token}"`);
+      this.logger.warn(`Expired token used for confirmation: "${token}"`, {
+        context: this.constructor.name,
+        method: this.confirm.name,
+      });
       throw new InvalidArgumentException('Invalid token');
     }
 
@@ -80,19 +97,28 @@ export class SubscriptionService implements SubscriptionServiceInterface {
       confirmed: true,
     });
 
-    this.logger.info(`Subscription confirmed for ${subscription.email} [${subscription.city}]`);
+    this.logger.info(`Subscription confirmed for ${subscription.email} [${subscription.city}]`, {
+      context: this.constructor.name,
+      method: this.confirm.name,
+    });
   }
 
   async unsubscribe (token: string): Promise<void> {
     const subscription = await this.getSubscriptionByToken(token);
     if (!subscription.confirmed) {
-      this.logger.warn(`Unsubscribe attempt on unconfirmed subscription: ${subscription.email}`);
+      this.logger.warn(`Unsubscribe attempt on unconfirmed subscription: ${subscription.email}`, {
+        context: this.constructor.name,
+        method: this.unsubscribe.name,
+      });
       throw new AlreadyExistsException('Subscription not confirmed');
     }
 
     await this.subscriptionRepository.deleteSubscription(subscription.id);
 
-    this.logger.info(`Subscription deleted for ${subscription.email} [${subscription.city}]`);
+    this.logger.info(`Subscription deleted for ${subscription.email} [${subscription.city}]`, {
+      context: this.constructor.name,
+      method: this.unsubscribe.name,
+    });
   }
 
   async getConfirmedSubscriptions (frequency: SubscriptionFrequencyEnum): Promise<Subscription[]> {

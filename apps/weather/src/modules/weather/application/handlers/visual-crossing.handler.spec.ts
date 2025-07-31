@@ -9,7 +9,6 @@ describe('VisualCrossingHandler', () => {
   let mockClient: jest.Mocked<IWeatherApiClient>;
 
   const mockLogger: jest.Mocked<LoggerServiceInterface> = {
-    setContext: jest.fn(),
     debug: jest.fn(),
     info: jest.fn(),
     warn: jest.fn(),

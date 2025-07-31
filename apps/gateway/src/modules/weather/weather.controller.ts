@@ -14,7 +14,6 @@ export class WeatherController {
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: LoggerServiceInterface,
   ) {
-    this.logger.setContext(WeatherController.name);
   }
 
   @Get()

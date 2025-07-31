@@ -48,7 +48,6 @@ describe('EmailJobService', () => {
   const loggerMock: jest.Mocked<LoggerServiceInterface> = {
     info: jest.fn(),
     error: jest.fn(),
-    setContext: jest.fn(),
     debug: jest.fn(),
     warn: jest.fn(),
   };
@@ -74,7 +73,7 @@ describe('EmailJobService', () => {
   it('should filter subscriptions by frequency and send emails', async () => {
     const city = 'Paris';
     subscriptionNotifierMock.getConfirmedSubscriptions.mockResolvedValue({
-      subscriptions: mockSubs,
+      subscriptions: [mockSubs[1]],
     });
     weatherServiceMock.getWeather.mockResolvedValue({
       temperature: 20,
@@ -96,7 +95,13 @@ describe('EmailJobService', () => {
       frequency: 'daily',
     });
 
-    expect(loggerMock.info).toHaveBeenCalledWith('Sent weather to john@example.com [Paris]');
+    expect(loggerMock.info).toHaveBeenCalledWith(
+      'Sent weather to john@example.com [Paris]',
+      expect.objectContaining({
+        context: 'EmailJobService',
+        method: 'sendWeatherEmailsByFrequency',
+      }),
+    );
   });
 
   it('should log error if email sending fails', async () => {
@@ -125,7 +130,12 @@ describe('EmailJobService', () => {
     await service.sendWeatherEmailsByFrequency(SubscriptionFrequencyEnum.HOURLY);
 
     expect(loggerMock.error).toHaveBeenCalledWith(
-      expect.stringContaining('Failed to send to fail@example.com: SMTP Error'),
+      'Failed to send to fail@example.com',
+      expect.objectContaining({
+        context: 'EmailJobService',
+        error: Error('SMTP Error'),
+        method: 'sendWeatherEmailsByFrequency',
+      }),
     );
   });
 

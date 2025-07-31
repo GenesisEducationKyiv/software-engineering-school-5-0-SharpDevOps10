@@ -18,13 +18,16 @@ export class WeatherService implements WeatherServiceInterface {
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: LoggerServiceInterface,
   ) {
-    this.logger.setContext(WeatherService.name);
   }
 
   async getWeather (city: string): Promise<GetWeatherResponse> {
     const result = await this.handler.handle(city);
 
-    this.logger.debug(`Fetched weather data for "${city}"`, result);
+    this.logger.debug(`Fetched weather data for "${city}"`, {
+      context: this.constructor.name,
+      method: this.getWeather.name,
+      result,
+    });
 
     return result;
   }
@@ -32,7 +35,10 @@ export class WeatherService implements WeatherServiceInterface {
   async isCityValid (city: string): Promise<boolean> {
     try {
       await this.getWeather(city);
-      this.logger.info(`City "${city}" is valid`);
+      this.logger.info(`City "${city}" is valid`, {
+        context: this.constructor.name,
+        method: this.isCityValid.name,
+      });
 
       return true;
     } catch (error) {
@@ -40,13 +46,20 @@ export class WeatherService implements WeatherServiceInterface {
         error instanceof RpcException &&
         (error.getError() as RpcError)?.code === status.NOT_FOUND
       ) {
-        this.logger.warn(`City "${city}" is NOT valid`);
+        this.logger.warn(`City "${city}" is NOT valid`, {
+          context: this.constructor.name,
+          method: this.isCityValid.name,
+        });
 
         return false;
       }
       this.logger.error(
         `Unexpected error while validating city "${city}": ${error.message}`,
-        { stack: error.stack },
+        {
+          context: this.constructor.name,
+          method: this.isCityValid.name,
+          stack: error.stack,
+        },
       );
       throw error;
     }

@@ -16,16 +16,19 @@ export class VisualCrossingHandler extends BaseWeatherHandler {
     logger: LoggerServiceInterface,
   ) {
     super(logger);
-    this.logger.setContext(VisualCrossingHandler.name);
   }
 
   async handle (city: string): Promise<GetWeatherResponse> {
     try {
-      this.logger.info(`VisualCrossing returned weather for "${city}"`);
+      this.logger.info(`VisualCrossing returned weather for "${city}"`, {
+        context: this.constructor.name,
+      });
 
       return await this.client.getWeatherData(city);
     } catch (e) {
-      this.logger.warn(`VisualCrossing failed for "${city}": ${e.message}`);
+      this.logger.warn(`VisualCrossing failed for "${city}": ${e.message}`, {
+        context: this.constructor.name,
+      });
 
       return super.handle(city, e);
     }
