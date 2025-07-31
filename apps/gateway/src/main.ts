@@ -5,7 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { GateWayConfigService } from './modules/config/gate-way-config.service';
 import { RpcToHttpExceptionFilter } from './filters/rpc-to-http-exception.filter';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
-import { LoggerServiceInterface } from '../../../libs/utils/modules/logger/logger.service.interface';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 
 async function bootstrap (): Promise<void> {
@@ -23,7 +23,6 @@ async function bootstrap (): Promise<void> {
 
   await app.listen(port);
 
-  logger.setContext('Bootstrap');
   logger.info(`Gateway is running on port ${port}`);
 }
 bootstrap();

@@ -42,7 +42,6 @@ async function bootstrap (): Promise<void> {
 
   await app.startAllMicroservices();
 
-  logger.setContext('Bootstrap');
   logger.info(`Subscription Service is running (gRPC: ${grpcPort}, RMQ queue: ${QUEUES.SUBSCRIPTION_QUEUE})`);
 }
 bootstrap();

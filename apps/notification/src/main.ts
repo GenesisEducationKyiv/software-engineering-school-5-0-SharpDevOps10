@@ -7,7 +7,6 @@ async function bootstrap (): Promise<void> {
   const app = await NestFactory.createApplicationContext(AppModule);
   const logger = app.get<LoggerServiceInterface>(LOGGER_DI_TOKENS.LOGGER_SERVICE);
 
-  logger.setContext('Bootstrap');
   logger.info('Notification Service started with cron jobs only');
 }
 bootstrap();
