@@ -1,4 +1,4 @@
-export interface INotificationConfigService {
+export interface NotificationConfigServiceInterface {
   getPort(): number;
 
   getWeatherClientHost(): string;
@@ -9,4 +9,6 @@ export interface INotificationConfigService {
 
   getRabbitMqHost(): string;
   getRabbitMqPort(): number;
+
+  getSubscriptionProducerTimeout(): number;
 }
