@@ -11,4 +11,6 @@ export const notificationValidationSchema = Joi.object({
 
   RABBITMQ_HOST: Joi.string().hostname().required(),
   RABBITMQ_PORT: Joi.number().port().required(),
+
+  SUBSCRIPTION_PRODUCER_TIMEOUT: Joi.number().required(),
 });

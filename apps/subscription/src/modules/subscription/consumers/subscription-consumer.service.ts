@@ -25,7 +25,10 @@ export class SubscriptionConsumer {
   ): Promise< { subscriptions: Subscription[] }> {
     const subscriptions = await this.subscriptionService.getConfirmedSubscriptions(frequency);
 
-    this.logger.info(`Retrieved ${subscriptions.length} confirmed subscriptions for frequency "${String(frequency)}"`);
+    this.logger.info(`Retrieved ${subscriptions.length} confirmed subscriptions for frequency "${String(frequency)}"`, {
+      context: this.constructor.name,
+      method: this.handleGetConfirmedSubscriptions.name,
+    });
 
     return { subscriptions };
   }

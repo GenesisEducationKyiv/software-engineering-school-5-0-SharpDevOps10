@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
-import { INotificationConfigService } from './interfaces/notification-config.service.interface';
+import { NotificationConfigServiceInterface } from './interfaces/notification-config.service.interface';
 
 @Injectable()
-export class NotificationConfigService implements INotificationConfigService {
+export class NotificationConfigService implements NotificationConfigServiceInterface {
   constructor (private readonly config: NestConfigService) {}
 
   getPort (): number {
@@ -32,5 +32,9 @@ export class NotificationConfigService implements INotificationConfigService {
 
   getRabbitMqPort (): number {
     return this.config.get<number>('RABBITMQ_PORT');
+  }
+
+  getSubscriptionProducerTimeout (): number {
+    return this.config.get<number>('SUBSCRIPTION_PRODUCER_TIMEOUT');
   }
 }

@@ -5,10 +5,14 @@ import { QUEUES } from '@utils/constants/brokers/queues';
 import { SUBSCRIPTION__PRODUCER_DI_TOKENS } from './di-tokens';
 import { SubscriptionProducerService } from './subscription-producer.service';
 import { NOTIFICATION_DI_TOKENS } from '../di-tokens';
+import { LoggerModule } from '@utils/modules/logger/logger.module';
+import { NotificationConfigModule } from '../../config/notification-config.module';
 
 @Module({
   imports: [
     ConfigModule,
+    LoggerModule,
+    NotificationConfigModule,
     ClientsModule.registerAsync([
       {
         name: SUBSCRIPTION__PRODUCER_DI_TOKENS.NOTIFICATION_BROKER_CLIENT,
