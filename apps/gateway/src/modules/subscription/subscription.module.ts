@@ -3,10 +3,12 @@ import { SubscriptionClientModule } from '../clients/subscription-client/subscri
 import { SubscriptionController } from './subscription.controller';
 import { SUBSCRIPTION_DI_TOKENS } from './di-tokens';
 import { SubscriptionService } from './subscription.service';
+import { LoggerModule } from '@utils/modules/logger/logger.module';
 
 @Module({
   imports: [
     SubscriptionClientModule,
+    LoggerModule,
   ],
   controllers: [SubscriptionController],
   providers: [
