@@ -1,3 +1,3 @@
-export interface ISubscriptionEmailSender {
+export interface SubscriptionEmailSenderInterface {
   sendConfirmationEmail(email: string, token: string): void;
 }

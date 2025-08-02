@@ -1,5 +1,6 @@
-export interface ILoggerService {
-  setContext (context: string): void;
-  log (message: string): void;
-  error (message: string, trace?: string): void;
+export interface LoggerServiceInterface {
+  info (message: string, meta?: unknown): void;
+  error (message: string, meta?: unknown): void;
+  warn (message: string, meta?: unknown): void;
+  debug (message: string, meta?: unknown): void;
 }

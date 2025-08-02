@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import Redis from 'ioredis';
-import { IWeatherService } from './interfaces/weather.service.interface';
+import { WeatherServiceInterface } from './interfaces/weather.service.interface';
 import { IWeatherApiClient } from '../interfaces/weather-api.interface';
 import { WeatherModule } from '../../weather.module';
 import { REDIS_DI_TOKENS } from '@utils/modules/redis/di-tokens';
@@ -11,7 +11,7 @@ import { server } from '../../../../test-utils/msw/setup-msw';
 describe('CachedWeatherService (integration)', () => {
   let app: INestApplication;
   let redisClient: Redis;
-  let service: IWeatherService;
+  let service: WeatherServiceInterface;
   let weatherApiClient: IWeatherApiClient;
 
   beforeEach(async () => {
@@ -23,7 +23,7 @@ describe('CachedWeatherService (integration)', () => {
     await app.init();
 
     redisClient = app.get(REDIS_DI_TOKENS.REDIS_CLIENT);
-    service = app.get<IWeatherService>(WEATHER_DI_TOKENS.WEATHER_SERVICE);
+    service = app.get<WeatherServiceInterface>(WEATHER_DI_TOKENS.WEATHER_SERVICE);
     weatherApiClient = app.get(WEATHER_DI_TOKENS.WEATHER_API_CLIENT);
     jest.spyOn(weatherApiClient, 'getWeatherData');
   });

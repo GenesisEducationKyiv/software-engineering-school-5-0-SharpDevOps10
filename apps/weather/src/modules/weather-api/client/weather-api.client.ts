@@ -14,15 +14,22 @@ import {
   NotFoundRpcException,
   UnavailableException,
 } from '@exceptions/grpc-exceptions';
+import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
 
 @Injectable()
 export class WeatherApiClient implements IWeatherApiClient {
   constructor (
     @Inject(WEATHER_DI_TOKENS.WEATHER_MAPPER)
     private readonly mapper: IWeatherMapper,
+
     @Inject(WEATHER_CONFIG_DI_TOKENS.WEATHER_CONFIG_SERVICE)
     private readonly config: IWeatherConfigService,
-  ) {}
+
+    @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
+    private readonly logger: LoggerServiceInterface,
+  ) {
+  }
 
   @LogResponseToFile('weatherapi.com')
   async getWeatherData (city: string): Promise<GetWeatherResponse> {
@@ -35,6 +42,11 @@ export class WeatherApiClient implements IWeatherApiClient {
     try {
       response = await fetch(url);
     } catch (err) {
+      this.logger.error(`Network error while fetching weather for ${city}`, {
+        context: this.constructor.name,
+        method: this.getWeatherData.name,
+        error: err.message,
+      });
       throw new UnavailableException(`Cannot reach Weather API: ${err.message}`);
     }
 
@@ -51,8 +63,19 @@ export class WeatherApiClient implements IWeatherApiClient {
     const errorCode = body?.error?.code;
     const message = body?.error?.message ?? 'Unknown error';
 
-    if (errorCode === CITY_NOT_FOUND_CODE) throw new NotFoundRpcException(`City not found: ${city}`);
+    if (errorCode === CITY_NOT_FOUND_CODE) {
+      this.logger.warn(`City not found: ${city}`, {
+        context: this.constructor.name,
+        method: this.getWeatherData.name,
+      });
+      throw new NotFoundRpcException(`City not found: ${city}`);
+    }
 
+    this.logger.error(`Weather API error ${status} for ${city}}`, {
+      context: this.constructor.name,
+      method: this.getWeatherData.name,
+      error: message,
+    });
     throw new InternalRpcException(`Weather API error ${status}: ${message}`);
   }
 }

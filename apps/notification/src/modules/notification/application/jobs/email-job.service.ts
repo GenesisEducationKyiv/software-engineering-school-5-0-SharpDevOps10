@@ -3,7 +3,7 @@ import { IEmailJobService } from '../interfaces/email.job.service.interface';
 import { NOTIFICATION_DI_TOKENS } from '../../di-tokens';
 import { IWeatherClient } from '../interfaces/weather.client.interface';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
-import { ILoggerService } from '@utils/modules/logger/logger.service.interface';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
 import { INotificationEmailSender } from '../interfaces/notification.email-sender.interface';
 import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 import { SubscriptionProducerInterface } from '../interfaces/subscription-producer.interface';
@@ -21,9 +21,8 @@ export class EmailJobService implements IEmailJobService {
     private readonly emailService: INotificationEmailSender,
 
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
-    private readonly logger: ILoggerService,
+    private readonly logger: LoggerServiceInterface,
   ) {
-    this.logger.setContext(EmailJobService.name);
   }
 
   async sendWeatherEmailsByFrequency (frequency: SubscriptionFrequencyEnum): Promise<void> {
@@ -40,9 +39,16 @@ export class EmailJobService implements IEmailJobService {
           frequency: label,
         });
 
-        this.logger.log(`Sent weather to ${sub.email} [${sub.city}]`);
+        this.logger.info(`Sent weather to ${sub.email} [${sub.city}]`, {
+          context: this.constructor.name,
+          method: this.sendWeatherEmailsByFrequency.name,
+        });
       } catch (err) {
-        this.logger.error(`Failed to send to ${sub.email}: ${err.message}`);
+        this.logger.error(`Failed to send to ${sub.email}`, {
+          context: this.constructor.name,
+          method: this.sendWeatherEmailsByFrequency.name,
+          error: err,
+        });
       }
     }
   }

@@ -1,20 +1,26 @@
-import { Injectable, Logger, Scope } from '@nestjs/common';
-import { ILoggerService } from '@utils/modules/logger/logger.service.interface';
+import { Injectable } from '@nestjs/common';
+import { PinoLogger } from 'nestjs-pino';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
 
-@Injectable({ scope: Scope.TRANSIENT })
-export class LoggerService implements ILoggerService {
-  private logger: Logger;
+@Injectable()
+export class LoggerService implements LoggerServiceInterface {
+  constructor (private readonly logger: PinoLogger) {}
 
-  setContext (context: string): void {
-    this.logger = new Logger(context);
+  debug (message: string, meta?: unknown): void {
+    this.logger.debug(meta ?? {}, message);
   }
 
-  log (message: string): void {
-    this.logger?.log?.(message);
+  info (message: string, meta?: unknown): void {
+    this.logger.info(meta ?? {}, message);
   }
 
-  error (message: string, trace?: string): void {
-    this.logger?.error?.(message, trace);
+  warn (message: string, meta?: unknown): void {
+    this.logger.warn(meta ?? {}, message);
+  }
+
+  error (message: string, meta?: unknown): void {
+    const safeMeta = typeof meta === 'object' && meta !== null ? meta : {};
+    this.logger.error(safeMeta, message);
   }
 }
 

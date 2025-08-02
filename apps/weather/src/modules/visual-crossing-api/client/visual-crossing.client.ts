@@ -13,15 +13,22 @@ import {
   UnavailableException,
 } from '@exceptions/grpc-exceptions';
 import { GetWeatherResponse } from '@grpc-types/get-weather.response';
+import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
+import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
 
 @Injectable()
 export class VisualCrossingClient implements IWeatherApiClient {
   constructor (
     @Inject(WEATHER_DI_TOKENS.VISUAL_CROSSING_MAPPER)
     private readonly mapper: IVisualCrossingMapper,
+
     @Inject(WEATHER_CONFIG_DI_TOKENS.WEATHER_CONFIG_SERVICE)
     private readonly config: IWeatherConfigService,
-  ) {}
+
+    @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
+    private readonly logger: LoggerServiceInterface,
+  ) {
+  }
 
   @LogResponseToFile('visualcrossing.com')
   async getWeatherData (city: string): Promise<GetWeatherResponse> {
@@ -35,12 +42,24 @@ export class VisualCrossingClient implements IWeatherApiClient {
     try {
       response = await fetch(url);
     } catch (err) {
+      this.logger.error(`Network error while fetching weather from Visual Crossing for ${city}`, {
+        context: this.constructor.name,
+        method: this.getWeatherData.name,
+        error: err.message,
+      });
       throw new UnavailableException(`Cannot reach Visual Crossing API: ${err.message}`);
     }
 
     const bodyText = await response.text();
 
-    if (!response.ok) this.handleApiError(response.status, bodyText, city);
+    if (!response.ok) {
+      this.logger.warn(`Visual Crossing API responded with status ${response.status} for ${city}`, {
+        context: this.constructor.name,
+        method: this.getWeatherData.name,
+        body: bodyText,
+      });
+      this.handleApiError(response.status, bodyText, city);
+    }
 
     try {
       const json = JSON.parse(bodyText);
@@ -49,6 +68,12 @@ export class VisualCrossingClient implements IWeatherApiClient {
 
       return this.mapper.mapToGetWeatherResponse(data);
     } catch (err) {
+      this.logger.error(`Failed to parse response from Visual Crossing for ${city}`, {
+        context: this.constructor.name,
+        method: this.getWeatherData.name,
+        error: err.message,
+        response: bodyText,
+      });
       throw new InternalRpcException('Failed to parse Visual Crossing response');
     }
   }
@@ -57,9 +82,18 @@ export class VisualCrossingClient implements IWeatherApiClient {
     const message = body || 'Unknown error from Visual Crossing API';
 
     if (status === 400 && /invalid location/i.test(message)) {
+      this.logger.warn(`Invalid city provided to Visual Crossing: ${city}`, {
+        context: this.constructor.name,
+        method: this.getWeatherData.name,
+      });
       throw new NotFoundRpcException(`City not found: ${city}`);
     }
 
+    this.logger.error(`Visual Crossing API error ${status} for ${city}`, {
+      context: this.constructor.name,
+      method: this.getWeatherData.name,
+      error: message,
+    });
     throw new InternalRpcException(`Visual Crossing API error ${status}: ${message}`);
   }
 }

@@ -3,7 +3,7 @@ import { type ClientOptions, ClientsModule, Transport } from '@nestjs/microservi
 import { EMAIL_PRODUCER_DI_TOKENS } from './di-tokens';
 import { EmailProducerService } from './email-producer.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { QUEUES } from '../../../constants/brokers/queues';
+import { QUEUES } from '@utils/constants/brokers/queues';
 
 @Module({
   imports: [
