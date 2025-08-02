@@ -53,8 +53,6 @@ module.exports = (serviceName) => ({
     kafkajs: 'commonjs kafkajs',
     mqtt: 'commonjs mqtt',
     nats: 'commonjs nats',
-    amqplib: 'commonjs amqplib',
-    'amqp-connection-manager': 'commonjs amqp-connection-manager',
   },
 
   ignoreWarnings: [
