@@ -4,7 +4,7 @@ import { RedisServiceInterface } from '@utils/modules/redis/interfaces/redis.ser
 import { WeatherServiceInterface } from './interfaces/weather.service.interface';
 import { WEATHER_DI_TOKENS } from '../../constants/di-tokens';
 import { WEATHER_CONFIG_DI_TOKENS } from '../../../config/di-tokens';
-import { IWeatherConfigService } from '../../../config/interfaces/weather-config.service.interface';
+import { WeatherConfigServiceInterface } from '../../../config/interfaces/weather-config.service.interface';
 import { GetWeatherResponse } from '@grpc-types/get-weather.response';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
@@ -16,7 +16,7 @@ export class CachedWeatherService implements WeatherServiceInterface {
     private readonly service: WeatherServiceInterface,
 
     @Inject(WEATHER_CONFIG_DI_TOKENS.WEATHER_CONFIG_SERVICE)
-    private readonly configService: IWeatherConfigService,
+    private readonly configService: WeatherConfigServiceInterface,
 
     @Inject(REDIS_DI_TOKENS.REDIS_SERVICE)
     private readonly cache: RedisServiceInterface,

@@ -11,6 +11,7 @@ import { WeatherClientModule } from '../clients/weather-client/weather-client.mo
 import { EmailProducerModule } from '@utils/modules/producers/email-producer/email-producer.module';
 import { SubscriptionConsumer } from './consumers/subscription-consumer.service';
 import { LoggerModule } from '@utils/modules/logger/logger.module';
+import { MetricsModule } from '../metrics/metrics.module';
 
 @Module({
   controllers: [SubscriptionController, SubscriptionConsumer],
@@ -42,6 +43,7 @@ import { LoggerModule } from '@utils/modules/logger/logger.module';
     EmailProducerModule,
     WeatherClientModule,
     LoggerModule,
+    MetricsModule,
   ],
   exports: [
     SUBSCRIPTION_DI_TOKENS.SUBSCRIPTION_SERVICE,

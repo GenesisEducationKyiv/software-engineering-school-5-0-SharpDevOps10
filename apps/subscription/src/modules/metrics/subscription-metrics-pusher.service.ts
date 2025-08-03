@@ -1,18 +1,18 @@
 import { Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
 import { Pushgateway, RegistryContentType } from 'prom-client';
-import { WeatherConfigServiceInterface } from '../config/interfaces/weather-config.service.interface';
-import { WEATHER_CONFIG_DI_TOKENS } from '../config/di-tokens';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
+import { SUBSCRIPTION_CONFIG_DI_TOKENS } from '../config/di-tokens';
+import { SubscriptionConfigServiceInterface } from '../config/interfaces/subscription-config.service.interface';
 
 @Injectable({ scope: Scope.DEFAULT })
-export class WeatherMetricsPusherService implements OnModuleInit {
+export class SubscriptionMetricsPusherService implements OnModuleInit {
   private gateway: Pushgateway<RegistryContentType>;
   private jobName: string;
 
   constructor (
-    @Inject(WEATHER_CONFIG_DI_TOKENS.WEATHER_CONFIG_SERVICE)
-    private readonly config: WeatherConfigServiceInterface,
+    @Inject(SUBSCRIPTION_CONFIG_DI_TOKENS.SUBSCRIPTION_CONFIG_SERVICE)
+    private readonly config: SubscriptionConfigServiceInterface,
 
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: LoggerServiceInterface,

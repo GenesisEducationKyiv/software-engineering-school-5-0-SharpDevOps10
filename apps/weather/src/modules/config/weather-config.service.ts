@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
-import { IWeatherConfigService } from './interfaces/weather-config.service.interface';
+import { WeatherConfigServiceInterface } from './interfaces/weather-config.service.interface';
 
 @Injectable()
-export class WeatherConfigService implements IWeatherConfigService {
+export class WeatherConfigService implements WeatherConfigServiceInterface {
   constructor (private readonly config: NestConfigService) {}
 
   getPort (): number {

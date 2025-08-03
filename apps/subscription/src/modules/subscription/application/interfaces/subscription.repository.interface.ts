@@ -9,4 +9,6 @@ export interface SubscriptionRepositoryInterface {
   updateSubscription (id: string, data: Partial<Subscription>): Promise<void>;
   deleteSubscription (id: string): Promise<void>;
   getConfirmedSubscriptions(frequency: SubscriptionFrequencyEnum): Promise<Subscription[]>;
+  countConfirmed(): Promise<number>;
+  countUnconfirmed(): Promise<number>;
 }

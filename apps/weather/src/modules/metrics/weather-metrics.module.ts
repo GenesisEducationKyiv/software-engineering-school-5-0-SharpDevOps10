@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MetricsPusherService } from './weather-metrics-pusher.service';
+import { WeatherMetricsPusherService } from './weather-metrics-pusher.service';
 import { WeatherConfigModule } from '../config/weather-config.module';
 import { MetricsModule } from '@utils/modules/metrics/metrics.module';
 import { LoggerModule } from '@utils/modules/logger/logger.module';
@@ -10,7 +10,7 @@ import { LoggerModule } from '@utils/modules/logger/logger.module';
     MetricsModule,
     LoggerModule,
   ],
-  providers: [MetricsPusherService],
+  providers: [WeatherMetricsPusherService],
   exports: [MetricsModule],
 })
 export class WeatherMetricsModule {}

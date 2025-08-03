@@ -1,4 +1,4 @@
-export interface IWeatherConfigService {
+export interface WeatherConfigServiceInterface {
   getPort(): number;
 
   getWeatherApiKey(): string;

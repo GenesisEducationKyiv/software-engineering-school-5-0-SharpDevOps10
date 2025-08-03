@@ -4,7 +4,7 @@ import { IWeatherApiClient } from '../../weather/application/interfaces/weather-
 import { WEATHER_DI_TOKENS } from '../../weather/constants/di-tokens';
 import { IVisualCrossingMapper } from './interfaces/visual-crossing.mapper.interface';
 import { WEATHER_CONFIG_DI_TOKENS } from '../../config/di-tokens';
-import { IWeatherConfigService } from '../../config/interfaces/weather-config.service.interface';
+import { WeatherConfigServiceInterface } from '../../config/interfaces/weather-config.service.interface';
 import { LogResponseToFile } from '@utils/decorators/log-response-to-file.decorator';
 import { VisualCrossingResponse } from '../responses/visual-crossing.response';
 import {
@@ -23,7 +23,7 @@ export class VisualCrossingClient implements IWeatherApiClient {
     private readonly mapper: IVisualCrossingMapper,
 
     @Inject(WEATHER_CONFIG_DI_TOKENS.WEATHER_CONFIG_SERVICE)
-    private readonly config: IWeatherConfigService,
+    private readonly config: WeatherConfigServiceInterface,
 
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: LoggerServiceInterface,
