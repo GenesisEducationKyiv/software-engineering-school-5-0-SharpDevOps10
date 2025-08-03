@@ -10,6 +10,7 @@ import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.int
 import { requestWithTimeout } from '@utils/timeouts/request-with-timeout';
 import { NOTIFICATION_CONFIG_DI_TOKENS } from '../../config/di-tokens';
 import { NotificationConfigServiceInterface } from '../../config/interfaces/notification-config.service.interface';
+import { TrackSubscriptionFetchMetrics } from '../../metrics/decorators/track-subscription-fetch-metrics.decorator';
 
 @Injectable()
 export class SubscriptionProducerService implements SubscriptionProducerInterface {
@@ -24,6 +25,7 @@ export class SubscriptionProducerService implements SubscriptionProducerInterfac
     private readonly configService: NotificationConfigServiceInterface,
   ) {}
 
+  @TrackSubscriptionFetchMetrics()
   async getConfirmedSubscriptions (
     frequency: SubscriptionFrequencyEnum,
   ): Promise<{ subscriptions: Subscription[] }> {

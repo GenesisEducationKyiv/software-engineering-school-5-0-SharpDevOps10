@@ -7,6 +7,7 @@ import { WeatherClientModule } from '../clients/weather-client/weather-client.mo
 import { NotificationEmailSenderService } from './infrastructure/email-sender/notification.email-sender.service';
 import { EmailProducerModule } from '@utils/modules/producers/email-producer/email-producer.module';
 import { SubscriptionProducerModule } from './producers/subscription-producer.module';
+import { MetricsModule } from '../metrics/metrics.module';
 
 @Module({
   providers: [
@@ -25,6 +26,7 @@ import { SubscriptionProducerModule } from './producers/subscription-producer.mo
     EmailProducerModule,
     LoggerModule,
     SubscriptionProducerModule,
+    MetricsModule,
   ],
 })
 export class NotificationModule {}
