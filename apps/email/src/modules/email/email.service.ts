@@ -4,6 +4,7 @@ import { EmailServiceInterface } from './interfaces/email.service.interface';
 import { EmailTemplateValidatorInterface } from './interfaces/email-template.validator.interface';
 import { EMAIL_DI_TOKENS } from './constants/di-tokens';
 import { SendEmailDto } from '@amqp-types/send-email.dto';
+import { TrackEmailSendMetrics } from '../metrics/decorators/track-email-send-metrics.decorator';
 
 @Injectable()
 export class EmailService implements EmailServiceInterface {
@@ -14,6 +15,7 @@ export class EmailService implements EmailServiceInterface {
     private readonly templateValidator: EmailTemplateValidatorInterface,
   ) {}
 
+  @TrackEmailSendMetrics()
   async sendEmail ({ to, subject, template, context }: SendEmailDto): Promise<void> {
     this.templateValidator.validate(template);
 

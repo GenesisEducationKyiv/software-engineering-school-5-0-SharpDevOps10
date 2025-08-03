@@ -6,6 +6,7 @@ import { EMAIL_EVENT_PATTERNS } from '@utils/constants/brokers/email-event.patte
 import { SendEmailDto } from '@amqp-types/send-email.dto';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
+import { TrackEmailEventMetrics } from '../metrics/decorators/track-email-event-metrics.decorator';
 
 @Controller()
 export class EmailConsumer {
@@ -18,17 +19,18 @@ export class EmailConsumer {
   ) {}
 
   @EventPattern(EMAIL_EVENT_PATTERNS.SEND_EMAIL)
+  @TrackEmailEventMetrics()
   async handleSendEmail (@Payload() data: SendEmailDto): Promise<void> {
     this.logger.info('Received SEND_EMAIL event', {
       context: this.constructor.name,
-      method: this.handleSendEmail.name,
+      method: 'handleSendEmail',
     });
 
     await this.emailService.sendEmail(data);
 
     this.logger.info('Finished processing SEND_EMAIL', {
       context: this.constructor.name,
-      method: this.handleSendEmail.name,
+      method: 'handleSendEmail',
     });
   }
 }

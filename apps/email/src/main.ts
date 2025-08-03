@@ -10,14 +10,15 @@ async function bootstrap (): Promise<void> {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(EmailConfigService);
   const host = configService.getRabbitMqHost();
-  const port = configService.getRabbitMqPort();
+  const rmgPort = configService.getRabbitMqPort();
+  const port = configService.getPort();
 
   const logger = app.get<LoggerServiceInterface>(LOGGER_DI_TOKENS.LOGGER_SERVICE);
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: [`amqp://${host}:${port}`],
+      urls: [`amqp://${host}:${rmgPort}`],
       queue: QUEUES.EMAIL_QUEUE,
       queueOptions: { durable: true },
       noAck: false,
@@ -25,6 +26,8 @@ async function bootstrap (): Promise<void> {
   });
 
   await app.startAllMicroservices();
-  logger.info(`Email Service is listening to RabbitMQ queue: ${QUEUES.EMAIL_QUEUE}, ${port}`);
+
+  await app.listen(port);
+  logger.info(`Email Service is listening to RabbitMQ queue: ${QUEUES.EMAIL_QUEUE}, ${rmgPort}`);
 }
 bootstrap();

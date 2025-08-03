@@ -8,11 +8,13 @@ import { EMAIL_DI_TOKENS } from './constants/di-tokens';
 import { EmailTemplateValidator } from './validators/email-template.validator';
 import { EmailConsumer } from './email.consumer';
 import { LoggerModule } from '@utils/modules/logger/logger.module';
+import { MetricsModule } from '../metrics/metrics.module';
 
 @Module({
   imports: [
     EmailConfigModule,
     LoggerModule,
+    MetricsModule,
     MailerModule.forRootAsync({
       imports: [EmailConfigModule],
       inject: [EMAIL_CONFIG_DI_TOKENS.EMAIL_CONFIG_SERVICE],
