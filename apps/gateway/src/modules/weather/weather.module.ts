@@ -3,13 +3,9 @@ import { WeatherClientModule } from '../clients/weather-client/weather-client.mo
 import { WeatherController } from './weather.controller';
 import { WeatherService } from './weather.service';
 import { WEATHER_DI_TOKENS } from './di-tokens';
-import { LoggerModule } from '@utils/modules/logger/logger.module';
 
 @Module({
-  imports: [
-    WeatherClientModule,
-    LoggerModule,
-  ],
+  imports: [WeatherClientModule],
   controllers: [WeatherController],
   providers: [
     {

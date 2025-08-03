@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       useFactory: (config: ConfigService): Params => ({
         pinoHttp: {
-          autoLogging: true,
+          autoLogging: false,
           level: config.getOrThrow('NODE_ENV') === 'production' ? 'info' : 'debug',
           transport: config.get('NODE_ENV') === 'production'
             ? undefined
