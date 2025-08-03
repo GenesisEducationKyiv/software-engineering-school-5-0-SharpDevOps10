@@ -90,4 +90,27 @@ I have also added CI/CD pipelines using GitHub Actions (located in `.github` fol
 [Dockerhub](https://hub.docker.com/repository/docker/rerorerio8/genesis-case-task/general) and running tests. Here you
 can find my [All Workflows](https://github.com/SharpDevOps10/genesis-case-task/actions)
 
-## Logs
+## Logging (Pino)
+
+Logs are handled using nestjs-pino for structured JSON logs.
+
+| Level   | Sampling Rate | Description                                            |
+|---------|---------------|--------------------------------------------------------|
+| `error` | 100% (all)    | All critical errors are logged without sampling.       |
+| `warn`  | 20%           | Warnings are selectively logged for anomaly detection. |
+| `info`  | 20%           | Informational logs for operational insights.           |
+| `debug` | 30%           | Verbose logs used mainly in development/testing.       |
+
+Logs are pushed to the console or centralized log system `Loki` based on deployment configuration.
+
+Log example:
+
+```json
+{
+  "level": 30,
+  "time": 1754230164262,
+  "context": "EmailConsumer",
+  "method": "handleSendEmail",
+  "msg": "Finished processing SEND_EMAIL"
+}
+```
