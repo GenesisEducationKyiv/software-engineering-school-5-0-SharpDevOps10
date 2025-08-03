@@ -61,3 +61,26 @@ Using `@nestjs/schedule`, the service:
 * Sends weather emails every day to users with `daily` frequency
 
 The email includes temperature, humidity, and description for the subscriber's city.
+
+## Metrics
+
+This microservice integrates Prometheus metrics to provide real-time observability of its core operations, including
+email dispatch and subscription retrieval. These metrics are periodically pushed to a Prometheus Pushgateway and are
+exposed in standard Prometheus format.
+
+| Metric Name                                | Type      | Labels                | Description                                                                   |
+|--------------------------------------------|-----------|-----------------------|-------------------------------------------------------------------------------|
+| `notification_email_send_attempts_total`   | Counter   | `status`, `frequency` | Total email send attempts, labeled by success/failure and frequency.          |
+| `notification_email_send_duration_seconds` | Histogram | `frequency`           | Duration of sending emails, labeled by notification frequency (e.g., hourly). |
+| `subscription_fetch_attempts_total`        | Counter   | `status`, `frequency` | Total attempts to fetch confirmed subscriptions, labeled by status/frequency. |
+| `subscription_fetch_duration_seconds`      | Histogram | `frequency`           | Time taken to fetch subscriptions, labeled by frequency.                      |
+
+### Viewing Metrics
+
+Metrics are pushed periodically to a Pushgateway configured for this service.
+
+1. Pushgateway Dashboard. Open http://localhost:9091 in your browser to inspect metrics submitted by the Notification
+   service.
+2. Prometheus with Grafana (optional): Configure Prometheus to scrape from Pushgateway to enable alerting and long-term
+   storage. Open `http://localhost:3000` and add `Prometheus` as a data source. Use the following query to visualize
+   email metrics:
