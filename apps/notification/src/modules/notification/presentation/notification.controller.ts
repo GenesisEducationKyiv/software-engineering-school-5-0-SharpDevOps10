@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { NOTIFICATION_DI_TOKENS } from '../di-tokens';
-import { IEmailJobService } from '../application/interfaces/email.job.service.interface';
+import { EmailJobServiceInterface } from '../application/interfaces/email.job.service.interface';
 import { CRON_CONSTANTS } from './constants/cron.constants';
 import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 
@@ -9,7 +9,7 @@ import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.en
 export class NotificationController {
   constructor (
     @Inject(NOTIFICATION_DI_TOKENS.EMAIL_JOB_SERVICE)
-    private readonly emailJobService: IEmailJobService,
+    private readonly emailJobService: EmailJobServiceInterface,
   ) {}
 
   @Cron(CronExpression.EVERY_HOUR, {

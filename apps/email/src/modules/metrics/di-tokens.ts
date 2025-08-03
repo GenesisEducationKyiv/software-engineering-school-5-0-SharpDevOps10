@@ -1,0 +1,3 @@
+export const EMAIL_METRIC_DI_TOKENS = {
+  EMAIL_METRICS: Symbol('EMAIL_METRICS'),
+};

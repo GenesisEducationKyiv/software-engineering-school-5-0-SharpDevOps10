@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
-import { IEmailConfigService } from './interfaces/email-config.service.interface';
+import { EmailConfigServiceInterface } from './interfaces/email-config.service.interface';
 
 @Injectable()
-export class EmailConfigService implements IEmailConfigService {
+export class EmailConfigService implements EmailConfigServiceInterface {
   constructor (private readonly config: NestConfigService) {}
 
   getSmtpHost (): string {
@@ -32,5 +32,21 @@ export class EmailConfigService implements IEmailConfigService {
 
   getRabbitMqPort (): number {
     return this.config.get<number>('RABBITMQ_PORT');
+  }
+
+  getPushGatewayUrl (): string {
+    return this.config.get<string>('PROMETHEUS_PUSH_GATEWAY_URL');
+  }
+
+  getMetricsJobName (): string {
+    return this.config.get<string>('PROMETHEUS_METRICS_JOB_NAME');
+  }
+
+  getMetricsPushInterval (): number {
+    return this.config.get<number>('PROMETHEUS_METRICS_PUSH_INTERVAL');
+  }
+
+  getPort (): number {
+    return this.config.get<number>('PORT');
   }
 }

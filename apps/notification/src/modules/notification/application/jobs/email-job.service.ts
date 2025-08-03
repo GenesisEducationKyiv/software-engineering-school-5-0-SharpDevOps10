@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IEmailJobService } from '../interfaces/email.job.service.interface';
+import { EmailJobServiceInterface } from '../interfaces/email.job.service.interface';
 import { NOTIFICATION_DI_TOKENS } from '../../di-tokens';
 import { IWeatherClient } from '../interfaces/weather.client.interface';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
@@ -10,7 +10,7 @@ import { SubscriptionProducerInterface } from '../interfaces/subscription-produc
 import { TrackEmailSendMetrics } from '../../../metrics/decorators/track-email-send-metrics.decorator';
 
 @Injectable()
-export class EmailJobService implements IEmailJobService {
+export class EmailJobService implements EmailJobServiceInterface {
   constructor (
     @Inject(NOTIFICATION_DI_TOKENS.SUBSCRIPTION_PRODUCER)
     private readonly subscriptionProducer: SubscriptionProducerInterface,

@@ -1,4 +1,4 @@
-export interface IEmailConfigService {
+export interface EmailConfigServiceInterface {
   getSmtpHost(): string;
   getSmtpPort(): number;
   getSmtpUser(): string;
@@ -7,4 +7,8 @@ export interface IEmailConfigService {
 
   getRabbitMqHost(): string;
   getRabbitMqPort(): number;
+
+  getPushGatewayUrl(): string;
+  getMetricsJobName(): string;
+  getMetricsPushInterval(): number;
 }
