@@ -18,7 +18,7 @@ export class WeatherController {
 
   @Get()
   async getWeather (@Query('city') city: string): Promise<GetWeatherResponse> {
-    this.logger.info(`GET /weather?city=${city}`);
+    //this.logger.info(`GET /weather?city=${city}`);
 
     return this.weatherService.getWeather(city);
   }

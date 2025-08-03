@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
-import { ISubscriptionConfigService } from './interfaces/subscription-config.service.interface';
+import { SubscriptionConfigServiceInterface } from './interfaces/subscription-config.service.interface';
 
 @Injectable()
-export class SubscriptionConfigService implements ISubscriptionConfigService {
+export class SubscriptionConfigService implements SubscriptionConfigServiceInterface {
   constructor (private readonly config: NestConfigService) {}
 
   getPort (): number {
@@ -32,5 +32,17 @@ export class SubscriptionConfigService implements ISubscriptionConfigService {
 
   getRabbitMqPort (): number {
     return this.config.get<number>('RABBITMQ_PORT');
+  }
+
+  getPushGatewayUrl (): string {
+    return this.config.get<string>('PROMETHEUS_PUSH_GATEWAY_URL');
+  }
+
+  getMetricsJobName (): string {
+    return this.config.get<string>('PROMETHEUS_METRICS_JOB_NAME');
+  }
+
+  getMetricsPushInterval (): number {
+    return this.config.get<number>('PROMETHEUS_METRICS_PUSH_INTERVAL');
   }
 }

@@ -4,7 +4,7 @@ import { WeatherProviderEnum } from '../../enums/weather.provider.enum';
 import { WeatherApiHandler } from '../handlers/weather-api.handler';
 import { VisualCrossingHandler } from '../handlers/visual-crossing.handler';
 import { WEATHER_CONFIG_DI_TOKENS } from '../../../config/di-tokens';
-import { IWeatherConfigService } from '../../../config/interfaces/weather-config.service.interface';
+import { WeatherConfigServiceInterface } from '../../../config/interfaces/weather-config.service.interface';
 
 @Injectable()
 export class WeatherHandlerFactory {
@@ -15,7 +15,7 @@ export class WeatherHandlerFactory {
     visualCrossing: VisualCrossingHandler,
 
     @Inject(WEATHER_CONFIG_DI_TOKENS.WEATHER_CONFIG_SERVICE)
-    private readonly config: IWeatherConfigService,
+    private readonly config: WeatherConfigServiceInterface,
   ) {
     this.strategies = {
       [WeatherProviderEnum.WEATHER_API]: weatherApi,

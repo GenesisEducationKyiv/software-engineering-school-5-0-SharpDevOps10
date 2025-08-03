@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { WEATHER_CONFIG_DI_TOKENS } from '../../config/di-tokens';
-import { IWeatherConfigService } from '../../config/interfaces/weather-config.service.interface';
+import { WeatherConfigServiceInterface } from '../../config/interfaces/weather-config.service.interface';
 import { WeatherApiErrorResponse } from '../responses/weather-api.error-response.interface';
 import { WEATHER_DI_TOKENS } from '../../weather/constants/di-tokens';
 import { IWeatherApiClient } from '../../weather/application/interfaces/weather-api.interface';
@@ -24,7 +24,7 @@ export class WeatherApiClient implements IWeatherApiClient {
     private readonly mapper: IWeatherMapper,
 
     @Inject(WEATHER_CONFIG_DI_TOKENS.WEATHER_CONFIG_SERVICE)
-    private readonly config: IWeatherConfigService,
+    private readonly config: WeatherConfigServiceInterface,
 
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
     private readonly logger: LoggerServiceInterface,

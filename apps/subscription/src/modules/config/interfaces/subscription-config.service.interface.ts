@@ -1,4 +1,4 @@
-export interface ISubscriptionConfigService {
+export interface SubscriptionConfigServiceInterface {
   getPort(): number;
 
   getTokenTtlHours(): number;
@@ -10,4 +10,8 @@ export interface ISubscriptionConfigService {
 
   getRabbitMqHost(): string;
   getRabbitMqPort(): number;
+
+  getPushGatewayUrl(): string;
+  getMetricsJobName(): string;
+  getMetricsPushInterval(): number;
 }

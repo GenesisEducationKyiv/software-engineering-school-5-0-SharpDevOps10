@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { SUBSCRIPTION_CONFIG_DI_TOKENS } from '../../../config/di-tokens';
-import { ISubscriptionConfigService } from '../../../config/interfaces/subscription-config.service.interface';
+import { SubscriptionConfigServiceInterface } from '../../../config/interfaces/subscription-config.service.interface';
 import { TokenServiceInterface } from '../../application/interfaces/token.service.interface';
 import { TOKEN_DATE } from './constants/token.date';
 
@@ -9,7 +9,7 @@ import { TOKEN_DATE } from './constants/token.date';
 export class TokenService implements TokenServiceInterface {
   constructor (
     @Inject(SUBSCRIPTION_CONFIG_DI_TOKENS.SUBSCRIPTION_CONFIG_SERVICE)
-    private readonly configService: ISubscriptionConfigService,
+    private readonly configService: SubscriptionConfigServiceInterface,
   ) {}
 
   generateToken (): string {

@@ -59,4 +59,16 @@ export class SubscriptionRepository implements SubscriptionRepositoryInterface {
       },
     });
   }
+
+  async countConfirmed (): Promise<number> {
+    return await this.prismaService.subscription.count({
+      where: { confirmed: true },
+    });
+  }
+
+  async countUnconfirmed (): Promise<number> {
+    return await this.prismaService.subscription.count({
+      where: { confirmed: false },
+    });
+  }
 }

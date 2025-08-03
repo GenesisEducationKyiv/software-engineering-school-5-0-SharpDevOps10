@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ISubscriptionConfigService } from '../../config/interfaces/subscription-config.service.interface';
+import { SubscriptionConfigServiceInterface } from '../../config/interfaces/subscription-config.service.interface';
 import { SubscriptionService } from './subscription.service';
 import { SubscriptionEmailSenderInterface } from './interfaces/subscription.email-sender.interface';
 import { PrismaService } from '../../../database/prisma.service';
@@ -33,10 +33,10 @@ describe('SubscriptionService (integration)', () => {
     debug: jest.fn(),
   };
 
-  const configServiceMock: jest.Mocked<ISubscriptionConfigService> = {
+  const configServiceMock: jest.Mocked<SubscriptionConfigServiceInterface> = {
     getTokenTtlHours: jest.fn().mockReturnValue(1),
 
-  } as unknown as jest.Mocked<ISubscriptionConfigService>;
+  } as unknown as jest.Mocked<SubscriptionConfigServiceInterface>;
 
   beforeAll(async () => {
     prisma = new PrismaClient();

@@ -105,6 +105,18 @@ services:
     networks:
       - app-network
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - app-network
+    depends_on:
+      - pushgateway
+
   loki:
     image: grafana/loki:latest
     container_name: loki
