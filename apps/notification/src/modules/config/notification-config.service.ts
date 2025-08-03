@@ -37,4 +37,16 @@ export class NotificationConfigService implements NotificationConfigServiceInter
   getSubscriptionProducerTimeout (): number {
     return this.config.get<number>('SUBSCRIPTION_PRODUCER_TIMEOUT');
   }
+
+  getPushGatewayUrl (): string {
+    return this.config.get<string>('PROMETHEUS_PUSH_GATEWAY_URL');
+  }
+
+  getMetricsJobName (): string {
+    return this.config.get<string>('PROMETHEUS_METRICS_JOB_NAME');
+  }
+
+  getMetricsPushInterval (): number {
+    return this.config.get<number>('PROMETHEUS_METRICS_PUSH_INTERVAL');
+  }
 }

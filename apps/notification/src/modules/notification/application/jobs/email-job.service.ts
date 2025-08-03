@@ -7,6 +7,7 @@ import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.int
 import { INotificationEmailSender } from '../interfaces/notification.email-sender.interface';
 import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.enum';
 import { SubscriptionProducerInterface } from '../interfaces/subscription-producer.interface';
+import { TrackEmailSendMetrics } from '../../../metrics/decorators/track-email-send-metrics.decorator';
 
 @Injectable()
 export class EmailJobService implements IEmailJobService {
@@ -25,6 +26,7 @@ export class EmailJobService implements IEmailJobService {
   ) {
   }
 
+  @TrackEmailSendMetrics()
   async sendWeatherEmailsByFrequency (frequency: SubscriptionFrequencyEnum): Promise<void> {
     const { subscriptions } = await this.subscriptionProducer.getConfirmedSubscriptions(frequency);
     const label = frequency === SubscriptionFrequencyEnum.HOURLY ? 'hourly' : 'daily';
@@ -41,12 +43,12 @@ export class EmailJobService implements IEmailJobService {
 
         this.logger.info(`Sent weather to ${sub.email} [${sub.city}]`, {
           context: this.constructor.name,
-          method: this.sendWeatherEmailsByFrequency.name,
+          method: 'sendWeatherEmailsByFrequency',
         });
       } catch (err) {
         this.logger.error(`Failed to send to ${sub.email}`, {
           context: this.constructor.name,
-          method: this.sendWeatherEmailsByFrequency.name,
+          method: 'sendWeatherEmailsByFrequency',
           error: err,
         });
       }

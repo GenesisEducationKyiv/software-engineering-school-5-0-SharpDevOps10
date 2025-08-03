@@ -11,4 +11,8 @@ export interface NotificationConfigServiceInterface {
   getRabbitMqPort(): number;
 
   getSubscriptionProducerTimeout(): number;
+
+  getPushGatewayUrl(): string;
+  getMetricsJobName(): string;
+  getMetricsPushInterval(): number;
 }
