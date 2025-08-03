@@ -1,44 +1,29 @@
 import { Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
-import { Pushgateway, RegistryContentType } from 'prom-client';
 import { WeatherConfigServiceInterface } from '../config/interfaces/weather-config.service.interface';
 import { WEATHER_CONFIG_DI_TOKENS } from '../config/di-tokens';
 import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
+import { BaseMetricsPusherService } from '@utils/modules/metrics/base-metrics-pusher.service';
 
 @Injectable({ scope: Scope.DEFAULT })
-export class WeatherMetricsPusherService implements OnModuleInit {
-  private gateway: Pushgateway<RegistryContentType>;
-  private jobName: string;
-
+export class WeatherMetricsPusherService extends BaseMetricsPusherService implements OnModuleInit {
   constructor (
     @Inject(WEATHER_CONFIG_DI_TOKENS.WEATHER_CONFIG_SERVICE)
-    private readonly config: WeatherConfigServiceInterface,
+      config: WeatherConfigServiceInterface,
 
     @Inject(LOGGER_DI_TOKENS.LOGGER_SERVICE)
-    private readonly logger: LoggerServiceInterface,
-  ) {}
-
-  onModuleInit (): void {
-    this.jobName = this.config.getMetricsJobName();
-    this.gateway = new Pushgateway(this.config.getPushGatewayUrl());
-
-    const interval = this.config.getMetricsPushInterval();
-    setInterval(() => this.pushMetrics(), interval);
+      logger: LoggerServiceInterface,
+  ) {
+    super(
+      config.getPushGatewayUrl(),
+      config.getMetricsJobName(),
+      config.getMetricsPushInterval(),
+      logger,
+    );
   }
 
-  private async pushMetrics (): Promise<void> {
-    try {
-      await this.gateway.pushAdd({ jobName: this.jobName });
-      this.logger.info(`Metrics pushed to Pushgateway (job: ${this.jobName})`, {
-        context: this.constructor.name,
-        method: this.pushMetrics.name,
-      });
-    } catch (err) {
-      this.logger.error(`Failed to push metrics: ${err.message}`, {
-        context: this.constructor.name,
-        method: this.pushMetrics.name,
-        error: err,
-      });
-    }
+
+  onModuleInit (): void {
+    this.initPusher();
   }
 }
