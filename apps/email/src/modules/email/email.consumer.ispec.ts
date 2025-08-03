@@ -11,7 +11,8 @@ import { SubscriptionFrequencyEnum } from '@grpc-types/subscription-frequency.en
 import { scheduler } from 'node:timers/promises';
 import { EMAIL_DI_TOKENS } from './constants/di-tokens';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { QUEUES } from '../../../../../libs/utils/constants/brokers/queues';
+import { QUEUES } from '@utils/constants/brokers/queues';
+import { EmailMetricsPusherService } from '../metrics/email-metrics-pusher.service';
 
 describe('EmailConsumer (integration)', () => {
   let app: INestApplication;
@@ -21,6 +22,11 @@ describe('EmailConsumer (integration)', () => {
   const sendEmailMock = jest.fn();
   const emailServiceMock: EmailServiceInterface = {
     sendEmail: sendEmailMock,
+  };
+
+  const emailMetricsPusherMock = {
+    initPusher: jest.fn(),
+    onModuleDestroy: jest.fn(),
   };
 
   let publish: (pattern: string, data: object) => void;
@@ -37,6 +43,8 @@ describe('EmailConsumer (integration)', () => {
     })
       .overrideProvider(EMAIL_DI_TOKENS.EMAIL_SERVICE)
       .useValue(emailServiceMock)
+      .overrideProvider(EmailMetricsPusherService)
+      .useValue(emailMetricsPusherMock)
       .compile();
 
     app = moduleRef.createNestApplication();
