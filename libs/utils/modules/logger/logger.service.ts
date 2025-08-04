@@ -1,29 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PinoLogger } from 'nestjs-pino';
 import { LoggerServiceInterface } from '@utils/modules/logger/logger.service.interface';
+import { LOGGER_DI_TOKENS } from './di-tokens';
+import { LoggerConfigServiceInterface } from '@utils/modules/logger/configs/logger-config-service.interface';
 
 @Injectable()
 export class LoggerService implements LoggerServiceInterface {
-  private readonly SAMPLE_RATE_INFO = 0.2;
-  private readonly SAMPLE_RATE_DEBUG = 0.3;
-  private readonly SAMPLE_RATE_WARN = 0.2;
+  constructor (
+    private readonly logger: PinoLogger,
 
-  constructor (private readonly logger: PinoLogger) {}
+    @Inject(LOGGER_DI_TOKENS.LOGGER_CONFIG_SERVICE)
+    private readonly config: LoggerConfigServiceInterface,
+  ) {}
 
   debug (message: string, meta?: unknown): void {
-    if (Math.random() < this.SAMPLE_RATE_DEBUG) {
+    if (Math.random() < this.config.sampleRateDebug) {
       this.logger.debug(meta ?? {}, message);
     }
   }
 
   info (message: string, meta?: unknown): void {
-    if (Math.random() < this.SAMPLE_RATE_INFO) {
+    if (Math.random() < this.config.sampleRateInfo) {
       this.logger.info(meta ?? {}, message);
     }
   }
 
   warn (message: string, meta?: unknown): void {
-    if (Math.random() < this.SAMPLE_RATE_WARN) {
+    if (Math.random() < this.config.sampleRateWarn) {
       this.logger.warn(meta ?? {}, message);
     }
   }

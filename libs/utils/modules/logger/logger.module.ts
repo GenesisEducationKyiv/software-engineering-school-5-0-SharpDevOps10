@@ -3,9 +3,11 @@ import { LOGGER_DI_TOKENS } from '@utils/modules/logger/di-tokens';
 import { LoggerService } from '@utils/modules/logger/logger.service';
 import { LoggerModule as PinoLoggerModule, Params } from 'nestjs-pino';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { LoggerConfigService } from '@utils/modules/logger/configs/logger-config.service';
 
 @Module({
   imports: [
+    ConfigModule,
     PinoLoggerModule.forRootAsync({
       inject: [ConfigService],
       imports: [ConfigModule],
@@ -29,11 +31,19 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   ],
 
   providers: [
+    LoggerConfigService,
     {
       provide: LOGGER_DI_TOKENS.LOGGER_SERVICE,
       useClass: LoggerService,
     },
+    {
+      provide: LOGGER_DI_TOKENS.LOGGER_CONFIG_SERVICE,
+      useClass: LoggerConfigService,
+    },
   ],
-  exports: [LOGGER_DI_TOKENS.LOGGER_SERVICE],
+  exports: [
+    LOGGER_DI_TOKENS.LOGGER_SERVICE,
+    LOGGER_DI_TOKENS.LOGGER_CONFIG_SERVICE,
+  ],
 })
 export class LoggerModule {}
